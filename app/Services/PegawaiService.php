@@ -6,51 +6,31 @@ use App\DTOs\PegawaiDTO;
 use App\Entities\PegawaiEntity;
 use Illuminate\Support\Facades\Http;
 
-class PegawaiService
+class PegawaiService implements BasicRequestServiceInterface
 {
-    protected $apiBaseUrl;
+    protected $apiUrl;
 
     public function __construct()
     {
-        $this->apiBaseUrl = config('services.api.base_url') . '/pegawai';
+        $this->apiUrl = config('services.api.base_url') . '/pegawai';
     }
 
-    public function getPegawai(): array
+    /**
+     * @throws \Exception
+     */
+    public function getAll(): array
     {
-        $response = Http::get($this->apiBaseUrl);
-        if ($response->successful()) {
-            $data = $response->json(['data']);
+        $response = Http::get($this->apiUrl);
 
-            $pegawaiEntities = [];
-
-            foreach ($data as $item) {
-                $pegawaiDTO = new PegawaiDTO($item);
-
-                $pegawaiEntity = new PegawaiEntity(
-                    $pegawaiDTO->id,
-                    $pegawaiDTO->nip,
-                    $pegawaiDTO->nipBps,
-                    $pegawaiDTO->nama,
-                    $pegawaiDTO->alias,
-                    $pegawaiDTO->jabatan,
-                    $pegawaiDTO->golongan
-                );
-
-                $pegawaiEntities[] = $pegawaiEntity;
-            }
-
-            return $pegawaiEntities;
-        } else {
+        if (!$response->successful()) {
             throw new \Exception('Failed to fetch PegawaiController data from API');
         }
-    }
 
-    public function getPegawaiById($id)
-    {
-        $response = Http::get($this->apiBaseUrl . '/' . $id);
-        if ($response->successful()) {
-            $data = $response->json(['data']);
-            $pegawaiDTO = new PegawaiDTO($data);
+        $data = $response->json(['data']);
+        $pegawaiEntities = [];
+
+        foreach ($data as $item) {
+            $pegawaiDTO = new PegawaiDTO($item);
 
             $pegawaiEntity = new PegawaiEntity(
                 $pegawaiDTO->id,
@@ -59,13 +39,55 @@ class PegawaiService
                 $pegawaiDTO->nama,
                 $pegawaiDTO->alias,
                 $pegawaiDTO->jabatan,
-                $pegawaiDTO->golongan
+                $pegawaiDTO->golongan,
+                $pegawaiDTO->status
             );
 
-            return $pegawaiEntity;
-        } else {
+            $pegawaiEntities[] = $pegawaiEntity;
+        }
+
+        return $pegawaiEntities;
+    }
+
+    public function getById($id): object
+    {
+        $response = Http::get($this->apiUrl . '/' . $id);
+
+        if (!$response->successful()) {
             throw new \Exception('Failed to fetch PegawaiController data from API');
         }
+
+        $data = $response->json(['data']);
+        $pegawaiDTO = new PegawaiDTO($data);
+
+        $pegawaiEntity = new PegawaiEntity(
+            $pegawaiDTO->id,
+            $pegawaiDTO->nip,
+            $pegawaiDTO->nipBps,
+            $pegawaiDTO->nama,
+            $pegawaiDTO->alias,
+            $pegawaiDTO->jabatan,
+            $pegawaiDTO->golongan,
+            $pegawaiDTO->status
+        );
+
+        return $pegawaiEntity;
     }
+
+    public function create($data): void
+    {
+        // TODO: Implement create() method.
+    }
+
+    public function update($id, $data): void
+    {
+        // TODO: Implement update() method.
+    }
+
+    public function delete($id): void
+    {
+        // TODO: Implement delete() method.
+    }
+
 
 }
