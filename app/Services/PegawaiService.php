@@ -6,13 +6,11 @@ use App\DTOs\PegawaiDTO;
 use App\Entities\PegawaiEntity;
 use Illuminate\Support\Facades\Http;
 
-class PegawaiService implements BasicRequestServiceInterface
+class PegawaiService extends AbstractRequestService
 {
-    protected $apiUrl;
-
     public function __construct()
     {
-        $this->apiUrl = config('services.api.base_url') . '/pegawai';
+        parent::__construct(config('services.api.base_url') . '/pegawai');
     }
 
     /**
@@ -23,7 +21,7 @@ class PegawaiService implements BasicRequestServiceInterface
         $response = Http::get($this->apiUrl);
 
         if (!$response->successful()) {
-            throw new \Exception('Failed to fetch PegawaiController data from API');
+            throw new \Exception($response->json('errors'));
         }
 
         $data = $response->json(['data']);
@@ -54,7 +52,7 @@ class PegawaiService implements BasicRequestServiceInterface
         $response = Http::get($this->apiUrl . '/' . $id);
 
         if (!$response->successful()) {
-            throw new \Exception('Failed to fetch PegawaiController data from API');
+            throw new \Exception($response->json('errors'));
         }
 
         $data = $response->json(['data']);
@@ -74,20 +72,32 @@ class PegawaiService implements BasicRequestServiceInterface
         return $pegawaiEntity;
     }
 
-    public function create($data): void
+    public function getByNip($nip): object
     {
-        // TODO: Implement create() method.
+        $request = [
+            'nip' => $nip
+        ];
+
+        $response = Http::post($this->apiUrl . '/nip', $request);
+
+        if (!$response->successful()) {
+            throw new \Exception($response->json('errors'));
+        }
+
+        $data = $response->json(['data']);
+        $pegawaiDTO = new PegawaiDTO($data);
+
+        $pegawaiEntity = new PegawaiEntity(
+            $pegawaiDTO->id,
+            $pegawaiDTO->nip,
+            $pegawaiDTO->nipBps,
+            $pegawaiDTO->nama,
+            $pegawaiDTO->alias,
+            $pegawaiDTO->jabatan,
+            $pegawaiDTO->golongan,
+            $pegawaiDTO->status
+        );
+
+        return $pegawaiEntity;
     }
-
-    public function update($id, $data): void
-    {
-        // TODO: Implement update() method.
-    }
-
-    public function delete($id): void
-    {
-        // TODO: Implement delete() method.
-    }
-
-
 }
