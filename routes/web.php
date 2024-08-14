@@ -7,4 +7,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test-page', [PegawaiController::class, 'getAll']) ->name('test-page');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+}) -> name('dashboard');
+
+Route::get('/kegiatan', function () {
+    return view('kegiatan');
+}) -> name('kegiatan');
+
+Route::get('/beban-kerja', function () {
+    return view('beban-kerja');
+}) -> name('beban-kerja');
