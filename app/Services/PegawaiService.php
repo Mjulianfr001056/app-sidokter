@@ -6,51 +6,29 @@ use App\DTOs\PegawaiDTO;
 use App\Entities\PegawaiEntity;
 use Illuminate\Support\Facades\Http;
 
-class PegawaiService
+class PegawaiService extends AbstractRequestService
 {
-    protected $apiBaseUrl;
-
     public function __construct()
     {
-        $this->apiBaseUrl = config('services.api.base_url') . '/pegawai';
+        parent::__construct(config('services.api.base_url') . '/pegawai');
     }
 
-    public function getPegawai(): array
+    /**
+     * @throws \Exception
+     */
+    public function getAll(): array
     {
-        $response = Http::get($this->apiBaseUrl);
-        if ($response->successful()) {
-            $data = $response->json(['data']);
+        $response = Http::get($this->apiUrl);
 
-            $pegawaiEntities = [];
-
-            foreach ($data as $item) {
-                $pegawaiDTO = new PegawaiDTO($item);
-
-                $pegawaiEntity = new PegawaiEntity(
-                    $pegawaiDTO->id,
-                    $pegawaiDTO->nip,
-                    $pegawaiDTO->nipBps,
-                    $pegawaiDTO->nama,
-                    $pegawaiDTO->alias,
-                    $pegawaiDTO->jabatan,
-                    $pegawaiDTO->golongan
-                );
-
-                $pegawaiEntities[] = $pegawaiEntity;
-            }
-
-            return $pegawaiEntities;
-        } else {
-            throw new \Exception('Failed to fetch PegawaiController data from API');
+        if (!$response->successful()) {
+            throw new \Exception($response->json('errors'));
         }
-    }
 
-    public function getPegawaiById($id)
-    {
-        $response = Http::get($this->apiBaseUrl . '/' . $id);
-        if ($response->successful()) {
-            $data = $response->json(['data']);
-            $pegawaiDTO = new PegawaiDTO($data);
+        $data = $response->json(['data']);
+        $pegawaiEntities = [];
+
+        foreach ($data as $item) {
+            $pegawaiDTO = new PegawaiDTO($item);
 
             $pegawaiEntity = new PegawaiEntity(
                 $pegawaiDTO->id,
@@ -59,13 +37,67 @@ class PegawaiService
                 $pegawaiDTO->nama,
                 $pegawaiDTO->alias,
                 $pegawaiDTO->jabatan,
-                $pegawaiDTO->golongan
+                $pegawaiDTO->golongan,
+                $pegawaiDTO->status
             );
 
-            return $pegawaiEntity;
-        } else {
-            throw new \Exception('Failed to fetch PegawaiController data from API');
+            $pegawaiEntities[] = $pegawaiEntity;
         }
+
+        return $pegawaiEntities;
     }
 
+    public function getById($id): object
+    {
+        $response = Http::get($this->apiUrl . '/' . $id);
+
+        if (!$response->successful()) {
+            throw new \Exception($response->json('errors'));
+        }
+
+        $data = $response->json(['data']);
+        $pegawaiDTO = new PegawaiDTO($data);
+
+        $pegawaiEntity = new PegawaiEntity(
+            $pegawaiDTO->id,
+            $pegawaiDTO->nip,
+            $pegawaiDTO->nipBps,
+            $pegawaiDTO->nama,
+            $pegawaiDTO->alias,
+            $pegawaiDTO->jabatan,
+            $pegawaiDTO->golongan,
+            $pegawaiDTO->status
+        );
+
+        return $pegawaiEntity;
+    }
+
+    public function getByNip($nip): object
+    {
+        $request = [
+            'nip' => $nip
+        ];
+
+        $response = Http::post($this->apiUrl . '/nip', $request);
+
+        if (!$response->successful()) {
+            throw new \Exception($response->json('errors'));
+        }
+
+        $data = $response->json(['data']);
+        $pegawaiDTO = new PegawaiDTO($data);
+
+        $pegawaiEntity = new PegawaiEntity(
+            $pegawaiDTO->id,
+            $pegawaiDTO->nip,
+            $pegawaiDTO->nipBps,
+            $pegawaiDTO->nama,
+            $pegawaiDTO->alias,
+            $pegawaiDTO->jabatan,
+            $pegawaiDTO->golongan,
+            $pegawaiDTO->status
+        );
+
+        return $pegawaiEntity;
+    }
 }

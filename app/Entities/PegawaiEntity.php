@@ -11,6 +11,7 @@ class PegawaiEntity
     private $alias;
     private $jabatan;
     private $golongan;
+    private $status;
 
     public function __construct(
         $id,
@@ -19,7 +20,8 @@ class PegawaiEntity
         $nama,
         $alias,
         $jabatan,
-        $golongan
+        $golongan,
+        $status
     ) {
         $this->id = $id;
         $this->nip = $nip;
@@ -28,6 +30,7 @@ class PegawaiEntity
         $this->alias = $alias;
         $this->jabatan = $jabatan;
         $this->golongan = $golongan;
+        $this->status = $status;
     }
 
     /**

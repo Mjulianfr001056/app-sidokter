@@ -11,6 +11,7 @@ class PegawaiDTO
     public $alias;
     public $jabatan;
     public $golongan;
+    public $status;
 
     public function __construct(array $data)
     {
@@ -21,5 +22,6 @@ class PegawaiDTO
         $this->alias = $data['alias'] ?? null;
         $this->jabatan = $data['jabatan'] ?? null;
         $this->golongan = $data['golongan'] ?? null;
+        $this->status = $data['status'] ?? null;
     }
 }
