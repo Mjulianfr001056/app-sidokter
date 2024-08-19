@@ -3,16 +3,23 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @vite('resources/css/app.css')
-    @livewireStyles
+    @vite(['resources/css/app.css','resources/js/app.js'])
     <title>@yield('title')</title>
 </head>
 <body>
-@include('components.navigation.navbar')
+<div class="size-full flex flex-col">
+    <div class="w-full border-b-[1px] border-b-gray-300">
+        @include('components.navigation.navbar')
+    </div>
 
-<x-navigation.sidebar-flow />
-@yield('content')
+    <div class="flex flex-row flex-1 bg-blue-50">
+        <x-sidebar-flow />
 
-@livewireScripts
+        <main class="flex-1 pt-12 px-8 ">
+            @yield('content')
+        </main>
+    </div>
+</div>
+
 </body>
 </html>
