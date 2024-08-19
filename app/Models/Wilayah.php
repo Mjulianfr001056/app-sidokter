@@ -19,4 +19,9 @@ class Wilayah extends Model
         'kecamatan',
         'kelurahan'
     ];
+
+    public function perusahaan()
+    {
+        return $this->hasMany(Perusahaan::class, 'kode_wilayah', 'kode');
+    }
 }
