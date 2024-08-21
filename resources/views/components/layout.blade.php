@@ -12,7 +12,7 @@
         @include('components.navigation.navbar')
     </div>
 
-    <div class="flex flex-row flex-1 bg-blue-50">
+    <div class="flex flex-row flex-1 bg-main-base">
         <x-sidebar-flow />
 
         <main class="flex-1 pt-12 px-8 ">

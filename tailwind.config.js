@@ -7,7 +7,11 @@ export default {
         "./node_modules/flowbite/**/*.js"
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                'main-base': '#F0F3FA',
+            }
+        },
     },
     plugins: [
         require('daisyui'),

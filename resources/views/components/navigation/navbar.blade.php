@@ -5,7 +5,7 @@
     <div class="flex-none">
         <div class="dropdown dropdown-bottom flex flex-row">
             <div class="self-center pr-3">
-                <p class="text-lg text-gray-700">Halo, Julian!</p>
+                <p class="text-lg text-teal-900 font-medium">Halo, Julian!</p>
             </div>
 
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle">

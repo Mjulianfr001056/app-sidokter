@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <div class="size-full bg-blue-50 flex flex-col w-full items-center">
+    <div class="size-full flex flex-col w-full items-center">
         <div class="size-full flex flex-col">
             <div class="w-full pl-4 pb-6">
                 <span class="text-3xl text-teal-600 font-bold">Selamat Datang!</span>
