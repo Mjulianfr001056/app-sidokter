@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BebanKerjaMitraController;
 use App\Http\Controllers\BebanKerjaOrganikController;
+use App\Http\Controllers\MasterKegiatanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,4 +22,9 @@ Route::group(['prefix' => 'beban-kerja'], function () {
         ->name('beban-kerja-organik');
     Route::get('/mitra', [BebanKerjaMitraController::class, 'index'])
         ->name('beban-kerja-mitra');
+});
+
+Route::group(['prefix' => 'master'], function () {
+    Route::get('/kegiatan', [MasterKegiatanController::class, 'index'])
+        ->name('master-kegiatan');
 });
