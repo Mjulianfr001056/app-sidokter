@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BebanKerjaMitraController;
 use App\Http\Controllers\BebanKerjaOrganikController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,4 +19,6 @@ Route::get('/kegiatan', function () {
 Route::group(['prefix' => 'beban-kerja'], function () {
     Route::get('/organik', [BebanKerjaOrganikController::class, 'index'])
         ->name('beban-kerja-organik');
+    Route::get('/mitra', [BebanKerjaMitraController::class, 'index'])
+        ->name('beban-kerja-mitra');
 });
