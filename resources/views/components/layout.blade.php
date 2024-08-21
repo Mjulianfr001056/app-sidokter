@@ -12,10 +12,10 @@
         @include('components.navigation.navbar')
     </div>
 
-    <div class="flex flex-row flex-1 bg-main-base">
+    <div class="flex flex-row flex-1 bg-main-base size-full">
         <x-sidebar-flow />
 
-        <main class="flex-1 pt-12 px-4 ">
+        <main class="flex-1 pt-12 px-6 size-full pb-10">
             @yield('content')
         </main>
     </div>

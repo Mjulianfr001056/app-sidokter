@@ -1,5 +1,5 @@
-<div class="w-full max-h-96">
-    <canvas id="lineChartCanvas" class="w-full"></canvas>
+<div class="size-full max-h-[60vh] pb-4">
+    <canvas id="lineChartCanvas" class="size-full"></canvas>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
