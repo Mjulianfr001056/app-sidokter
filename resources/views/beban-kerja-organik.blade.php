@@ -1,19 +1,24 @@
 @extends('components.layout')
 
-@section('title', 'Beban Kerja')
+@section('title', 'Beban Kerja Organik')
 
 @section('content')
-    <div class="size-full bg-gray-50 flex flex-col w-full items-center">
+    <div class="size-full flex flex-col w-full items-center px-4">
         {{--        Judul--}}
-        <div class="w-full">
-            <h1 class="text-4xl font-bold text-teal-600 mb-8 pl-6">Beban Kerja Organik</h1>
+        <div class="w-full pb-6 ">
+            <x-judul text="Beban Kerja Organik"/>
         </div>
 
+        <div class="w-full pb-8">
+            <x-line-card :judul="'Jumlah Kegiatan Setiap Periode'" :labels="$labels" :value="$value"/>
+        </div>
+
+
         {{--        Pencarian dan Periode--}}
-        <div class="w-full flex flex-row justify-between items-center pr-4">
+        <div class="w-full flex flex-row justify-between items-center pb-0.5">
             {{-- Dropdown Button --}}
             <div class="flex items-center">
-                <div class="dropdown dropdown-bottom pl-6">
+                <div class="dropdown dropdown-bottom">
                     <div tabindex="0" role="button"
                          class="btn bg-teal-700 border-0 text-gray-50 justify-between self-center btn-sm w-36 hover:bg-teal-600 flex items-center">
                         <div class="self-center pr-2">
@@ -34,9 +39,9 @@
             </div>
 
             {{-- Search Input --}}
-            <div class="relative flex items-center w-64">
+            <div class="relative flex items-center w-64 ">
                 <input type="text"
-                       class="input pl-10 m-2 w-full bg-gray-50 border border-gray-300 rounded-md input-sm focus:outline-none focus:ring-1 focus:ring-teal-600 focus:border-teal-600 peer"
+                       class="input pl-10 m-2 mr-0 w-full bg-gray-50 border border-gray-300 rounded-md input-sm focus:outline-none focus:ring-1 focus:ring-teal-600 focus:border-teal-600 peer"
                        placeholder="Cari kegiatan"/>
 
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -51,7 +56,7 @@
 
 
         {{--        Tabel--}}
-        <div class="w-full flex flex-col justify-center px-6 pb-12">
+        <div class="w-full flex flex-col justify-center pb-12">
 
 
             <div class="relative overflow-x-auto">

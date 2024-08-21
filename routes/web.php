@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\BebanKerjaOrganikController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,6 +15,7 @@ Route::get('/kegiatan', function () {
     return view('kegiatan');
 }) -> name('kegiatan');
 
-Route::get('/beban-kerja', function () {
-    return view('beban-kerja');
-}) -> name('beban-kerja');
+Route::group(['prefix' => 'beban-kerja'], function () {
+    Route::get('/organik', [BebanKerjaOrganikController::class, 'index'])
+        ->name('beban-kerja-organik');
+});
