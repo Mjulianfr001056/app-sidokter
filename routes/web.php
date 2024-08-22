@@ -19,6 +19,10 @@ Route::group(['prefix' => 'capaian'], function () {
         ->name('capaian-agregat');
     Route::get('/organik', [CapaianOrganikController::class, 'index'])
         ->name('capaian-organik');
+    Route::get('/organik/{nama}', [CapaianOrganikController::class, 'showDetail'])
+        ->name('capaian-organik-detail');
+    Route::get('/organik/mitra/{nama}', [CapaianOrganikController::class, 'showMitra'])
+        ->name('capaian-organik-mitra');
 });
 
 Route::group(['prefix' => 'beban-kerja'], function () {
