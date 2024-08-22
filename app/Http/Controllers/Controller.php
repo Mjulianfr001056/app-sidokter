@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Services\BasicRequestServiceInterface;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class Controller
 {
+    protected Model $model;
 //    protected BasicRequestServiceInterface $service;
 //
 //    public function __construct(BasicRequestServiceInterface $service)

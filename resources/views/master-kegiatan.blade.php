@@ -1,3 +1,4 @@
+@php use Carbon\Carbon; @endphp
 @extends('components.layout')
 
 @section('title', 'Master Kegiatan')
@@ -27,77 +28,73 @@
             </div>
         </div>
 
-
         {{--        Tabel--}}
-        <div class="max-w-[78vw] flex flex-col justify-center pb-12 ">
-            <div class="relative overflow-x-auto">
+        <div class="flex flex-col justify-center overflow-x-auto max-w-[78vw]">
+            <div class="relative min-w-[100vw]">
                 <table class="table-custom">
                     <thead>
                     <tr>
-                        <th scope="col" class="w-12">No</th>
-                        <th scope="col" class="w-32">Tanggal</th>
-                        <th scope="col" class="w-64">Nama</th>
-                        <th scope="col" class="w-24">Volume</th>
-                        <th scope="col" class="w-24">Satuan</th>
-                        <th scope="col" class="w-52">Harga Satuan</th>
-                        <th scope="col" class="w-52">Jumlah Biaya</th>
-                        <th scope="col" class="w-64">Aksi</th>
+                        <th scope="col" rowspan="2" class="w-8 text-center">No</th>
+                        <th scope="col" rowspan="2" class="w-56">Nama</th>
+                        <th scope="col" rowspan="2" class="w-24">Asal Fungsi</th>
+                        <th scope="col" rowspan="2" class="w-20 text-center">Periode</th>
+                        <th scope="col" colspan="2" class="text-center border-b-gray-200 border-b-[1px]">Tanggal</th>
+                        <th scope="col" rowspan="2" class="w-28 text-end">Target</th>
+                        <th scope="col" rowspan="2" class="w-28 text-center">Satuan</th>
+                        <th scope="col" rowspan="2" class="w-28 text-end">Harga Satuan</th>
+                        <th scope="col" rowspan="2" class="w-28 text-center">Aksi</th>
+                    </tr>
+                    <tr>
+                        <th scope="col" class="w-28 text-center">Mulai</th>
+                        <th scope="col" class="w-28 text-center">Selesai</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="tr-border-b">
-                        <td class="px-6 py-4">1</td>
-                        <td class="date-cell">2024-01-15</td>
-                        <td class="px-6 py-4">John Doe</td>
-                        <td class="px-6 py-4">1000</td>
-                        <td class="px-6 py-4">Unit</td>
-                        <td class="px-6 py-4">500000</td>
-                        <td class="px-6 py-4">400000000</td>
-                        <td class="px-6 py-4">
-                            <div class="flex justify-between space-x-2">
-                                <x-view-button/>
-                                <x-remove-button/>
-                            </div>
-                        </td>
-                    </tr>
+                    @foreach ($kegiatan as $item)
+                        <tr>
+                            <td class="text-center">{{ $item->id }}</td>
+                            <td>{{ $item->nama }}</td>
+                            <td>{{ $item->asal_fungsi }}</td>
+                            <td class="text-center">
+                                @if($item->periode)
+                                    {{ $item->periode }}
+                                @else
+                                    -
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if($item->tanggal_mulai)
+                                    {{ Carbon::parse($item->tanggal_mulai)->format('d-m-Y') }}
+                                @else
+                                    -
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if($item->tanggal_akhir)
+                                    {{ Carbon::parse($item->tanggal_akhir)->format('d-m-Y') }}
+                                @else
+                                    -
+                                @endif
+                            </td>
 
+                            <td class="text-end">{{ $item->target }}</td>
+                            <td class="text-center">{{$item->satuan }}</td>
+                            <td class="text-end">{{ $item->harga_satuan }}</td>
+                            <td class="text-center">
+                                <div class="flex justify-between space-x-2 px-2">
+                                    <x-view-button/>
+                                    <x-remove-button/>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
-
-
-            <div class="flex flex-row items-center justify-between">
-        <span class="text-sm text-gray-400">
-            Menampilkan
-            <span class="font-semibold text-gray-900">1</span>
-            sampai
-            <span class="font-semibold text-gray-900">7</span>
-            dari
-            <span class="font-semibold text-gray-900">100</span>
-            entri
-        </span>
-                <div class="inline-flex mt-2 xs:mt-0 space-x-0.5">
-                    <button
-                        class="btn bg-teal-700 border-0 text-gray-50 justify-between self-center btn-sm w-24 hover:bg-teal-600 flex items-center rounded-r-none" role="button">
-                        <svg class="w-3.5 h-3.5 me-2 rtl:rotate-180" aria-hidden="true"
-                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M13 5H1m0 0 4 4M1 5l4-4"/>
-                        </svg>
-                        Prev
-                    </button>
-                    <button
-                        class="btn bg-teal-700 border-0 text-gray-50 justify-between self-center btn-sm w-24 hover:bg-teal-600 flex items-center rounded-l-none" role="button">
-                        Next
-                        <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true"
-                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
         </div>
+
+        {{-- Pagination --}}
+        <x-paginator :paginator="$kegiatan"/>
 
     </div>
 @endsection

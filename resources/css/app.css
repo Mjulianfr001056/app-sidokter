@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .table-custom {
-    @apply w-full text-sm text-left text-gray-500;
+    @apply w-full text-sm text-left text-gray-700;
 }
 
 .table-custom thead {
@@ -14,12 +14,25 @@
     @apply bg-white border-b;
 }
 
+.table-custom td{
+    @apply text-sm;
+}
+
 .table-custom td,
 .table-custom th {
-    @apply px-6 py-3;
+    @apply px-2 py-2.5;
 }
 
 .table-custom .date-cell {
     @apply font-medium text-cyan-950 whitespace-nowrap;
 }
+
+.table-custom th {
+    @apply border-x-[1px] border-gray-200;
+}
+
+.table-custom th:last-child {
+    border-right: none; /* Remove border from the last header cell */
+}
+
 
