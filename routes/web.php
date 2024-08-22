@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\BebanKerjaMitraController;
 use App\Http\Controllers\BebanKerjaOrganikController;
+use App\Http\Controllers\CapaianAgregatController;
+use App\Http\Controllers\CapaianOrganikController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MasterKegiatanController;
 use Illuminate\Support\Facades\Route;
@@ -12,9 +14,12 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index']) -> name('dashboard');
 
-Route::get('/kegiatan', function () {
-    return view('kegiatan');
-}) -> name('kegiatan');
+Route::group(['prefix' => 'capaian'], function () {
+    Route::get('/agregat', [CapaianAgregatController::class, 'index'])
+        ->name('capaian-agregat');
+    Route::get('/organik', [CapaianOrganikController::class, 'index'])
+        ->name('capaian-organik');
+});
 
 Route::group(['prefix' => 'beban-kerja'], function () {
     Route::get('/organik', [BebanKerjaOrganikController::class, 'index'])
