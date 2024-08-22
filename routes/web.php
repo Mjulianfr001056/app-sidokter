@@ -6,6 +6,9 @@ use App\Http\Controllers\CapaianAgregatController;
 use App\Http\Controllers\CapaianOrganikController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MasterKegiatanController;
+use App\Http\Controllers\MasterMitraController;
+use App\Http\Controllers\MasterOrganikController;
+use App\Http\Controllers\MasterPerusahaanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -35,4 +38,10 @@ Route::group(['prefix' => 'beban-kerja'], function () {
 Route::group(['prefix' => 'master'], function () {
     Route::get('/kegiatan', [MasterKegiatanController::class, 'index'])
         ->name('master-kegiatan');
+    Route::get('/organik', [MasterOrganikController::class, 'index'])
+        ->name('master-organik');
+    Route::get('/mitra', [MasterMitraController::class, 'index'])
+        ->name('master-mitra');
+    Route::get('/perusahaan', [MasterPerusahaanController::class, 'index'])
+        ->name('master-perusahaan');
 });
