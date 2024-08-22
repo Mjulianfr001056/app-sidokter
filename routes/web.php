@@ -38,6 +38,10 @@ Route::group(['prefix' => 'master'], function () {
         ->name('create-kegiatan');
     Route::post('/kegiatan/create', [MasterKegiatanController::class, 'store'])
         ->name('store-kegiatan');
+    Route::get('/kegiatan/{id}', [MasterKegiatanController::class, 'view'])
+        ->name('view-kegiatan');
+    Route::get('/kegiatan/{id}/edit', [MasterKegiatanController::class, 'edit'])
+        ->name('edit-kegiatan');
 
     Route::get('/organik', [MasterOrganikController::class, 'index'])
         ->name('master-organik');

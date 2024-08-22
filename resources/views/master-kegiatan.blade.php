@@ -83,7 +83,7 @@
                             <td class="text-end">{{ $item->harga_satuan }}</td>
                             <td class="text-center">
                                 <div class="flex justify-between space-x-2 px-2">
-                                    <x-view-button/>
+                                    <x-view-button :id="$item->id" :route="'view-kegiatan'" />
                                     <x-remove-button/>
                                 </div>
                             </td>
