@@ -34,6 +34,11 @@ Route::group(['prefix' => 'beban-kerja'], function () {
 Route::group(['prefix' => 'master'], function () {
     Route::get('/kegiatan', [MasterKegiatanController::class, 'index'])
         ->name('master-kegiatan');
+    Route::get('/kegiatan/create', [MasterKegiatanController::class, 'create'])
+        ->name('create-kegiatan');
+    Route::post('/kegiatan/create', [MasterKegiatanController::class, 'store'])
+        ->name('store-kegiatan');
+
     Route::get('/organik', [MasterOrganikController::class, 'index'])
         ->name('master-organik');
     Route::get('/mitra', [MasterMitraController::class, 'index'])
