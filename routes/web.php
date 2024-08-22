@@ -11,10 +11,6 @@ use App\Http\Controllers\MasterOrganikController;
 use App\Http\Controllers\MasterPerusahaanController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::get('/dashboard', [DashboardController::class, 'index']) -> name('dashboard');
 
 Route::group(['prefix' => 'capaian'], function () {

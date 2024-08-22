@@ -8,7 +8,9 @@
             <x-judul text="Selamat datang!"/>
 
 {{--            Chip periode--}}
-            <x-chip-periode/>
+            <div class="w-full flex justify-end">
+                <x-chip-periode/>
+            </div>
 
             <div class="flex flex-row space-x-4">
                 <x-stat-card :jumlah="$jumlah_kegiatan">Jumlah kegiatan periode ini</x-stat-card>
