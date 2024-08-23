@@ -84,7 +84,7 @@
                             <td class="text-center">
                                 <div class="flex justify-between space-x-2 px-2">
                                     <x-view-button :id="$item->id" :route="'view-kegiatan'" />
-                                    <x-remove-button/>
+{{--                                    <x-remove-button/>--}}
                                 </div>
                             </td>
                         </tr>

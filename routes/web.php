@@ -47,6 +47,8 @@ Route::group(['prefix' => 'master'], function () {
         ->name('master-organik');
     Route::get('/organik/{id}', [MasterOrganikController::class, 'view'])
         ->name('view-organik');
+    Route::delete('/organik/{id}', [MasterOrganikController::class, 'delete'])
+        ->name('remove-organik');
 
 
     Route::get('/mitra', [MasterMitraController::class, 'index'])

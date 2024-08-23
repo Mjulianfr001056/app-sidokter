@@ -22,4 +22,11 @@ class MasterOrganikController extends Controller
         $pegawai = $this->model->all();
         return view('organik-view', compact('pegawai'));
     }
+
+    public function delete($id)
+    {
+//        $pegawai = $this->model->find($id);
+//        $pegawai->delete();
+//        return redirect()->route('master-organik')->with('success', 'Data berhasil dihapus.');
+    }
 }

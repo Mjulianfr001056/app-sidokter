@@ -53,9 +53,9 @@
                             <td>{{ $item->alias }}</td>
                             <td>{{ $item->jabatan }}</td>
                             <td class="text-center">
-                                <div class="flex justify-between space-x-2 px-2">
+                                <div class="flex justify-center space-x-2 px-2">
                                     <x-view-button :id="$item->id" :route="'view-organik'" />
-                                    <x-remove-button/>
+                                    <x-remove-button :id="$item->id" :route="'remove-organik'"/>
                                 </div>
                             </td>
                         </tr>

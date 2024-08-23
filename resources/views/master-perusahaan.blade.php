@@ -57,8 +57,8 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex justify-between space-x-2">
-                                <x-view-button/>
-                                <x-remove-button/>
+{{--                                <x-view-button/>--}}
+{{--                                <x-remove-button/>--}}
                             </div>
                         </td>
                     </tr>
@@ -74,8 +74,8 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex justify-between space-x-2">
-                                <x-view-button/>
-                                <x-remove-button/>
+{{--                                <x-view-button/>--}}
+{{--                                <x-remove-button/>--}}
                             </div>
                         </td>
                     </tr>
@@ -91,8 +91,8 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex justify-between space-x-2">
-                                <x-view-button/>
-                                <x-remove-button/>
+{{--                                <x-view-button/>--}}
+{{--                                <x-remove-button/>--}}
                             </div>
                         </td>
                     </tr>
@@ -108,8 +108,8 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex justify-between space-x-2">
-                                <x-view-button/>
-                                <x-remove-button/>
+{{--                                <x-view-button/>--}}
+{{--                                <x-remove-button/>--}}
                             </div>
                         </td>
                     </tr>
