@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('periode', 50)->nullable();
             $table->date('tanggal_mulai')->nullable();
             $table->date('tanggal_akhir')->nullable();
-            $table->string('target', 50)->nullable();
+            $table->unsignedInteger('target')->nullable();
             $table->string('satuan', 30);
             $table->unsignedInteger('harga_satuan')->nullable();
 

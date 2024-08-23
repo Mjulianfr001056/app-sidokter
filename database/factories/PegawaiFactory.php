@@ -22,7 +22,7 @@ class PegawaiFactory extends Factory
             'nip_bps' => $this->faker->numerify('#########'),
             'nama' => $this->faker->name,
             'alias' => $this->faker->word,
-            'jabatan' => $this->faker->word,
+            'jabatan' => $this->faker->text(30),
             'golongan' => $this->faker->randomElement([
                 'I/A', 'I/B', 'I/C', 'I/D',
                 'II/A', 'II/B', 'II/C', 'II/D',
