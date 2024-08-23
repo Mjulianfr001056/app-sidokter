@@ -44,10 +44,20 @@ class Kegiatan extends Model
 
     public static function countActiveKegiatan()
     {
-        $today = Carbon::today(); // Gets today's date
+        $today = Carbon::today();
 
         return self::where('tanggal_mulai', '<', $today)
             ->where('tanggal_akhir', '>', $today)
             ->count();
+    }
+
+    public static function countByAsalFungsi()
+    {
+        return self::select('asal_fungsi')
+            ->selectRaw('count(*) as total')
+            ->groupBy('asal_fungsi')
+            ->get()
+            ->keyBy('asal_fungsi')
+            ->map->total;
     }
 }

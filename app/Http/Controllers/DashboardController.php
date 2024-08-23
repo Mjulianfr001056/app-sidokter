@@ -43,14 +43,10 @@ class DashboardController extends Controller
 
         $perusahaan_kecamatan_value = array_map(fn() => rand(1, 100), $perusahaan_kecamatan_labels);
 
+        $kegiatan_fungsi_data = $this->model->countByAsalFungsi();
+        $kegiatan_fungsi_labels = $kegiatan_fungsi_data->keys()->toArray();
+        $kegiatan_fungsi_value = $kegiatan_fungsi_data->values()->toArray();
 
-        $kegiatan_fungsi_labels = [
-            'Umum', 'Produksi', 'Distribusi', 'Nerwilis', 'IPDS', 'Sosial'
-        ];
-
-        $kegiatan_fungsi_value = array_map(fn() => rand(1, 50), $kegiatan_fungsi_labels);
-
-        // Pass data to the view
         return view('dashboard', [
             'jumlah_kegiatan' => $jumlah_kegiatan,
             'rerata_beban' => $rerata_beban,
