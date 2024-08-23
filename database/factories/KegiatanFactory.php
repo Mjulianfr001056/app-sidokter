@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Kegiatan;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 
 /**
  * @extends Factory<Kegiatan>
@@ -17,6 +18,13 @@ class KegiatanFactory extends Factory
      */
     public function definition(): array
     {
+        $startDate = Carbon::now()->subYear();
+        $endDate = Carbon::now()->addYear();
+
+        $tanggalMulai = $this->faker->dateTimeBetween($startDate, $endDate);
+
+        $tanggalAkhir = $this->faker->dateTimeBetween($tanggalMulai, $endDate);
+
         $periodeOptions = ['bulanan', 'triwulanan', 'semesteran', 'tahunan'];
         $satuanOptions = [
             'Laporan', 'File', 'Kegiatan', 'Desa atau Kelurahan', 'Blok Sensus',
@@ -35,8 +43,8 @@ class KegiatanFactory extends Factory
             'asal_fungsi' => $this->faker->randomElement([
                 'Subbag Umum', 'Statistik Produksi', 'Statistik Distribusi', 'Nerwilis', 'IPDS', 'Sosial']),
             'periode' => $periode,
-            'tanggal_mulai' => $this->faker->optional()->date(),
-            'tanggal_akhir' => $this->faker->optional()->date(),
+            'tanggal_mulai' => $tanggalMulai,
+            'tanggal_akhir' => $tanggalAkhir,
             'target' => $this->faker->numberBetween(1, 1000),
             'satuan' => $this->faker->randomElement($satuanOptions),
             'harga_satuan' => $this->faker->optional()->numberBetween(1000, 1000000),

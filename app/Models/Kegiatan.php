@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Kegiatan extends Model
 {
@@ -30,4 +31,23 @@ class Kegiatan extends Model
         'tanggal_akhir' => 'date',
         'harga_satuan' => 'integer',
     ];
+
+    public function penugasanPegawai()
+    {
+        return $this->hasMany(PenugasanPegawai::class, 'kegiatan');
+    }
+
+    public function penugasanMitra()
+    {
+        return $this->hasMany(PenugasanMitra::class, 'kegiatan');
+    }
+
+    public static function countActiveKegiatan()
+    {
+        $today = Carbon::today(); // Gets today's date
+
+        return self::where('tanggal_mulai', '<', $today)
+            ->where('tanggal_akhir', '>', $today)
+            ->count();
+    }
 }

@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kegiatan;
+
 class DashboardController extends Controller
 {
+    public function __construct()
+    {
+        $this->model = new Kegiatan();
+    }
     public function index()
     {
-        $jumlah_kegiatan = rand(100, 400);
+        $jumlah_kegiatan = $this->model->countActiveKegiatan();
         $rerata_beban = rand(10, 50);
         $organik_terlibat = rand(0, 29);
         $mitra_terlibat = rand(0, 100);
