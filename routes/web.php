@@ -45,6 +45,10 @@ Route::group(['prefix' => 'master'], function () {
 
     Route::get('/organik', [MasterOrganikController::class, 'index'])
         ->name('master-organik');
+    Route::get('/organik/{id}', [MasterOrganikController::class, 'view'])
+        ->name('view-organik');
+
+
     Route::get('/mitra', [MasterMitraController::class, 'index'])
         ->name('master-mitra');
     Route::get('/perusahaan', [MasterPerusahaanController::class, 'index'])
