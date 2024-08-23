@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kegiatan;
+use App\Models\Pegawai;
 
 class DashboardController extends Controller
 {
@@ -24,16 +25,9 @@ class DashboardController extends Controller
 
         $kegiatan_periode_value = array_map(fn() => rand(1, 30), $kegiatan_periode_labels);
 
-
-        $kegiatan_organik_labels = [
-            'Alice Johnson', 'Bob Smith', 'Charlie Brown', 'Diana Prince', 'Edward Norton', 'Fiona Green',
-            'George Wilson', 'Hannah Adams', 'Ian Clark', 'Jane Austin', 'Kyle Johnson', 'Lila Rose',
-            'Mason Carter', 'Nina Patel', 'Oscar Lee', 'Paula Thompson', 'Quincy Adams', 'Rita Gomez',
-            'Steve Harris', 'Tina Turner', 'Ulysses Grant', 'Vera Wang', 'William Taylor', 'Xena Knight',
-            'Yvonne Davis', 'Zachary Miller'
-        ];
-
-        $kegiatan_organik_value = array_map(fn() => rand(1, 20), $kegiatan_organik_labels);
+        $kegiatan_organik = Pegawai::getTugasPegawai();
+        $kegiatan_organik_labels = $kegiatan_organik['nama'];
+        $kegiatan_organik_value = $kegiatan_organik['tugas'];
 
 
         $perusahaan_kecamatan_labels = [

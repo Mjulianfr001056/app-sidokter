@@ -29,4 +29,25 @@ class Pegawai extends Model
         'status' => 'string',
     ];
 
+    public function penugasanPegawai()
+    {
+        return $this->hasMany(PenugasanPegawai::class, 'petugas');
+    }
+
+    public static function getTugasPegawai()
+    {
+        $data = self::withCount('penugasanPegawai')->get();
+
+        $sortedData = $data->sortByDesc('penugasan_pegawai_count');
+
+        $names = $sortedData->pluck('nama');
+        $tasks = $sortedData->pluck('penugasan_pegawai_count');
+
+        return [
+            'nama' => $names->toArray(),
+            'tugas' => $tasks->toArray(),
+        ];
+    }
+
+
 }
