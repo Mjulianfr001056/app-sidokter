@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kegiatan;
+use App\Models\Mitra;
 use App\Models\Pegawai;
 
 class DashboardController extends Controller
@@ -14,16 +15,14 @@ class DashboardController extends Controller
     public function index()
     {
         $jumlah_kegiatan = $this->model->countActiveKegiatan();
-        $rerata_beban = rand(10, 50);
-        $organik_terlibat = rand(0, 29);
-        $mitra_terlibat = rand(0, 100);
+        $rerata_beban = Pegawai::getRerataBebanKerja();
+        $organik_terlibat = Pegawai::countPegawaiTerlibatKegiatan();
+        $mitra_terlibat = Mitra::countMitraTerlibatKegiatan();
 
-        $kegiatan_periode_labels = [
-            'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
-            'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
-        ];
-
-        $kegiatan_periode_value = array_map(fn() => rand(1, 30), $kegiatan_periode_labels);
+        $kegiatan_periode = Kegiatan::countByMonth();
+//        dd($kegiatan_periode);
+        $kegiatan_periode_labels = $kegiatan_periode['label'];
+        $kegiatan_periode_value = $kegiatan_periode['jumlah'];
 
         $kegiatan_organik = Pegawai::getTugasPegawai();
         $kegiatan_organik_labels = $kegiatan_organik['nama'];

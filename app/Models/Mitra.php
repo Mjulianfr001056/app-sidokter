@@ -28,4 +28,14 @@ class Mitra extends Model
         'jenis_kelamin' => 'string',
         'posisi' => 'string',
     ];
+
+    public function penugasanMitra()
+    {
+        return $this->hasMany(PenugasanMitra::class, 'petugas');
+    }
+
+    public static function countMitraTerlibatKegiatan()
+    {
+        return self::has('penugasanMitra')->count();
+    }
 }

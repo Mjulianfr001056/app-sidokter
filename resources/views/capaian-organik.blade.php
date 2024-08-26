@@ -46,7 +46,7 @@
                             <x-selesai-badge/>
                         </td>
                         <td>
-                            <x-view-button/>
+{{--                            <x-view-button/>--}}
                         </td>
                     </tr>
                     <tr>
@@ -59,7 +59,7 @@
                             <x-selesai-badge/>
                         </td>
                         <td>
-                            <x-view-button/>
+{{--                            <x-view-button/>--}}
                         </td>
                     </tr>
                     <tr>
@@ -72,7 +72,7 @@
                             <x-proses-badge/>
                         </td>
                         <td>
-                            <x-view-button/>
+{{--                            <x-view-button/>--}}
                         </td>
                     </tr>
                     <tr>
@@ -85,7 +85,7 @@
                             <x-proses-badge/>
                         </td>
                         <td>
-                            <x-view-button/>
+{{--                            <x-view-button/>--}}
                         </td>
                     </tr>
                     <tr>
@@ -98,7 +98,7 @@
                             <x-selesai-badge/>
                         </td>
                         <td>
-                            <x-view-button/>
+{{--                            <x-view-button/>--}}
                         </td>
                     </tr>
 

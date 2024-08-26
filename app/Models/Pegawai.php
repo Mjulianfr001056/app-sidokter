@@ -49,5 +49,23 @@ class Pegawai extends Model
         ];
     }
 
+    public static function countPegawaiTerlibatKegiatan()
+    {
+        return self::has('penugasanPegawai')->count();
+    }
+
+    public static function getRerataBebanKerja()
+    {
+        $totalTugas = self::withCount('penugasanPegawai')->get()->sum('penugasan_pegawai_count');
+
+        $totalPegawai = self::count();
+
+        if ($totalPegawai == 0) {
+            return 0;
+        }
+
+        return $totalTugas / $totalPegawai;
+    }
+
 
 }
