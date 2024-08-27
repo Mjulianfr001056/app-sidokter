@@ -21,12 +21,14 @@ class Mitra extends Model
         'nama',
         'jenis_kelamin',
         'email',
-        'posisi'
+        'posisi',
+        'fungsi',
     ];
 
     protected $casts = [
         'jenis_kelamin' => 'string',
         'posisi' => 'string',
+        'fungsi' => 'string',
     ];
 
     public function penugasanMitra()

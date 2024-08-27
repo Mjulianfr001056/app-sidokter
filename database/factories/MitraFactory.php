@@ -23,6 +23,10 @@ class MitraFactory extends Factory
             'jenis_kelamin' => $this->faker->randomElement(['laki-laki', 'perempuan']),
             'email' => $this->faker->unique()->safeEmail,
             'posisi' => $this->faker->randomElement(['pendataan', 'pengolahan', 'pendataan dan pengolahan']),
+            'fungsi' => $this->faker->randomElement([
+                'IPDS', 'Statistik Produksi', 'Statistik Distribusi',
+                'Statistik Sosial', 'Subbag Umum', 'Nerwilis'
+            ])
         ];
     }
 }

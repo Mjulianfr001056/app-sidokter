@@ -20,8 +20,12 @@ return new class extends Migration
             $table->enum('jenis_kelamin', ['laki-laki', 'perempuan']);
             $table->string('email', 50);
             $table->enum('posisi', ['pendataan', 'pengolahan', 'pendataan dan pengolahan']);
+            $table->enum('fungsi', [
+                'IPDS', 'Statistik Produksi', 'Statistik Distribusi',
+                'Statistik Sosial', 'Subbag Umum', 'Nerwilis'
+            ]);
 
-            $table->timestamps(); // Optionally include timestamps for created_at and updated_at
+            $table->timestamps();
         });
     }
 
