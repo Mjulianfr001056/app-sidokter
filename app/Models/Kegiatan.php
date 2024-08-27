@@ -43,6 +43,12 @@ class Kegiatan extends Model
         return $this->hasMany(PenugasanMitra::class, 'kegiatan');
     }
 
+    public function sampel()
+    {
+        return $this->hasMany(Sampel::class, 'kegiatan_id');
+    }
+
+
     public static function countActiveKegiatan()
     {
         $today = Carbon::today();
