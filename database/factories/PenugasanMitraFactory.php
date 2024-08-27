@@ -24,6 +24,7 @@ class PenugasanMitraFactory extends Factory
             'tanggal_penugasan' => $this->faker->date(),
             'pemberi_tugas' => DB::table('pegawai')->inRandomOrder()->first()->id,
             'status' => $this->faker->randomElement(['ditugaskan', 'proses', 'selesai']),
+            'volume' => $this->faker->numberBetween(1, 100),
             'catatan' => $this->faker->sentence(),
         ];
     }

@@ -162,10 +162,10 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($daftarPenugasanTim as $item)
+                            @foreach ($daftarPenugasanMitra as $item)
                                 <tr>
-                                    <td class="text-center">{{ ($daftarPenugasanTim->currentPage() - 1) * $daftarPenugasanTim->perPage() + $loop->iteration }}</td>
-                                    <td>{{ $item->nama_pegawai }}</td>
+                                    <td class="text-center">{{ ($daftarPenugasanMitra->currentPage() - 1) * $daftarPenugasanMitra->perPage() + $loop->iteration }}</td>
+                                    <td>{{ $item->nama_mitra }}</td>
                                     <td>{{ $item->nama_kegiatan }}</td>
                                     <td class="text-center">{{ $item->status }}</td>
                                     <td>{{ 100000 }}</td>
@@ -183,7 +183,7 @@
                 </div>
             </div>
 
-            {{--            <x-paginator :paginator="$kegiatan_sampel"/>--}}
+                        <x-paginator :paginator="$daftarPenugasanMitra"/>
         </div>
     </div>
 @endsection

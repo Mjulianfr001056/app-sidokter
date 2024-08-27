@@ -47,7 +47,7 @@ class KegiatanFactory extends Factory
             'tanggal_akhir' => $tanggalAkhir,
             'target' => $this->faker->numberBetween(1, 1000),
             'satuan' => $this->faker->randomElement($satuanOptions),
-            'harga_satuan' => $this->faker->optional()->numberBetween(1000, 1000000),
+            'harga_satuan' => $this->faker->optional()->numberBetween(1000, 200000),
         ];
     }
 }

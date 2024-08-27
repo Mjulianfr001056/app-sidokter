@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PenugasanMitra;
 use App\Models\PenugasanPegawai;
 use App\Models\Tim;
 use Illuminate\Support\Facades\DB;
@@ -49,8 +50,22 @@ class PenugasanController extends Controller
             )
             ->paginate(10);
 
+        $daftarPenugasanMitra = PenugasanMitra::join('mitra', 'penugasan_mitra.petugas', '=', 'mitra.id')
+            ->join('kegiatan', 'penugasan_mitra.kegiatan', '=', 'kegiatan.id')
+            ->join('pegawai AS pemberi_tugas_pegawai', 'penugasan_mitra.pemberi_tugas', '=', 'pemberi_tugas_pegawai.id')
+            ->where('mitra.fungsi', $fungsi)
+            ->select(
+                'mitra.nama AS nama_mitra',
+                'kegiatan.nama AS nama_kegiatan',
+                'pemberi_tugas_pegawai.nama AS nama_pemberi_tugas',
+                'penugasan_mitra.tanggal_penugasan',
+                'penugasan_mitra.status'
+            )
+            ->paginate(5);
+
         return view('beban-kerja-tugas', compact(
-            'fungsi', 'ketua', 'anggota', 'tugas_tim', 'daftarPenugasanTim'));
+            'fungsi', 'ketua', 'anggota',
+            'tugas_tim', 'daftarPenugasanTim', 'daftarPenugasanMitra'));
     }
 
 }
