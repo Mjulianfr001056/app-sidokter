@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pegawai;
 use App\Models\PenugasanMitra;
 use App\Models\PenugasanPegawai;
 use App\Models\Tim;
@@ -42,6 +43,7 @@ class PenugasanController extends Controller
             ->join('pegawai AS pemberi_tugas_pegawai', 'penugasan_pegawai.pemberi_tugas', '=', 'pemberi_tugas_pegawai.id')
             ->where('tim.fungsi', $fungsi)
             ->select(
+                'penugasan_pegawai.id',
                 'pegawai.nama AS nama_pegawai',
                 'kegiatan.nama AS nama_kegiatan',
                 'pemberi_tugas_pegawai.nama AS nama_pemberi_tugas',
@@ -57,6 +59,7 @@ class PenugasanController extends Controller
             ->join('pegawai AS pemberi_tugas_pegawai', 'penugasan_mitra.pemberi_tugas', '=', 'pemberi_tugas_pegawai.id')
             ->where('mitra.fungsi', $fungsi)
             ->select(
+                'penugasan_mitra.id',
                 'mitra.nama AS nama_mitra',
                 'kegiatan.nama AS nama_kegiatan',
                 'pemberi_tugas_pegawai.nama AS nama_pemberi_tugas',
@@ -72,4 +75,48 @@ class PenugasanController extends Controller
             'tugas_tim', 'daftarPenugasanTim', 'daftarPenugasanMitra'));
     }
 
+    public function showOrganik($id)
+    {
+        $detail_tugas = PenugasanPegawai::select('penugasan_pegawai.*', 'kegiatan.nama as nama_kegiatan', 'pemberi.nama as nama_pemberi_tugas', 'pelaksana.nama as pelaksana')
+            ->join('kegiatan', 'penugasan_pegawai.kegiatan', '=', 'kegiatan.id')
+            ->join('pegawai as pemberi', 'penugasan_pegawai.pemberi_tugas', '=', 'pemberi.id')
+            ->join('pegawai as pelaksana', 'penugasan_pegawai.petugas', '=', 'pelaksana.id')
+            ->where('penugasan_pegawai.id', $id)
+            ->first();
+
+        return view('penugasan-organik-detail', compact('detail_tugas'));
+    }
+
+    public function editOrganik($id)
+    {
+        $detail_tugas = PenugasanPegawai::select('penugasan_pegawai.*', 'kegiatan.nama as nama_kegiatan','pemberi.nama as nama_pemberi_tugas', 'pelaksana.nama as pelaksana')
+            ->join('kegiatan', 'penugasan_pegawai.kegiatan', '=', 'kegiatan.id')
+            ->join('pegawai as pemberi', 'penugasan_pegawai.pemberi_tugas', '=', 'pemberi.id')
+            ->join('pegawai as pelaksana', 'penugasan_pegawai.petugas', '=', 'pelaksana.id')
+            ->where('penugasan_pegawai.id', $id)
+            ->first();
+
+//        Nanti dynamic
+        $fungsi = 'nerwilis';
+
+        $pilihan = DB::table('tim')
+            ->join('pegawai', 'tim.anggota', '=', 'pegawai.id')
+            ->select('pegawai.nama as nama_pegawai')
+            ->where('tim.fungsi', $fungsi)
+            ->get();
+
+        return view('penugasan-organik-edit', compact('detail_tugas', 'pilihan'));
+    }
+
+    public function storeOrganik($id)
+    {
+        $detail_tugas = PenugasanPegawai::select('penugasan_pegawai.*', 'kegiatan.nama as nama_kegiatan', 'pemberi.nama as nama_pemberi_tugas', 'pelaksana.nama as pelaksana')
+            ->join('kegiatan', 'penugasan_pegawai.kegiatan', '=', 'kegiatan.id')
+            ->join('pegawai as pemberi', 'penugasan_pegawai.pemberi_tugas', '=', 'pemberi.id')
+            ->join('pegawai as pelaksana', 'penugasan_pegawai.petugas', '=', 'pelaksana.id')
+            ->where('penugasan_pegawai.id', $id)
+            ->first();
+
+        return view('penugasan-organik-detail', compact('detail_tugas'));
+    }
 }

@@ -29,6 +29,13 @@ Route::group(['prefix' => 'capaian'], function () {
 Route::group(['prefix' => 'beban-kerja'], function () {
     Route::get('/tugas', [PenugasanController::class, 'index'])
         ->name('beban-kerja-tugas');
+    Route::get('/tugas-organik/{id}', [PenugasanController::class, 'showOrganik'])
+        ->name('penugasan-organik-detail');
+    Route::get('/tugas-organik/{id}/edit', [PenugasanController::class, 'editOrganik'])
+        ->name('penugasan-organik-edit-view');
+    Route::post('/tugas-organik/{id}/edit', [PenugasanController::class, 'storeOrganik'])
+        ->name('penugasan-organik-edit-save');
+
     Route::get('/organik', [BebanKerjaOrganikController::class, 'index'])
         ->name('beban-kerja-organik');
     Route::get('/mitra', [BebanKerjaMitraController::class, 'index'])

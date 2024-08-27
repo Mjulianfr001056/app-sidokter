@@ -9,6 +9,7 @@
             <x-judul text="Dashboard Penugasan"/>
         </div>
 
+{{--        Grid--}}
         <div class="grid grid-cols-[5fr_3fr] grid-rows-auto size-full pt-6 gap-4">
             <!-- First row -->
             <div class="row-span-1 max-h-[75vh]">
@@ -48,16 +49,16 @@
                     </div>
                     <div class="w-full pl-2 pb-2">
                         <p class="text-lg text-cyan-950 font-medium">Fungsi: </p>
-                        <p class="text-md text-gray-600 font-medium">{{$fungsi}}</p>
+                        <p class="text-md text-gray-600 font-normal">{{$fungsi}}</p>
                     </div>
                     <div class="w-full pl-2 pb-2">
                         <p class="text-lg text-cyan-950 font-medium">Ketua Tim: </p>
-                        <p class="text-md text-gray-600 font-medium">{{$ketua->nama_pegawai}}</p>
+                        <p class="text-md text-gray-600 font-normal">{{$ketua->nama_pegawai}}</p>
                     </div>
                     <div class="w-full pl-2 pb-2">
                         <p class="text-lg text-cyan-950 font-medium">Anggota: </p>
                         @foreach($anggota as $item)
-                            <p class="text-md text-gray-600 font-medium">{{$item->nama_pegawai}}</p>
+                            <p class="text-md text-gray-600 font-normal">{{$item->nama_pegawai}}</p>
                         @endforeach
                     </div>
                 </div>
@@ -118,8 +119,8 @@
                                     <td class="text-center">{{ $item->status }}</td>
                                     <td class="text-center w-16">
                                         <div class="justify-center space-x-2 px-2">
-{{--                                            <x-view-button :id="$item->id" :route="'view-kegiatan'" />--}}
-{{--                                            <x-remove-button :id="$item->id" :route="'view-kegiatan'"/>--}}
+                                            <x-view-button :id="$item->id" :route="'penugasan-organik-detail'" />
+                                            <x-remove-button :id="$item->id" :route="'view-kegiatan'"/>
                                         </div>
                                     </td>
                                 </tr>
@@ -191,7 +192,7 @@
                                     </td>
                                     <td class="text-center w-16">
                                         <div class="justify-center space-x-2 px-2">
-                                            {{--                                            <x-view-button :id="$item->id" :route="'view-kegiatan'" />--}}
+{{--                                            <x-view-button :id="$item->id" :route="'penugasan-organik-detail'" />--}}
                                             {{--                                            <x-remove-button :id="$item->id" :route="'view-kegiatan'"/>--}}
                                         </div>
                                     </td>
