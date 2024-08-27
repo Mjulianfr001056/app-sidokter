@@ -46,6 +46,8 @@ class PenugasanController extends Controller
                 'kegiatan.nama AS nama_kegiatan',
                 'pemberi_tugas_pegawai.nama AS nama_pemberi_tugas',
                 'penugasan_pegawai.tanggal_penugasan',
+                'penugasan_pegawai.volume',
+                'penugasan_pegawai.satuan',
                 'penugasan_pegawai.status'
             )
             ->paginate(10);
@@ -59,6 +61,8 @@ class PenugasanController extends Controller
                 'kegiatan.nama AS nama_kegiatan',
                 'pemberi_tugas_pegawai.nama AS nama_pemberi_tugas',
                 'penugasan_mitra.tanggal_penugasan',
+                'penugasan_mitra.volume',
+                'kegiatan.harga_satuan',
                 'penugasan_mitra.status'
             )
             ->paginate(5);

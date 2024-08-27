@@ -64,6 +64,7 @@
             </div>
         </div>
 
+{{--        Tugas Tim--}}
         <div class="size-full pt-6">
             <div class="size-full bg-gray-50 shadow-md p-4">
                 <div class="w-full pl-2 pb-6 flex flex-row justify-between">
@@ -96,6 +97,7 @@
                                 <th scope="col" class="w-8 text-center">No</th>
                                 <th scope="col" class="w-44">Nama</th>
                                 <th scope="col" class="w-44">Kegiatan</th>
+                                <th scope="col" class="w-16 text-center">Kuantitas</th>
                                 <th scope="col" class="w-8 text-center">Status</th>
                                 <th scope="col" class="w-16 text-center">Aksi</th>
                             </tr>
@@ -106,6 +108,13 @@
                                     <td class="text-center">{{ ($daftarPenugasanTim->currentPage() - 1) * $daftarPenugasanTim->perPage() + $loop->iteration }}</td>
                                     <td>{{ $item->nama_pegawai }}</td>
                                     <td>{{ $item->nama_kegiatan }}</td>
+                                    <td class="text-center">
+                                        @if($item->satuan)
+                                            {{ $item->volume }} {{$item->satuan}}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
                                     <td class="text-center">{{ $item->status }}</td>
                                     <td class="text-center w-16">
                                         <div class="justify-center space-x-2 px-2">
@@ -124,6 +133,7 @@
             <x-paginator :paginator="$daftarPenugasanTim"/>
         </div>
 
+{{--        Tugas Mitra--}}
         <div class="size-full pt-6">
             <div class="size-full bg-gray-50 shadow-md p-4">
                 <div class="w-full pl-2 pb-6 flex flex-row justify-between">
@@ -157,7 +167,7 @@
                                 <th scope="col" class="w-44">Nama</th>
                                 <th scope="col" class="w-44">Kegiatan</th>
                                 <th scope="col" class="w-8 text-center">Status</th>
-                                <th scope="col" class="w-8 text-center">Pendapatan</th>
+                                <th scope="col" class="w-8 text-end">Pendapatan</th>
                                 <th scope="col" class="w-16 text-center">Aksi</th>
                             </tr>
                             </thead>
@@ -168,7 +178,17 @@
                                     <td>{{ $item->nama_mitra }}</td>
                                     <td>{{ $item->nama_kegiatan }}</td>
                                     <td class="text-center">{{ $item->status }}</td>
-                                    <td>{{ 100000 }}</td>
+                                    <td class="text-end">
+                                        @php
+                                            $pendapatan = $item->volume * $item->harga_satuan;
+
+                                            if($pendapatan > 0){
+                                                echo "Rp" . number_format($pendapatan, 0, ',', '.');
+                                            } else {
+                                                echo "-";
+                                            }
+                                        @endphp
+                                    </td>
                                     <td class="text-center w-16">
                                         <div class="justify-center space-x-2 px-2">
                                             {{--                                            <x-view-button :id="$item->id" :route="'view-kegiatan'" />--}}
