@@ -2,64 +2,55 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Collection;
+use App\Models\PenugasanPegawai;
+use App\Models\Tim;
+use Illuminate\Support\Facades\DB;
+
 class PenugasanController extends Controller
 {
     public function index()
     {
-        $penugasan_tim = Collection::make([
-            (object)[
-                'rank' => 1,
-                'nama' => 'John Doe',
-                'jumlah_kegiatan' => 5,
-            ],
-            (object)[
-                'rank' => 2,
-                'nama' => 'Jane Smith',
-                'jumlah_kegiatan' => 3,
-            ],
-            (object)[
-                'rank' => 3,
-                'nama' => 'Alice Johnson',
-                'jumlah_kegiatan' => 7,
-            ],
-            (object)[
-                'rank' => 4,
-                'nama' => 'Bob Brown',
-                'jumlah_kegiatan' => 2,
-            ],
-            (object)[
-                'rank' => 5,
-                'nama' => 'Carol Davis',
-                'jumlah_kegiatan' => 6,
-            ],
-            (object)[
-                'rank' => 6,
-                'nama' => 'David Wilson',
-                'jumlah_kegiatan' => 4,
-            ],
-            (object)[
-                'rank' => 7,
-                'nama' => 'Eve Taylor',
-                'jumlah_kegiatan' => 8,
-            ],
-            (object)[
-                'rank' => 8,
-                'nama' => 'Frank Miller',
-                'jumlah_kegiatan' => 3,
-            ],
-            (object)[
-                'rank' => 9,
-                'nama' => 'Grace Lee',
-                'jumlah_kegiatan' => 1,
-            ],
-            (object)[
-                'rank' => 10,
-                'nama' => 'Hank Martinez',
-                'jumlah_kegiatan' => 2,
-            ],
-        ]);
+        $fungsi = 'nerwilis';
 
-        return view('beban-kerja-tugas', compact('penugasan_tim'));
+        $ketua = DB::table('tim')
+            ->join('pegawai', 'tim.anggota', '=', 'pegawai.id')
+            ->select('tim.*', 'pegawai.nama as nama_pegawai')
+            ->where('tim.fungsi', $fungsi)
+            ->where('tim.status', 'ketua')
+            ->first();
+
+        $anggota = DB::table('tim')
+            ->join('pegawai', 'tim.anggota', '=', 'pegawai.id')
+            ->select('tim.*', 'pegawai.nama as nama_pegawai')
+            ->where('tim.fungsi', $fungsi)
+            ->where('tim.status', 'anggota')
+            ->get();
+
+        $tugas_tim = Tim::select('pegawai.nama as nama_pegawai', DB::raw('COUNT(kegiatan.id) as jumlah_kegiatan'))
+            ->join('pegawai', 'tim.anggota', '=', 'pegawai.id')
+            ->leftJoin('penugasan_pegawai', 'penugasan_pegawai.petugas', '=', 'pegawai.id')
+            ->leftJoin('kegiatan', 'kegiatan.id', '=', 'penugasan_pegawai.kegiatan')
+            ->where('tim.fungsi', $fungsi)
+            ->where('tim.status', 'anggota')
+            ->groupBy('tim.anggota', 'pegawai.nama')
+            ->get();
+
+        $daftarPenugasanTim = PenugasanPegawai::join('tim', 'penugasan_pegawai.petugas', '=', 'tim.anggota')
+            ->join('pegawai', 'penugasan_pegawai.petugas', '=', 'pegawai.id')
+            ->join('kegiatan', 'penugasan_pegawai.kegiatan', '=', 'kegiatan.id')
+            ->join('pegawai AS pemberi_tugas_pegawai', 'penugasan_pegawai.pemberi_tugas', '=', 'pemberi_tugas_pegawai.id')
+            ->where('tim.fungsi', $fungsi)
+            ->select(
+                'pegawai.nama AS nama_pegawai',
+                'kegiatan.nama AS nama_kegiatan',
+                'pemberi_tugas_pegawai.nama AS nama_pemberi_tugas',
+                'penugasan_pegawai.tanggal_penugasan',
+                'penugasan_pegawai.status'
+            )
+            ->paginate(10);
+
+        return view('beban-kerja-tugas', compact(
+            'fungsi', 'ketua', 'anggota', 'tugas_tim', 'daftarPenugasanTim'));
     }
+
 }

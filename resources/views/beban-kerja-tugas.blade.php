@@ -14,7 +14,7 @@
             <div class="row-span-1 max-h-[75vh]">
                 <div class="size-full bg-gray-50 shadow-md p-4">
                     <div class="w-full pl-2 pb-6">
-                        <span class="text-2xl text-teal-600 font-medium">Daftar Tugas Tim</span>
+                        <span class="text-2xl text-teal-600 font-medium">Jumlah Tugas Anggota Tim</span>
                     </div>
 
                     <div class="flex flex-col justify-center overflow-x-auto max-w-[70vw]">
@@ -28,10 +28,10 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($penugasan_tim as $item)
+                                @foreach ($tugas_tim as $item)
                                     <tr>
-                                        <td class="text-center">{{ $item->rank }}</td>
-                                        <td>{{ $item->nama }}</td>
+                                        <td class="text-center">{{ $loop->iteration }}</td>
+                                        <td>{{ $item->nama_pegawai }}</td>
                                         <td class="text-center">{{ $item->jumlah_kegiatan }}</td>
                                     </tr>
                                 @endforeach
@@ -48,24 +48,142 @@
                     </div>
                     <div class="w-full pl-2 pb-2">
                         <p class="text-lg text-cyan-950 font-medium">Fungsi: </p>
+                        <p class="text-md text-gray-600 font-medium">{{$fungsi}}</p>
                     </div>
                     <div class="w-full pl-2 pb-2">
                         <p class="text-lg text-cyan-950 font-medium">Ketua Tim: </p>
-                        <p class="text-md text-gray-600 font-medium">Nama Ketua</p>
+                        <p class="text-md text-gray-600 font-medium">{{$ketua->nama_pegawai}}</p>
                     </div>
                     <div class="w-full pl-2 pb-2">
                         <p class="text-lg text-cyan-950 font-medium">Anggota: </p>
-                        <p class="text-md text-gray-600 font-medium">Nama Anggota</p>
-                        <p class="text-md text-gray-600 font-medium">Nama Anggota</p>
-                        <p class="text-md text-gray-600 font-medium">Nama Anggota</p>
-                        <p class="text-md text-gray-600 font-medium">Nama Anggota</p>
-                        <p class="text-md text-gray-600 font-medium">Nama Anggota</p>
-                        <p class="text-md text-gray-600 font-medium">Nama Anggota</p>
-                        <p class="text-md text-gray-600 font-medium">Nama Anggota</p>
+                        @foreach($anggota as $item)
+                            <p class="text-md text-gray-600 font-medium">{{$item->nama_pegawai}}</p>
+                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
 
+        <div class="size-full pt-6">
+            <div class="size-full bg-gray-50 shadow-md p-4">
+                <div class="w-full pl-2 pb-6 flex flex-row justify-between">
+                    <span class="text-2xl text-teal-600 font-medium">Daftar Tugas Tim</span>
+                </div>
+
+                <div class="w-full flex flex-row justify-between items-center pb-1">
+                    {{--                    Pencarian--}}
+                    <div class="relative flex items-center w-64 ">
+                        <input type="text"
+                               class="input pl-10 m-2 ml-0 w-full bg-gray-50 border border-gray-300 rounded-md input-sm focus:outline-none focus:ring-1 focus:ring-teal-600 focus:border-teal-600 peer"
+                               placeholder="Cari kegiatan"/>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                             stroke-width="1.5"
+                             stroke="currentColor"
+                             class="absolute left-4 w-5 h-5 text-gray-500 transition duration-200 ease-in-out peer-focus:text-teal-600">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+                        </svg>
+                    </div>
+                    <x-tambah-button :route="route('create-kegiatan')"/>
+                </div>
+
+                <div class="flex flex-col justify-center overflow-x-auto max-w-[78vw]">
+                    <div class="relative">
+                        <table class="table-custom">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="w-8 text-center">No</th>
+                                <th scope="col" class="w-44">Nama</th>
+                                <th scope="col" class="w-44">Kegiatan</th>
+                                <th scope="col" class="w-8 text-center">Status</th>
+                                <th scope="col" class="w-16 text-center">Aksi</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($daftarPenugasanTim as $item)
+                                <tr>
+                                    <td class="text-center">{{ ($daftarPenugasanTim->currentPage() - 1) * $daftarPenugasanTim->perPage() + $loop->iteration }}</td>
+                                    <td>{{ $item->nama_pegawai }}</td>
+                                    <td>{{ $item->nama_kegiatan }}</td>
+                                    <td class="text-center">{{ $item->status }}</td>
+                                    <td class="text-center w-16">
+                                        <div class="justify-center space-x-2 px-2">
+{{--                                            <x-view-button :id="$item->id" :route="'view-kegiatan'" />--}}
+{{--                                            <x-remove-button :id="$item->id" :route="'view-kegiatan'"/>--}}
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <x-paginator :paginator="$daftarPenugasanTim"/>
+        </div>
+
+        <div class="size-full pt-6">
+            <div class="size-full bg-gray-50 shadow-md p-4">
+                <div class="w-full pl-2 pb-6 flex flex-row justify-between">
+                    <span class="text-2xl text-teal-600 font-medium">Daftar Tugas Mitra</span>
+                </div>
+
+                <div class="w-full flex flex-row justify-between items-center pb-1">
+                    {{--                    Pencarian--}}
+                    <div class="relative flex items-center w-64 ">
+                        <input type="text"
+                               class="input pl-10 m-2 ml-0 w-full bg-gray-50 border border-gray-300 rounded-md input-sm focus:outline-none focus:ring-1 focus:ring-teal-600 focus:border-teal-600 peer"
+                               placeholder="Cari kegiatan"/>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                             stroke-width="1.5"
+                             stroke="currentColor"
+                             class="absolute left-4 w-5 h-5 text-gray-500 transition duration-200 ease-in-out peer-focus:text-teal-600">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+                        </svg>
+                    </div>
+                    <x-tambah-button :route="route('create-kegiatan')"/>
+                </div>
+
+                <div class="flex flex-col justify-center overflow-x-auto max-w-[78vw]">
+                    <div class="relative">
+                        <table class="table-custom">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="w-8 text-center">No</th>
+                                <th scope="col" class="w-44">Nama</th>
+                                <th scope="col" class="w-44">Kegiatan</th>
+                                <th scope="col" class="w-8 text-center">Status</th>
+                                <th scope="col" class="w-8 text-center">Pendapatan</th>
+                                <th scope="col" class="w-16 text-center">Aksi</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($daftarPenugasanTim as $item)
+                                <tr>
+                                    <td class="text-center">{{ ($daftarPenugasanTim->currentPage() - 1) * $daftarPenugasanTim->perPage() + $loop->iteration }}</td>
+                                    <td>{{ $item->nama_pegawai }}</td>
+                                    <td>{{ $item->nama_kegiatan }}</td>
+                                    <td class="text-center">{{ $item->status }}</td>
+                                    <td>{{ 100000 }}</td>
+                                    <td class="text-center w-16">
+                                        <div class="justify-center space-x-2 px-2">
+                                            {{--                                            <x-view-button :id="$item->id" :route="'view-kegiatan'" />--}}
+                                            {{--                                            <x-remove-button :id="$item->id" :route="'view-kegiatan'"/>--}}
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            {{--            <x-paginator :paginator="$kegiatan_sampel"/>--}}
+        </div>
     </div>
 @endsection
