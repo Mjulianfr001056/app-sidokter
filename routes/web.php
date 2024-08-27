@@ -5,6 +5,7 @@ use App\Http\Controllers\BebanKerjaOrganikController;
 use App\Http\Controllers\CapaianAgregatController;
 use App\Http\Controllers\CapaianOrganikController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ManajemenSampelController;
 use App\Http\Controllers\MasterKegiatanController;
 use App\Http\Controllers\MasterMitraController;
 use App\Http\Controllers\MasterOrganikController;
@@ -29,6 +30,11 @@ Route::group(['prefix' => 'beban-kerja'], function () {
         ->name('beban-kerja-organik');
     Route::get('/mitra', [BebanKerjaMitraController::class, 'index'])
         ->name('beban-kerja-mitra');
+});
+
+Route::group(['prefix' => 'sampel'], function () {
+    Route::get('/', [ManajemenSampelController::class, 'index'])
+        ->name('manajemen-sampel');
 });
 
 Route::group(['prefix' => 'master'], function () {
