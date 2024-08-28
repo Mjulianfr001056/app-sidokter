@@ -1,6 +1,9 @@
 @php
     $options = $pilihan->pluck('nama_pegawai');
-    $selectedValue = old('pelaksana', $detail_tugas->pelaksana);
+    $current_pelaksana = old('pelaksana', $detail_tugas->pelaksana);
+    $current_satuan = old('satuan', $detail_tugas->satuan);
+    $current_status = old('status', $detail_tugas->status);
+    $detail_tugas->tanggal_penugasan = date('d-m-Y', strtotime($detail_tugas->tanggal_penugasan));
 @endphp
 
 @extends('components.layout')
@@ -26,11 +29,11 @@
 
                 <div class="w-full pb-2">
                     <label class="text-lg text-cyan-950 font-medium">Pelaksana:</label>
-                    <select id="asal_fungsi" name="asal_fungsi" required
+                    <select id="asal_fungsi" name="asal_fungsi"
                             class="text-gray-600 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
                         <option value="">-- Pilih Opsi --</option>
                         @foreach ($options as $option)
-                            <option value="{{ $option }}" {{ $selectedValue == $option ? 'selected' : '' }}>
+                            <option value="{{ $option }}" {{ $current_pelaksana == $option ? 'selected' : '' }}>
                                 {{ $option }}
                             </option>
                         @endforeach
@@ -39,39 +42,77 @@
 
                 <div class="w-full pb-2">
                     <label class="text-lg text-cyan-950 font-medium">Pemberi Tugas:</label>
+                    <input type="text" id="pemberi_tugas" name="pemberi_tugas"
+                           value="{{ $detail_tugas->nama_pemberi_tugas }}" disabled
+                           class="text-gray-600 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 cursor-not-allowed">
                 </div>
 
                 <div class="w-full pb-2">
                     <label class="text-lg text-cyan-950 font-medium">Tanggal Ditugaskan:</label>
-                    <input type="date" name="tanggal_penugasan" class="input w-full" value="{{ old('tanggal_penugasan', $detail_tugas->tanggal_penugasan) }}" required>
+                    <div class="relative w-full mt-1">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                 fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                            </svg>
+                        </div>
+                        <input datepicker id="default-datepicker" type="text"
+                               datepicker-format="dd-mm-yyyy"
+                               datepicker-autohide="true"
+                               class="text-gray-600 border border-gray-300 text-sm rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 block w-full ps-10 p-2.5"
+                               value="{{ old('tanggal_penugasan', $detail_tugas->tanggal_penugasan) }}"
+                               placeholder="Select date">
+                    </div>
                 </div>
+
+                <style>
+                    input[type="number"]::-webkit-inner-spin-button,
+                    input[type="number"]::-webkit-outer-spin-button {
+                        -webkit-appearance: none;
+                        appearance: none;
+                    }
+
+                    input[type="number"] {
+                        -moz-appearance: textfield;
+                    }
+                </style>
 
                 <div class="w-full pb-2">
                     <label class="text-lg text-cyan-950 font-medium">Kuantitas:</label>
-                    <input type="number" name="volume" class="input w-full" value="{{ old('volume', $detail_tugas->volume) }}">
-                    <select name="satuan" class="input w-full mt-2">
-                        <option value="" disabled selected>Pilih Satuan</option>
-                        <option value="pcs" {{ old('satuan', $detail_tugas->satuan) == 'pcs' ? 'selected' : '' }}>pcs</option>
-                        <!-- Add more units as needed -->
-                    </select>
+                    <div class="w-full flex space-x-3">
+                        <input type="number" id="volume" name="volume" value="{{ $detail_tugas->volume }}"
+                               class="text-gray-600 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                        <select id="satuan" name="satuan"
+                                class="text-gray-600 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                            <option value="" {{ $current_satuan == '' ? 'selected' : '' }}></option>
+                            <option value="OH" {{ $current_satuan == 'OH' ? 'selected' : '' }}>OH</option>
+                            <option value="OK" {{ $current_satuan == 'OK' ? 'selected' : '' }}>OK</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="w-full pb-2">
-                    <label class="text-lg text-cyan-950 font-medium">Status:</label>
-                    <select name="status" class="input w-full">
-                        <option value="disampel" {{ old('status', $detail_tugas->status) == 'disampel' ? 'selected' : '' }}>Disampel</option>
-                        <option value="proses" {{ old('status', $detail_tugas->status) == 'proses' ? 'selected' : '' }}>Proses</option>
-                        <option value="selesai" {{ old('status', $detail_tugas->status) == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                    <label for="status" class="text-lg text-cyan-950 font-medium">Status:</label>
+                    <select id="status" name="status"
+                            class="text-gray-600 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                        <option value="ditugaskan" {{ $current_status == 'ditugaskan' ? 'selected' : '' }}>Ditugaskan</option>
+                        <option value="proses" {{ $current_status == 'proses' ? 'selected' : '' }}>Proses</option>
+                        <option value="selesai" {{ $current_status == 'selesai' ? 'selected' : '' }}>Selesai</option>
                     </select>
                 </div>
 
                 <div class="w-full pb-2">
                     <label class="text-lg text-cyan-950 font-medium">Catatan:</label>
-                    <textarea name="catatan" class="input w-full">{{ old('catatan', $detail_tugas->catatan) }}</textarea>
+                    <textarea id="catatan" rows="4" name="catatan"
+                              class="text-gray-600 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm resize-none overflow-auto">{{ old('catatan', $detail_tugas->catatan) }}</textarea>
                 </div>
 
+
                 <div class="w-full flex justify-end pt-4">
-                    <button type="submit" class="btn bg-teal-600 text-white">Simpan Perubahan</button>
+                    <x-submit-button>
+                        Simpan Perubahan
+                    </x-submit-button>
                 </div>
             </form>
         </div>
