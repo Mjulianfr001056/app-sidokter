@@ -31,6 +31,8 @@ Route::group(['prefix' => 'beban-kerja'], function () {
         ->name('beban-kerja-tugas');
     Route::get('/tugas-organik/{id}', [PenugasanController::class, 'showOrganik'])
         ->name('penugasan-organik-detail');
+    Route::delete('/tugas-organik/{id}', [PenugasanController::class, 'deleteOrganik'])
+        ->name('penugasan-organik-delete');
     Route::get('/tugas-organik/{id}/edit', [PenugasanController::class, 'editOrganik'])
         ->name('penugasan-organik-edit-view');
     Route::put('/tugas-organik/{id}/edit', [PenugasanController::class, 'storeOrganik'])

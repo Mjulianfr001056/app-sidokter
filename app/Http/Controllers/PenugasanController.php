@@ -124,4 +124,11 @@ class PenugasanController extends Controller
 
         return redirect()->route('penugasan-organik-detail', ['id' => $id]);
     }
+
+    public function deleteOrganik($id)
+    {
+        PenugasanPegawai::where('id', $id)->delete();
+
+        return redirect()->route('beban-kerja-tugas');
+    }
 }

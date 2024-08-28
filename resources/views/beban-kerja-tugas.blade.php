@@ -120,7 +120,12 @@
                                     <td class="text-center w-16">
                                         <div class="justify-center space-x-2 px-2">
                                             <x-view-button :id="$item->id" :route="'penugasan-organik-detail'" />
-                                            <x-remove-button :id="$item->id" :route="'view-kegiatan'"/>
+
+                                            <form action="{{ route('penugasan-organik-delete', $item->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <x-remove-button/>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
