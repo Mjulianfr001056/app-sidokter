@@ -1,5 +1,4 @@
 @php
-    $options = $pilihan->pluck('nama_pegawai');
     $current_pelaksana = old('pelaksana', $detail_tugas->pelaksana);
     $current_satuan = old('satuan', $detail_tugas->satuan);
     $current_status = old('status', $detail_tugas->status);
@@ -14,7 +13,7 @@
     <div class="size-full flex flex-col items-center px-4 py-6">
         <div class="w-full bg-white shadow-lg rounded-lg p-6">
             <div class="w-full pb-6 flex">
-                <x-judul text="Edit Kegiatan"/>
+                <x-judul text="Edit Penugasan Organik"/>
             </div>
 
             <form action="{{ route('penugasan-organik-edit-save', $detail_tugas->id) }}" method="POST">
@@ -29,12 +28,12 @@
 
                 <div class="w-full pb-2">
                     <label class="text-lg text-cyan-950 font-medium">Pelaksana:</label>
-                    <select id="asal_fungsi" name="asal_fungsi"
+                    <select id="petugas" name="petugas"
                             class="text-gray-600 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
                         <option value="">-- Pilih Opsi --</option>
-                        @foreach ($options as $option)
-                            <option value="{{ $option }}" {{ $current_pelaksana == $option ? 'selected' : '' }}>
-                                {{ $option }}
+                        @foreach ($pilihan as $option)
+                            <option value="{{ $option->id_pegawai }}" {{ $current_pelaksana == $option->nama_pegawai ? 'selected' : '' }}>
+                                {{ $option->nama_pegawai }}
                             </option>
                         @endforeach
                     </select>
@@ -57,7 +56,7 @@
                                     d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                             </svg>
                         </div>
-                        <input datepicker id="default-datepicker" type="text"
+                        <input datepicker id="tanggal_penugasan" name="tanggal_penugasan" type="text"
                                datepicker-format="dd-mm-yyyy"
                                datepicker-autohide="true"
                                class="text-gray-600 border border-gray-300 text-sm rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 block w-full ps-10 p-2.5"
@@ -86,8 +85,8 @@
                         <select id="satuan" name="satuan"
                                 class="text-gray-600 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
                             <option value="" {{ $current_satuan == '' ? 'selected' : '' }}></option>
-                            <option value="OH" {{ $current_satuan == 'OH' ? 'selected' : '' }}>OH</option>
-                            <option value="OK" {{ $current_satuan == 'OK' ? 'selected' : '' }}>OK</option>
+                            <option value="oh" {{ $current_satuan == 'oh' ? 'selected' : '' }}>OH</option>
+                            <option value="ok" {{ $current_satuan == 'ok' ? 'selected' : '' }}>OK</option>
                         </select>
                     </div>
                 </div>

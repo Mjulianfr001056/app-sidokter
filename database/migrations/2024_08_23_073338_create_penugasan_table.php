@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('pemberi_tugas')->nullable();
             $table->enum('status', ['ditugaskan', 'proses', 'selesai']);
             $table->unsignedInteger('volume');
-            $table->enum('satuan', ['OH','OK'])->nullable();
+            $table->enum('satuan', ['oh','ok'])->nullable();
             $table->text('catatan')->nullable();
             $table->timestamps();
 

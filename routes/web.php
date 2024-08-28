@@ -33,7 +33,7 @@ Route::group(['prefix' => 'beban-kerja'], function () {
         ->name('penugasan-organik-detail');
     Route::get('/tugas-organik/{id}/edit', [PenugasanController::class, 'editOrganik'])
         ->name('penugasan-organik-edit-view');
-    Route::post('/tugas-organik/{id}/edit', [PenugasanController::class, 'storeOrganik'])
+    Route::put('/tugas-organik/{id}/edit', [PenugasanController::class, 'storeOrganik'])
         ->name('penugasan-organik-edit-save');
 
     Route::get('/organik', [BebanKerjaOrganikController::class, 'index'])

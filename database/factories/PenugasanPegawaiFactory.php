@@ -21,7 +21,7 @@ class PenugasanPegawaiFactory extends Factory
         return [
             'petugas' => DB::table('pegawai')->inRandomOrder()->first()->id,
             'kegiatan' => DB::table('kegiatan')->inRandomOrder()->first()->id,
-            'tanggal_penugasan' => $this->faker->date(),
+            'tanggal_penugasan' => $this->faker->dateTimeBetween('-2 year', 'now'),
             'pemberi_tugas' => DB::table('pegawai')->inRandomOrder()->first()->id,
             'status' => $this->faker->randomElement(['ditugaskan', 'proses', 'selesai']),
             'volume' => $this->faker->numberBetween(1, 10),

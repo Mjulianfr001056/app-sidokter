@@ -6,6 +6,7 @@ use App\Models\Pegawai;
 use App\Models\PenugasanMitra;
 use App\Models\PenugasanPegawai;
 use App\Models\Tim;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PenugasanController extends Controller
@@ -101,22 +102,26 @@ class PenugasanController extends Controller
 
         $pilihan = DB::table('tim')
             ->join('pegawai', 'tim.anggota', '=', 'pegawai.id')
-            ->select('pegawai.nama as nama_pegawai')
+            ->select('pegawai.nama as nama_pegawai', 'pegawai.id as id_pegawai')
             ->where('tim.fungsi', $fungsi)
             ->get();
 
         return view('penugasan-organik-edit', compact('detail_tugas', 'pilihan'));
     }
 
-    public function storeOrganik($id)
+    public function storeOrganik(Request $request, $id)
     {
-        $detail_tugas = PenugasanPegawai::select('penugasan_pegawai.*', 'kegiatan.nama as nama_kegiatan', 'pemberi.nama as nama_pemberi_tugas', 'pelaksana.nama as pelaksana')
-            ->join('kegiatan', 'penugasan_pegawai.kegiatan', '=', 'kegiatan.id')
-            ->join('pegawai as pemberi', 'penugasan_pegawai.pemberi_tugas', '=', 'pemberi.id')
-            ->join('pegawai as pelaksana', 'penugasan_pegawai.petugas', '=', 'pelaksana.id')
-            ->where('penugasan_pegawai.id', $id)
-            ->first();
+        $tanggal_penugasan_converted = \DateTime::createFromFormat('d-m-Y', $request->tanggal_penugasan)->format('Y-m-d');
 
-        return view('penugasan-organik-detail', compact('detail_tugas'));
+        PenugasanPegawai::where('id', $id)->update([
+            'petugas' => $request->petugas,
+            'tanggal_penugasan' => $tanggal_penugasan_converted,
+            'status' => $request->status,
+            'volume' => $request->volume,
+            'satuan' => $request->satuan,
+            'catatan' => $request->catatan,
+        ]);
+
+        return redirect()->route('penugasan-organik-detail', ['id' => $id]);
     }
 }
