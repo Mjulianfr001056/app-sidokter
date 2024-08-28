@@ -15,14 +15,14 @@ class MasterKegiatanController extends Controller
 
     public function index()
     {
-        $kegiatan = $this->model->paginate(25);
+        $kegiatan = $this->model->paginate(10);
 
         return view('master-kegiatan', compact('kegiatan'));
     }
 
     public function create()
     {
-        return view('kegiatan-create');
+        return view('master-kegiatan-create');
     }
 
     public function store(Request $request)
@@ -46,23 +46,8 @@ class MasterKegiatanController extends Controller
 
         $this->model->create($validatedData);
 
-        return redirect()->route('master-kegiatan')->with('success', 'Kegiatan berhasil ditambahkan.');
+        return redirect()->route('master-kegiatan');
     }
-
-    public function view($id)
-    {
-        $kegiatan = $this->model->find($id);
-
-        if ($kegiatan->periode) {
-            $kegiatan->periode = explode(',', $kegiatan->periode);
-        } else {
-            $kegiatan->periode = [];
-        }
-
-        return view('kegiatan-view', compact('kegiatan'));
-    }
-
-
 
     public function edit($id)
     {
@@ -74,17 +59,17 @@ class MasterKegiatanController extends Controller
             $kegiatan->periode = [];
         }
 
-        return view('kegiatan-edit', compact('kegiatan'));
+        return view('master-kegiatan-edit', compact('kegiatan'));
     }
 
-    public function update($id)
+    public function update(Request $request, $id)
     {
         $kegiatan = $this->model->find($id);
 
-        if (is_array(request()->get('periode'))) {
-            request()->merge(['periode' => implode(',', request()->get('periode'))]);
-        } elseif (request()->get('periode') === '') {
-            request()->merge(['periode' => null]);
+        if(is_array($request->get('periode'))) {
+            $request->merge(['periode' => implode(',', $request->get('periode'))]);
+        } elseif ($request->get('periode') === '') {
+            $request->merge(['periode' => null]);
         }
 
         $validatedData = request()->validate([
@@ -100,6 +85,14 @@ class MasterKegiatanController extends Controller
 
         $kegiatan->update($validatedData);
 
-        return redirect()->route('master-kegiatan')->with('success', 'Kegiatan berhasil diperbarui.');
+        return redirect()->route('master-kegiatan');
+    }
+
+    public function delete($id)
+    {
+        $kegiatan = $this->model->find($id);
+        $kegiatan->delete();
+
+        return redirect()->route('master-kegiatan');
     }
 }

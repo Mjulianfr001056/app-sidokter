@@ -41,7 +41,7 @@ class KegiatanFactory extends Factory
         return [
             'nama' => $this->faker->sentence(),
             'asal_fungsi' => $this->faker->randomElement([
-                'Subbag Umum', 'Statistik Produksi', 'Statistik Distribusi', 'Nerwilis', 'IPDS', 'Sosial']),
+                'Subbag Umum', 'Statistik Produksi', 'Statistik Distribusi', 'Nerwilis', 'IPDS', 'Statistik Sosial']),
             'periode' => $periode,
             'tanggal_mulai' => $tanggalMulai,
             'tanggal_akhir' => $tanggalAkhir,
