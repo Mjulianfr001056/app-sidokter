@@ -161,7 +161,7 @@
                                   d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
                         </svg>
                     </div>
-                    <x-tambah-button :route="'penugasan-organik-create-view'"/>
+                    <x-tambah-button :route="'penugasan-mitra-create-view'"/>
                 </div>
 
                 <div class="flex flex-col justify-center overflow-x-auto max-w-[78vw]">
@@ -170,11 +170,11 @@
                             <thead>
                             <tr>
                                 <th scope="col" class="w-8 text-center">No</th>
-                                <th scope="col" class="w-44">Nama</th>
-                                <th scope="col" class="w-44">Kegiatan</th>
+                                <th scope="col" class="w-52">Nama</th>
+                                <th scope="col" class="w-52">Kegiatan</th>
                                 <th scope="col" class="w-8 text-center">Status</th>
-                                <th scope="col" class="w-8 text-end">Pendapatan</th>
-                                <th scope="col" class="w-16 text-center">Aksi</th>
+                                <th scope="col" class="w-12 text-end">Pendapatan</th>
+                                <th scope="col" class="w-8 text-center">Aksi</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -195,10 +195,15 @@
                                             }
                                         @endphp
                                     </td>
-                                    <td class="text-center w-16">
-                                        <div class="justify-center space-x-2 px-2">
-{{--                                            <x-view-button :id="$item->id" :route="'penugasan-organik-detail'" />--}}
-                                            {{--                                            <x-remove-button :id="$item->id" :route="'view-kegiatan'"/>--}}
+                                    <td class="text-center w-8">
+                                        <div class="justify-center space-x-2 px-2 flex">
+                                            <x-view-button :id="$item->id" :route="'penugasan-mitra-detail'" />
+
+                                            <form action="{{ route('penugasan-mitra-delete', $item->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <x-remove-button/>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>

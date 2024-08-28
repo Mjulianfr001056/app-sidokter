@@ -16,6 +16,7 @@ class PenugasanMitra extends Model
         'kegiatan',
         'tanggal_penugasan',
         'pemberi_tugas',
+        'volume',
         'status',
         'catatan',
     ];

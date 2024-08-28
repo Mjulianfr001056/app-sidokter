@@ -71,7 +71,7 @@ class PenugasanController extends Controller
                 'kegiatan.harga_satuan',
                 'penugasan_mitra.status'
             )
-            ->paginate(5);
+            ->paginate(10);
 
         return view('beban-kerja-tugas', compact(
             'fungsi', 'ketua', 'anggota',
@@ -164,6 +164,99 @@ class PenugasanController extends Controller
     public function deleteOrganik($id)
     {
         PenugasanPegawai::where('id', $id)->delete();
+
+        return redirect()->route('beban-kerja-tugas');
+    }
+
+    public function createMitra()
+    {
+        $daftar_kegiatan = Kegiatan::select('id', 'nama', 'harga_satuan', 'satuan')->get();
+
+        $fungsi = 'nerwilis';
+
+        $pilihan_penugas = DB::table('tim')
+            ->join('pegawai', 'tim.anggota', '=', 'pegawai.id')
+            ->select('pegawai.nama as nama_pegawai', 'pegawai.id as id_pegawai')
+            ->where('tim.fungsi', $fungsi)
+            ->get();
+
+        $pilihan_petugas = DB::table('mitra')
+            ->select('mitra.nama as nama_mitra', 'mitra.id as id_mitra')
+            ->where('mitra.fungsi', $fungsi)
+            ->get();
+
+        return view('penugasan-mitra-create', compact('pilihan_petugas', 'pilihan_penugas', 'daftar_kegiatan'));
+    }
+
+    public function storeMitra(Request $request)
+    {
+        $penugasan = new PenugasanMitra();
+        $id_kegiatan = json_decode($request->kegiatan)->id;
+
+        $penugasan->petugas = $request->petugas;
+        $penugasan->kegiatan = $id_kegiatan;
+        $penugasan->pemberi_tugas = $request->pemberi_tugas;
+        $penugasan->tanggal_penugasan = Carbon::now()->format('Y-m-d');
+        $penugasan->status = 'ditugaskan';
+        $penugasan->volume = $request->volume;
+        $penugasan->catatan = $request->catatan;
+        $penugasan->save();
+
+        return redirect()->route('beban-kerja-tugas');
+    }
+    public function showMitra($id)
+    {
+        $detail_tugas = PenugasanMitra::select('penugasan_mitra.*', 'kegiatan.nama as nama_kegiatan',
+            'kegiatan.satuan as satuan_kegiatan','kegiatan.harga_satuan as harga_satuan_kegiatan',
+            'pemberi.nama as nama_pemberi_tugas', 'pelaksana.nama as pelaksana')
+            ->join('kegiatan', 'penugasan_mitra.kegiatan', '=', 'kegiatan.id')
+            ->join('pegawai as pemberi', 'penugasan_mitra.pemberi_tugas', '=', 'pemberi.id')
+            ->join('mitra as pelaksana', 'penugasan_mitra.petugas', '=', 'pelaksana.id')
+            ->where('penugasan_mitra.id', $id)
+            ->first();
+
+        return view('penugasan-mitra-detail', compact('detail_tugas'));
+    }
+
+    public function editMitra($id)
+    {
+        $detail_tugas = PenugasanMitra::select('penugasan_mitra.*', 'kegiatan.nama as nama_kegiatan',
+            'kegiatan.satuan as satuan_kegiatan','kegiatan.harga_satuan as harga_satuan_kegiatan',
+            'pemberi.nama as nama_pemberi_tugas', 'pelaksana.nama as pelaksana')
+            ->join('kegiatan', 'penugasan_mitra.kegiatan', '=', 'kegiatan.id')
+            ->join('pegawai as pemberi', 'penugasan_mitra.pemberi_tugas', '=', 'pemberi.id')
+            ->join('mitra as pelaksana', 'penugasan_mitra.petugas', '=', 'pelaksana.id')
+            ->where('penugasan_mitra.id', $id)
+            ->first();
+
+        $fungsi = 'nerwilis';
+
+        $pilihan = DB::table('mitra')
+            ->select('mitra.nama as nama_mitra', 'mitra.id as id_mitra')
+            ->where('mitra.fungsi', $fungsi)
+            ->get();
+
+        return view('penugasan-mitra-edit', compact('detail_tugas', 'pilihan'));
+    }
+
+    public function updateMitra(Request $request, $id)
+    {
+        $tanggal_penugasan_converted = \DateTime::createFromFormat('d-m-Y', $request->tanggal_penugasan)->format('Y-m-d');
+
+        PenugasanMitra::where('id', $id)->update([
+            'petugas' => $request->petugas,
+            'tanggal_penugasan' => $tanggal_penugasan_converted,
+            'volume' => $request->volume,
+            'status' => $request->status,
+            'catatan' => $request->catatan,
+        ]);
+
+        return redirect()->route('penugasan-mitra-detail', ['id' => $id]);
+    }
+
+    public function deleteMitra($id)
+    {
+        PenugasanMitra::where('id', $id)->delete();
 
         return redirect()->route('beban-kerja-tugas');
     }

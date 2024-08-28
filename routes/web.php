@@ -32,19 +32,29 @@ Route::group(['prefix' => 'beban-kerja'], function () {
 
     Route::get('/tugas-organik/show/{id}', [PenugasanController::class, 'showOrganik'])
         ->name('penugasan-organik-detail');
-
     Route::get('/tugas-organik/create', [PenugasanController::class, 'createOrganik'])
         ->name('penugasan-organik-create-view');
     Route::post('/tugas-organik/save', [PenugasanController::class, 'storeOrganik'])
         ->name('penugasan-organik-create-save');
-
     Route::delete('/tugas-organik/delete/{id}', [PenugasanController::class, 'deleteOrganik'])
         ->name('penugasan-organik-delete');
-
     Route::get('/tugas-organik/edit/{id}', [PenugasanController::class, 'editOrganik'])
         ->name('penugasan-organik-edit-view');
     Route::put('/tugas-organik/edit/{id}', [PenugasanController::class, 'updateOrganik'])
         ->name('penugasan-organik-edit-save');
+
+    Route::get('/tugas-mitra/show/{id}', [PenugasanController::class, 'showMitra'])
+        ->name('penugasan-mitra-detail');
+    Route::get('/tugas-mitra/create', [PenugasanController::class, 'createMitra'])
+        ->name('penugasan-mitra-create-view');
+    Route::post('/tugas-mitra/save', [PenugasanController::class, 'storeMitra'])
+        ->name('penugasan-mitra-create-save');
+    Route::delete('/tugas-mitra/delete/{id}', [PenugasanController::class, 'deleteMitra'])
+        ->name('penugasan-mitra-delete');
+    Route::get('/tugas-mitra/edit/{id}', [PenugasanController::class, 'editMitra'])
+        ->name('penugasan-mitra-edit-view');
+    Route::put('/tugas-mitra/edit/{id}', [PenugasanController::class, 'updateMitra'])
+        ->name('penugasan-mitra-edit-save');
 
     Route::get('/organik', [BebanKerjaOrganikController::class, 'index'])
         ->name('beban-kerja-organik');
