@@ -46,6 +46,40 @@
                     </select>
                 </div>
 
+                <p class="text-lg text-cyan-950 font-medium">Informasi Pendapatan Mitra:</p>
+                <div class="my-2 flex flex-col justify-center overflow-x-auto max-w-[78vw]">
+                    <div class="relative">
+                        <table class="table-custom">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="w-8 text-center">No</th>
+                                <th scope="col" class="w-52">Nama</th>
+                                <th scope="col" class="w-52 text-end">Pendapatan</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($daftar_pendapatan as $item)
+                                <tr>
+                                    <td class="text-center">{{$loop->iteration}}</td>
+                                    <td>{{ $item->nama_mitra }}</td>
+                                    <td class="text-end">
+                                        @php
+                                            $pendapatan = $item->total_pendapatan;
+
+                                            if($pendapatan > 0){
+                                                echo "Rp" . number_format($pendapatan, 0, ',', '.');
+                                            } else {
+                                                echo "-";
+                                            }
+                                        @endphp
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
                 <div class="w-full pb-2">
                     <label class="text-lg text-cyan-950 font-medium">Pemberi Tugas:</label>
                     <select id="pemberi_tugas" name="pemberi_tugas"

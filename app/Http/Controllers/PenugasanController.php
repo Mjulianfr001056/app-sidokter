@@ -181,11 +181,27 @@ class PenugasanController extends Controller
             ->get();
 
         $pilihan_petugas = DB::table('mitra')
-            ->select('mitra.nama as nama_mitra', 'mitra.id as id_mitra')
+            ->select('mitra.nama as nama_mitra', 'mitra.id as id_mitra',
+                DB::raw('SUM(kegiatan.harga_satuan * penugasan_mitra.volume) as total_pendapatan'))
+            ->leftJoin('penugasan_mitra', 'mitra.id', '=', 'penugasan_mitra.petugas')
+            ->join('kegiatan', 'penugasan_mitra.kegiatan', '=', 'kegiatan.id')
             ->where('mitra.fungsi', $fungsi)
+            ->groupBy('mitra.nama', 'mitra.id')
+            ->havingRaw('SUM(kegiatan.harga_satuan * penugasan_mitra.volume) <= ? OR SUM(kegiatan.harga_satuan * penugasan_mitra.volume) IS NULL', [4200000])
             ->get();
 
-        return view('penugasan-mitra-create', compact('pilihan_petugas', 'pilihan_penugas', 'daftar_kegiatan'));
+
+        $daftar_pendapatan = DB::table('mitra')
+            ->select('mitra.nama as nama_mitra', 'mitra.fungsi',
+                DB::raw('SUM(kegiatan.harga_satuan * penugasan_mitra.volume) as total_pendapatan'))
+            ->leftJoin('penugasan_mitra', 'mitra.id', '=', 'penugasan_mitra.petugas')
+            ->join('kegiatan', 'penugasan_mitra.kegiatan', '=', 'kegiatan.id')
+            ->where('mitra.fungsi', $fungsi)
+            ->groupBy('mitra.nama', 'mitra.fungsi')
+            ->orderBy('total_pendapatan', 'desc')
+            ->get();
+
+        return view('penugasan-mitra-create', compact('daftar_pendapatan','pilihan_petugas', 'pilihan_penugas', 'daftar_kegiatan'));
     }
 
     public function storeMitra(Request $request)
