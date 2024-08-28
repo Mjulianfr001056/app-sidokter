@@ -111,7 +111,7 @@
                                     <td>{{ $item->nama_kegiatan }}</td>
                                     <td class="text-center">
                                         @if($item->satuan)
-                                            {{ $item->volume }} {{$item->satuan}}
+                                            {{ $item->volume }} {{ strtoupper( $item->satuan )}}
                                         @else
                                             -
                                         @endif
