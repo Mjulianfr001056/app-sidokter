@@ -87,7 +87,7 @@
                                   d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
                         </svg>
                     </div>
-                    <x-tambah-button :route="route('create-kegiatan')"/>
+                    <x-tambah-button :route="'penugasan-organik-create-view'"/>
                 </div>
 
                 <div class="flex flex-col justify-center overflow-x-auto max-w-[78vw]">
@@ -161,7 +161,7 @@
                                   d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
                         </svg>
                     </div>
-                    <x-tambah-button :route="route('create-kegiatan')"/>
+                    <x-tambah-button :route="'penugasan-organik-create-view'"/>
                 </div>
 
                 <div class="flex flex-col justify-center overflow-x-auto max-w-[78vw]">

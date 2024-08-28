@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kegiatan;
 use App\Models\Pegawai;
 use App\Models\PenugasanMitra;
 use App\Models\PenugasanPegawai;
 use App\Models\Tim;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -88,6 +90,40 @@ class PenugasanController extends Controller
         return view('penugasan-organik-detail', compact('detail_tugas'));
     }
 
+    public function createOrganik()
+    {
+        $daftar_kegiatan = Kegiatan::select('id', 'nama')->get();
+
+        $fungsi = 'nerwilis';
+
+        $pilihan_petugas = DB::table('tim')
+            ->join('pegawai', 'tim.anggota', '=', 'pegawai.id')
+            ->select('pegawai.nama as nama_pegawai', 'pegawai.id as id_pegawai')
+            ->where('tim.fungsi', $fungsi)
+            ->get();
+
+        return view('penugasan-organik-create', compact('pilihan_petugas', 'daftar_kegiatan'));
+    }
+
+    public function storeOrganik(Request $request)
+    {
+//        dd($request->all());
+        $penugasan = new PenugasanPegawai();
+        $penugasan->petugas = $request->petugas;
+        $penugasan->kegiatan = $request->id_kegiatan;
+        $penugasan->pemberi_tugas = 7;
+        $penugasan->tanggal_penugasan = Carbon::now()->format('Y-m-d');
+        $penugasan->status = 'ditugaskan';
+        $penugasan->volume = $request->volume;
+        $penugasan->satuan = $request->satuan;
+        $penugasan->catatan = $request->catatan;
+        $penugasan->save();
+
+
+
+        return redirect()->route('beban-kerja-tugas');
+    }
+
     public function editOrganik($id)
     {
         $detail_tugas = PenugasanPegawai::select('penugasan_pegawai.*', 'kegiatan.nama as nama_kegiatan','pemberi.nama as nama_pemberi_tugas', 'pelaksana.nama as pelaksana')
@@ -109,7 +145,7 @@ class PenugasanController extends Controller
         return view('penugasan-organik-edit', compact('detail_tugas', 'pilihan'));
     }
 
-    public function storeOrganik(Request $request, $id)
+    public function updateOrganik(Request $request, $id)
     {
         $tanggal_penugasan_converted = \DateTime::createFromFormat('d-m-Y', $request->tanggal_penugasan)->format('Y-m-d');
 

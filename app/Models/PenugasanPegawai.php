@@ -17,6 +17,8 @@ class PenugasanPegawai extends Model
         'tanggal_penugasan',
         'pemberi_tugas',
         'status',
+        'volume',
+        'satuan',
         'catatan',
     ];
 

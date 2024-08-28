@@ -29,13 +29,21 @@ Route::group(['prefix' => 'capaian'], function () {
 Route::group(['prefix' => 'beban-kerja'], function () {
     Route::get('/tugas', [PenugasanController::class, 'index'])
         ->name('beban-kerja-tugas');
-    Route::get('/tugas-organik/{id}', [PenugasanController::class, 'showOrganik'])
+
+    Route::get('/tugas-organik/show/{id}', [PenugasanController::class, 'showOrganik'])
         ->name('penugasan-organik-detail');
-    Route::delete('/tugas-organik/{id}', [PenugasanController::class, 'deleteOrganik'])
+
+    Route::get('/tugas-organik/create', [PenugasanController::class, 'createOrganik'])
+        ->name('penugasan-organik-create-view');
+    Route::post('/tugas-organik/save', [PenugasanController::class, 'storeOrganik'])
+        ->name('penugasan-organik-create-save');
+
+    Route::delete('/tugas-organik/delete/{id}', [PenugasanController::class, 'deleteOrganik'])
         ->name('penugasan-organik-delete');
-    Route::get('/tugas-organik/{id}/edit', [PenugasanController::class, 'editOrganik'])
+
+    Route::get('/tugas-organik/edit/{id}', [PenugasanController::class, 'editOrganik'])
         ->name('penugasan-organik-edit-view');
-    Route::put('/tugas-organik/{id}/edit', [PenugasanController::class, 'storeOrganik'])
+    Route::put('/tugas-organik/edit/{id}', [PenugasanController::class, 'updateOrganik'])
         ->name('penugasan-organik-edit-save');
 
     Route::get('/organik', [BebanKerjaOrganikController::class, 'index'])
