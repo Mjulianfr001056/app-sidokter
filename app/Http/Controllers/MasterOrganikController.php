@@ -17,16 +17,33 @@ class MasterOrganikController extends Controller
         return view('master-organik', compact('pegawai'));
     }
 
-    public function view()
+    public function create()
     {
-        $pegawai = $this->model->all();
-        return view('organik-view', compact('pegawai'));
+        return view('master-organik-create');
+    }
+
+    public function store(Request $request)
+    {
+        Pegawai::create($request->except('_token', '_method'));
+        return redirect()->route('master-organik');
+    }
+
+    public function edit($id)
+    {
+        $pegawai = $this->model->find($id);
+        return view('master-organik-edit', compact('pegawai'));
+    }
+
+    public function update(Request $request, $id)
+    {
+//        dd($request->all());
+        Pegawai::where('id', $id)->update($request->except('_token', '_method'));
+        return redirect()->route('master-organik');
     }
 
     public function delete($id)
     {
-//        $pegawai = $this->model->find($id);
-//        $pegawai->delete();
-//        return redirect()->route('master-organik')->with('success', 'Data berhasil dihapus.');
+        Pegawai::where('id', $id)->delete();
+        return redirect()->route('master-organik');
     }
 }

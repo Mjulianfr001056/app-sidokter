@@ -83,10 +83,16 @@ Route::group(['prefix' => 'master'], function () {
 
     Route::get('/organik', [MasterOrganikController::class, 'index'])
         ->name('master-organik');
-    Route::get('/organik/{id}', [MasterOrganikController::class, 'view'])
-        ->name('view-organik');
-    Route::delete('/organik/{id}', [MasterOrganikController::class, 'delete'])
-        ->name('remove-organik');
+    Route::get('/organik/create', [MasterOrganikController::class, 'create'])
+        ->name('master-organik-create-view');
+    Route::post('/organik/create', [MasterOrganikController::class, 'store'])
+        ->name('master-organik-create-save');
+    Route::get('/organik/edit/{id}', [MasterOrganikController::class, 'edit'])
+        ->name('master-organik-edit-view');
+    Route::put('/organik/edit/{id}', [MasterOrganikController::class, 'update'])
+        ->name('master-organik-edit-save');
+    Route::delete('/organik/delete/{id}', [MasterOrganikController::class, 'delete'])
+        ->name('master-organik-delete');
 
 
     Route::get('/mitra', [MasterMitraController::class, 'index'])
