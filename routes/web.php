@@ -97,6 +97,17 @@ Route::group(['prefix' => 'master'], function () {
 
     Route::get('/mitra', [MasterMitraController::class, 'index'])
         ->name('master-mitra');
+    Route::get('/mitra/create', [MasterMitraController::class, 'create'])
+        ->name('master-mitra-create-view');
+    Route::post('/mitra/create', [MasterMitraController::class, 'store'])
+        ->name('master-mitra-create-save');
+    Route::get('/mitra/edit/{id}', [MasterMitraController::class, 'edit'])
+        ->name('master-mitra-edit-view');
+    Route::put('/mitra/edit/{id}', [MasterMitraController::class, 'update'])
+        ->name('master-mitra-edit-save');
+    Route::delete('/mitra/delete/{id}', [MasterMitraController::class, 'delete'])
+        ->name('master-mitra-delete');
+
     Route::get('/perusahaan', [MasterPerusahaanController::class, 'index'])
         ->name('master-perusahaan');
 });
