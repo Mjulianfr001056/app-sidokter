@@ -110,4 +110,14 @@ Route::group(['prefix' => 'master'], function () {
 
     Route::get('/perusahaan', [MasterPerusahaanController::class, 'index'])
         ->name('master-perusahaan');
+    Route::get('/perusahaan/create', [MasterPerusahaanController::class, 'create'])
+        ->name('master-perusahaan-create-view');
+    Route::post('/perusahaan/create', [MasterPerusahaanController::class, 'store'])
+        ->name('master-perusahaan-create-save');
+    Route::get('/perusahaan/edit/{id}', [MasterPerusahaanController::class, 'edit'])
+        ->name('master-perusahaan-edit-view');
+    Route::put('/perusahaan/edit/{id}', [MasterPerusahaanController::class, 'update'])
+        ->name('master-perusahaan-edit-save');
+    Route::delete('/perusahaan/delete/{id}', [MasterPerusahaanController::class, 'delete'])
+        ->name('master-perusahaan-delete');
 });

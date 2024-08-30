@@ -25,8 +25,8 @@ class PerusahaanFactory extends Factory
         return [
             'kode_wilayah' => $kodeWilayah,
             'nama_usaha' => $this->faker->company,
-            'sls' => $this->faker->word,
-            'alamat' => $this->faker->address,
+            'sls' => $this->faker->city(),
+            'alamat_detail' => $this->faker->address,
             'kode_kbli' => $this->faker->randomElement([
                 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
                 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',

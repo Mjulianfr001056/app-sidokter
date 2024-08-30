@@ -21,7 +21,7 @@ return new class extends Migration
 
             $table->string('nama_usaha');
             $table->string('sls');
-            $table->text('alamat');
+            $table->text('alamat_detail');
 
             $table->enum('kode_kbli', [
                 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',

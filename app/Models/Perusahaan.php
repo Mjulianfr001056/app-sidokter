@@ -15,7 +15,7 @@ class Perusahaan extends Model
         'kode_wilayah',
         'nama_usaha',
         'sls',
-        'alamat',
+        'alamat_detail',
         'kode_kbli',
         'nama_cp',
         'nomor_cp',
