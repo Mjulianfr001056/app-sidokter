@@ -33,7 +33,15 @@ return new class extends Migration
                 'XVI', 'XVII'
             ]);
 
-            $table->enum('status', ['PNS', 'PPPK']);
+            $table->enum('status', ['pns', 'pppk']);
+            $table->enum('fungsi', [
+                'ipds', 'statistik produksi', 'statistik distribusi',
+                'statistik sosial', 'subbag umum', 'nerwilis'
+            ]);
+
+            $table->enum('jabatan_tim', [
+                'ketua', 'anggota'
+            ]);
 
             $table->timestamps();
 

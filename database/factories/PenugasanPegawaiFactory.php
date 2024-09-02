@@ -24,6 +24,7 @@ class PenugasanPegawaiFactory extends Factory
             'tanggal_penugasan' => $this->faker->dateTimeBetween('-2 year', 'now'),
             'pemberi_tugas' => DB::table('pegawai')->inRandomOrder()->first()->id,
             'status' => $this->faker->randomElement(['ditugaskan', 'proses', 'selesai']),
+            'jabatan' => $this->faker->randomElement(['pengawas', 'supervisor']),
             'volume' => $this->faker->numberBetween(1, 10),
             'satuan' => $this->faker->optional()->randomElement(['OH', 'OK']),
             'catatan' => $this->faker->sentence(),

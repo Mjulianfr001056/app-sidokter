@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('kegiatan')->nullable();
             $table->date('tanggal_penugasan');
             $table->unsignedBigInteger('pemberi_tugas')->nullable();
+            $table->string('jabatan', 20);
             $table->enum('status', ['ditugaskan', 'proses', 'selesai']);
             $table->unsignedInteger('volume');
             $table->enum('satuan', ['oh','ok'])->nullable();
@@ -34,6 +35,7 @@ return new class extends Migration
             $table->unsignedBigInteger('kegiatan')->nullable();
             $table->date('tanggal_penugasan');
             $table->unsignedBigInteger('pemberi_tugas')->nullable();
+            $table->string('jabatan', 20);
             $table->unsignedInteger('volume');
             $table->enum('status', ['ditugaskan', 'proses', 'selesai']);
             $table->text('catatan')->nullable();

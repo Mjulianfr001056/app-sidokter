@@ -20,7 +20,7 @@ class PerusahaanFactory extends Factory
      */
     public function definition()
     {
-        $kodeWilayah = DB::table('wilayah')->inRandomOrder()->value('kode');;
+        $kodeWilayah = DB::table('wilayah')->inRandomOrder()->value('kode');
 
         return [
             'kode_wilayah' => $kodeWilayah,
