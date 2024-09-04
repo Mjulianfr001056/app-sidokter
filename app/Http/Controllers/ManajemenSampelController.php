@@ -28,6 +28,6 @@ class ManajemenSampelController extends Controller
             ->having('sampel_count', '>', 0)
             ->paginate(25, ['id', 'nama', 'sampel_count']);
 
-        return view('manajemen-sampel', compact('perusahaan_rank', 'kegiatan_sampel'));
+        return view('manajemen-sampel.index', compact('perusahaan_rank', 'kegiatan_sampel'));
     }
 }

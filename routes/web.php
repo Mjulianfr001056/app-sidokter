@@ -64,9 +64,9 @@ Route::group(['prefix' => 'beban-kerja'], function () {
         ->name('beban-kerja-mitra');
 });
 
-Route::group(['prefix' => 'sampel'], function () {
+Route::group(['prefix' => 'manajemen-sampel'], function () {
     Route::get('/', [ManajemenSampelController::class, 'index'])
-        ->name('manajemen-sampel');
+        ->name('sampel-index');
 });
 
 Route::group(['prefix' => 'master'], function () {
