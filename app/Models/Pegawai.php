@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Pegawai extends Model
 {
@@ -21,7 +22,9 @@ class Pegawai extends Model
         'alias',
         'jabatan',
         'golongan',
-        'status'
+        'status',
+        'fungsi',
+        'jabatan_tim',
     ];
 
     protected $casts = [
@@ -67,5 +70,30 @@ class Pegawai extends Model
         return $totalTugas / $totalPegawai;
     }
 
+    public static function getKetuaByFungsi($fungsi)
+    {
+        return self::select('pegawai.nama as nama_pegawai')
+            ->where('pegawai.fungsi', $fungsi)
+            ->where('pegawai.jabatan_tim', 'ketua')
+            ->first();
+    }
 
+    public static function getAnggotaByFungsi($fungsi)
+    {
+        return self::select('pegawai.nama as nama_pegawai')
+            ->where('pegawai.fungsi', $fungsi)
+            ->where('pegawai.jabatan_tim', 'anggota')
+            ->get();
+    }
+
+    public static function getJumlahKegiatanPerPegawaiByFungsi($fungsi)
+    {
+        return self::select('pegawai.nama as nama_pegawai', 'pegawai.jabatan_tim', DB::raw('COUNT(kegiatan.id) as jumlah_kegiatan'))
+            ->leftJoin('penugasan_pegawai', 'penugasan_pegawai.petugas', '=', 'pegawai.id')
+            ->leftJoin('kegiatan', 'kegiatan.id', '=', 'penugasan_pegawai.kegiatan')
+            ->where('pegawai.fungsi', 'nerwilis')
+            ->groupBy('pegawai.nama', 'pegawai.jabatan_tim')
+            ->orderBy('pegawai.jabatan_tim')
+            ->get();
+    }
 }

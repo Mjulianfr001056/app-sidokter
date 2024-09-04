@@ -24,8 +24,7 @@ class Mitra extends Model
         'kecamatan',
         'kelurahan',
         'alamat_detail',
-        'posisi',
-        'fungsi',
+        'posisi'
     ];
 
     protected $casts = [
