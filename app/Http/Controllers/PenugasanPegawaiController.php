@@ -4,14 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Kegiatan;
 use App\Models\Pegawai;
-use App\Models\PenugasanMitra;
 use App\Models\PenugasanPegawai;
-use App\Models\Tim;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PenugasanPegawaiController extends Controller implements RestControllerInterface
 {

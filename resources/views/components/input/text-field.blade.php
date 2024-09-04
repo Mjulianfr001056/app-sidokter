@@ -1,7 +1,7 @@
-@props(['label', 'name', 'value' => ''])
+@props(['label', 'name', 'value' => '', 'label_size' => 'lg'])
 
 <div class="w-full pb-2">
-    <label for="{{ $name }}" class="text-lg text-cyan-950 font-medium flex items-center">
+    <label for="{{ $name }}" class="text-{{ $label_size }} text-cyan-950 font-medium flex items-center">
         {{ $label }}
         @if($attributes->has('required'))
             <p class="text-red-600 ml-1">*</p>

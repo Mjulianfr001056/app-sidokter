@@ -50,11 +50,12 @@ class Mitra extends Model
     {
         $totalPendapatan = DB::raw('SUM(kegiatan.harga_satuan * penugasan_mitra.volume) as total_pendapatan');
 
-        return self::select('mitra.nama as nama_mitra', 'mitra.id as id_mitra', $totalPendapatan)
+        return self::select('mitra.nama as nama', 'mitra.id as id', $totalPendapatan)
             ->leftJoin('penugasan_mitra', 'mitra.id', '=', 'penugasan_mitra.petugas')
             ->join('kegiatan', 'penugasan_mitra.kegiatan', '=', 'kegiatan.id')
             ->groupBy('mitra.nama', 'mitra.id')
             ->havingRaw('total_pendapatan <= ? OR total_pendapatan IS NULL', [self::PENDAPATAN_MAKS])
+            ->orderBy('mitra.nama', 'asc')
             ->get();
     }
 
@@ -66,6 +67,7 @@ class Mitra extends Model
             ->leftJoin('penugasan_mitra', 'mitra.id', '=', 'penugasan_mitra.petugas')
             ->join('kegiatan', 'penugasan_mitra.kegiatan', '=', 'kegiatan.id')
             ->groupBy('mitra.nama', 'mitra.id')
+            ->orderBy('total_pendapatan', 'desc')
             ->get();
     }
 

@@ -16,40 +16,43 @@
                     <x-edit-button :id="request()->route('id')" :route="'penugasan-mitra-edit-view'"/>
                 </div>
             </div>
-            <div class="w-full pb-2">
-                <p class="text-lg text-cyan-950 font-medium">Nama Kegiatan: </p>
-                <p class="text-md text-gray-600 font-normal">{{$detail_tugas->nama_kegiatan}}</p>
-            </div>
-            <div class="w-full pb-2">
-                <p class="text-lg text-cyan-950 font-medium">Pelaksana: </p>
-                <p class="text-md text-gray-600 font-normal">{{$detail_tugas->pelaksana}}</p>
-            </div>
-            <div class="w-full pb-2">
-                <p class="text-lg text-cyan-950 font-medium">Pemberi Tugas: </p>
-                <p class="text-md text-gray-600 font-normal">{{$detail_tugas->nama_pemberi_tugas}}</p>
-            </div>
-            <div class="w-full pb-2">
-                <p class="text-lg text-cyan-950 font-medium">Tanggal Ditugaskan: </p>
-                <p class="text-md text-gray-600 font-normal">{{$detail_tugas->tanggal_penugasan}}</p>
-            </div>
-            <div class="w-full pb-2">
-                <p class="text-lg text-cyan-950 font-medium">Kuantitas: </p>
-                <p class="text-md text-gray-600 font-normal">
-                    @if($detail_tugas->satuan_kegiatan)
-                        {{ $detail_tugas->volume }} {{ $detail_tugas->satuan_kegiatan }}
-                    @else
-                        -
-                    @endif
-                </p>
-            </div>
-            <div class="w-full pb-2">
-                <p class="text-lg text-cyan-950 font-medium">Status: </p>
-                <p class="text-md text-gray-600 font-normal">{{ $detail_tugas->status }}</p>
-            </div>
-            <div class="w-full pb-2">
-                <p class="text-lg text-cyan-950 font-medium">Catatan: </p>
-                <p class="text-md text-gray-600 font-normal">{{ $detail_tugas->catatan }}</p>
-            </div>
+
+            <x-output.details-output label="Nama Kegiatan">
+                {{$detail_tugas->nama_kegiatan}}
+            </x-output.details-output>
+
+            <x-output.details-output label="Pelaksana">
+                {{$detail_tugas->pelaksana}}
+            </x-output.details-output>
+
+            <x-output.details-output label="Pemberi Tugas">
+                {{$detail_tugas->nama_pemberi_tugas}}
+            </x-output.details-output>
+
+            <x-output.details-output label="Jabatan Penugasan">
+                {{$detail_tugas->jabatan}}
+            </x-output.details-output>
+
+            <x-output.details-output label="Tanggal Ditugaskan">
+                {{$detail_tugas->tanggal_penugasan}}
+            </x-output.details-output>
+
+            <x-output.details-output label="Kuantitas">
+                @if($detail_tugas->satuan_kegiatan)
+                    {{ $detail_tugas->volume }} {{ $detail_tugas->satuan_kegiatan }}
+                @else
+                    -
+                @endif
+            </x-output.details-output>
+
+            <x-output.details-output label="status">
+                {{$detail_tugas->status}}
+            </x-output.details-output>
+
+            <x-output.details-output label="Catatan">
+                {{$detail_tugas->catatan}}
+            </x-output.details-output>
+
             <div class="w-full pb-2">
                 <p class="text-lg text-cyan-950 font-medium">Pendapatan: </p>
                 <p class="text-md text-gray-600 font-normal">
@@ -69,6 +72,7 @@
                     @endif
                 </p>
             </div>
+
         </div>
     </div>
 @endsection
