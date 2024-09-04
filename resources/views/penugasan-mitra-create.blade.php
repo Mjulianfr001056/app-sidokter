@@ -23,7 +23,7 @@
                                     :name="'petugas'"
                                     required></x-input.dropdown>
 
-                <p class="text-lg text-cyan-950 font-medium">Informasi Pendapatan Mitra:</p>
+                <p class="text-lg text-cyan-950 font-medium">Informasi Pendapatan Mitra</p>
                 <div class="my-2 flex flex-col justify-center overflow-auto max-w-[78vw]">
                     <div class="relative max-h-96">
                         <table class="table-custom">

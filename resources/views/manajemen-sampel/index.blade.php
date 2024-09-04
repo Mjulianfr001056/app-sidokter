@@ -28,7 +28,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($perusahaan_rank as $item)
+                                @foreach ($ranking as $item)
                                     <tr>
                                         <td class="text-center">{{ $item->rank }}</td>
                                         <td>{{ $item->nama_usaha }}</td>
@@ -71,7 +71,6 @@
                                   d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
                         </svg>
                     </div>
-{{--                    <x-tambah-button :route="route('create-kegiatan')"/>--}}
                 </div>
 
                 <div class="flex flex-col justify-center overflow-x-auto max-w-[78vw]">
@@ -82,19 +81,20 @@
                                 <th scope="col" class="w-8 text-center">No</th>
                                 <th scope="col" class="w-56">Nama</th>
                                 <th scope="col" class="w-8 text-center">Jumlah Sampel</th>
+                                <th scope="col" class="w-8 text-center">Status</th>
                                 <th scope="col" class="w-16 text-center">Aksi</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($kegiatan_sampel as $item)
+                            @foreach ($kegiatan as $item)
                                 <tr>
-                                    <td class="text-center">{{ ($kegiatan_sampel->currentPage() - 1) * $kegiatan_sampel->perPage() + $loop->iteration }}</td>
+                                    <td class="text-center">{{ $loop->iteration }}</td>
                                     <td>{{ $item->nama }}</td>
-                                    <td class="text-center">{{ $item->sampel_count }}</td>
+                                    <td class="text-center">{{ $item->banyak_sampel }}</td>
+                                    <td class="text-center">{{ $item->status_sampel }}</td>
                                     <td class="text-center w-16">
-                                        <div class="justify-center space-x-2 px-2">
-{{--                                            <x-view-button :id="$item->id" :route="'view-kegiatan'" />--}}
-{{--                                            <x-remove-button :id="$item->id" :route="'view-kegiatan'"/>--}}
+                                        <div class="justify-center">
+                                            <x-view-button :id="$item->id" :route="'sampel-show'" />
                                         </div>
                                     </td>
                                 </tr>
@@ -105,7 +105,7 @@
                 </div>
             </div>
 
-            <x-paginator :paginator="$kegiatan_sampel"/>
+            <x-paginator :paginator="$kegiatan"/>
         </div>
     </div>
 @endsection

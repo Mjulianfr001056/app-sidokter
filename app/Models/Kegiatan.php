@@ -75,7 +75,6 @@ class Kegiatan extends Model
         $startDate = Carbon::now()->startOfYear();
         $endDate = Carbon::now()->endOfYear();
 
-        // Fetching and grouping data by month
         $data = self::select(DB::raw('MONTH(tanggal_mulai) as month'), DB::raw('YEAR(tanggal_mulai) as year'), DB::raw('count(*) as total'))
             ->whereBetween('tanggal_mulai', [$startDate, $endDate])
             ->groupBy(DB::raw('YEAR(tanggal_mulai)'), DB::raw('MONTH(tanggal_mulai)'))
@@ -83,7 +82,6 @@ class Kegiatan extends Model
             ->orderBy(DB::raw('MONTH(tanggal_mulai)'))
             ->get();
 
-        // Aggregating totals by month
         $monthlyTotals = $data->groupBy('month')->map(function ($items) {
             return $items->sum('total');
         });
@@ -94,7 +92,6 @@ class Kegiatan extends Model
             9 => 'Sep', 10 => 'Oct', 11 => 'Nov', 12 => 'Dec'
         ];
 
-        // Creating a full list of months for the current year, ensuring each month is represented
         $currentYear = Carbon::now()->year;
         $months = collect(range(1, 12))->map(function ($month) use ($monthlyTotals, $monthNames, $currentYear) {
             return [
@@ -103,13 +100,11 @@ class Kegiatan extends Model
             ];
         });
 
-        // Sort the months in the correct order (January to December)
         $sortedMonths = $months->sortBy(function ($item) use ($monthNames) {
             $monthNumber = array_search($item['month'], $monthNames);
             return sprintf('%02d', $monthNumber);
         });
 
-        // Reindex to make sure it's in order
         $sortedMonths = $sortedMonths->values();
 
         return [

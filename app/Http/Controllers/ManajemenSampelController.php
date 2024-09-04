@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kegiatan;
 use App\Models\Perusahaan;
+use App\Models\Sampel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -11,23 +12,26 @@ class ManajemenSampelController extends Controller
 {
     public function index()
     {
-        $perusahaan_rank = Perusahaan::select('perusahaan.nama_usaha', 'perusahaan.kode_kbli', DB::raw('COUNT(kegiatan.id) as jumlah_kegiatan'))
-            ->join('sampel', 'perusahaan.id', '=', 'sampel.perusahaan_id')
-            ->join('kegiatan', 'kegiatan.id', '=', 'sampel.kegiatan_id')
-            ->groupBy('perusahaan.id', 'perusahaan.nama_usaha', 'perusahaan.kode_kbli')
-            ->orderByDesc('jumlah_kegiatan')
-            ->take(10)
-            ->get();
+        $ranking = Perusahaan::getTopSampledPerusahaan();
+        $kegiatan = Kegiatan::select('id', 'nama', 'banyak_sampel', 'status_sampel')
+            ->paginate(25);
 
-        $perusahaan_rank = $perusahaan_rank->map(function ($item, $index) {
-            $item->rank = $index + 1;
-            return $item;
-        });
+        return view('manajemen-sampel.index', compact('ranking', 'kegiatan'));
+    }
 
-        $kegiatan_sampel = Kegiatan::withCount('sampel')
-            ->having('sampel_count', '>', 0)
-            ->paginate(25, ['id', 'nama', 'sampel_count']);
+    public function show($id)
+    {
+        $kegiatan = Kegiatan::find($id);
+        $daftar_sampel = Sampel::getDaftarSampel($id);
+        return view('manajemen-sampel.details', compact('kegiatan', 'daftar_sampel'));
+    }
 
-        return view('manajemen-sampel.index', compact('perusahaan_rank', 'kegiatan_sampel'));
+    public function edit($id){
+        return view('manajemen-sampel.edit');
+    }
+
+    public function update(Request $request, $id){
+
+        return redirect()->route('sampel-index');
     }
 }
