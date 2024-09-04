@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Mitra extends Model
 {
@@ -24,14 +25,16 @@ class Mitra extends Model
         'kecamatan',
         'kelurahan',
         'alamat_detail',
-        'posisi',
-        'fungsi',
+        'posisi'
     ];
 
     protected $casts = [
         'jenis_kelamin' => 'string',
         'fungsi' => 'string',
     ];
+
+    const PENDAPATAN_MAKS = 4200000;
+
 
     public function penugasanMitra()
     {
@@ -42,4 +45,30 @@ class Mitra extends Model
     {
         return self::has('penugasanMitra')->count();
     }
+
+    public static function getTotalPendapatanFiltered()
+    {
+        $totalPendapatan = DB::raw('SUM(kegiatan.harga_satuan * penugasan_mitra.volume) as total_pendapatan');
+
+        return self::select('mitra.nama as nama', 'mitra.id as id', $totalPendapatan)
+            ->leftJoin('penugasan_mitra', 'mitra.id', '=', 'penugasan_mitra.petugas')
+            ->join('kegiatan', 'penugasan_mitra.kegiatan', '=', 'kegiatan.id')
+            ->groupBy('mitra.nama', 'mitra.id')
+            ->havingRaw('total_pendapatan <= ? OR total_pendapatan IS NULL', [self::PENDAPATAN_MAKS])
+            ->orderBy('mitra.nama', 'asc')
+            ->get();
+    }
+
+    public static function getTotalPendapatan()
+    {
+        $totalPendapatan = DB::raw('SUM(kegiatan.harga_satuan * penugasan_mitra.volume) as total_pendapatan');
+
+        return self::select('mitra.nama as nama_mitra', 'mitra.id as id_mitra', $totalPendapatan)
+            ->leftJoin('penugasan_mitra', 'mitra.id', '=', 'penugasan_mitra.petugas')
+            ->join('kegiatan', 'penugasan_mitra.kegiatan', '=', 'kegiatan.id')
+            ->groupBy('mitra.nama', 'mitra.id')
+            ->orderBy('total_pendapatan', 'desc')
+            ->get();
+    }
+
 }

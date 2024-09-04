@@ -19,15 +19,11 @@ return new class extends Migration
             $table->string('nama', 150);
             $table->enum('jenis_kelamin', ['laki-laki', 'perempuan']);
             $table->string('email', 50);
-            $table->string('kecamatan', 15)->nullable();
-            $table->string('kelurahan', 25)->nullable();
+            $table->string('kode_wilayah');
+            $table->foreign('kode_wilayah')->references('kode')->on('wilayah')
+                ->onDelete('restrict')->onUpdate('cascade');
             $table->text('alamat_detail')->nullable();
             $table->string('posisi', 30);
-            $table->enum('fungsi', [
-                'IPDS', 'Statistik Produksi', 'Statistik Distribusi',
-                'Statistik Sosial', 'Subbag Umum', 'Nerwilis'
-            ]);
-
             $table->timestamps();
         });
     }
