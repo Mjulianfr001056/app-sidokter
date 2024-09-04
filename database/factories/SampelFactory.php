@@ -22,7 +22,7 @@ class SampelFactory extends Factory
             'kegiatan_id' => DB::table('kegiatan')->inRandomOrder()->first()->id,
             'perusahaan_id' => DB::table('perusahaan')->inRandomOrder()->first()->id,
             'dibuat_oleh' => DB::table('pegawai')->inRandomOrder()->first()->id,
-            'status' => $this->faker->randomElement(['disampel', 'proses', 'selesai']),
+            'status' => $this->faker->randomElement(['menunggu', 'selesai'])
         ];
     }
 }

@@ -24,7 +24,9 @@ class Kegiatan extends Model
         'tanggal_akhir',
         'target',
         'satuan',
-        'harga_satuan'
+        'harga_satuan',
+        'banyak_sampel',
+        'status_sampel'
     ];
 
     protected $casts = [

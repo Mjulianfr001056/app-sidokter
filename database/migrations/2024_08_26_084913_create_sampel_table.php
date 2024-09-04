@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('kegiatan_id')->nullable();
             $table->unsignedBigInteger('perusahaan_id')->nullable();
             $table->unsignedBigInteger('dibuat_oleh')->nullable();
-            $table->enum('status', ['disampel', 'proses', 'selesai']);
+            $table->enum('status', ['menunggu', 'selesai'])->default('menunggu');
 
             $table->foreign('kegiatan_id')->references('id')->on('kegiatan')->onDelete('set null')->onUpdate('cascade');
             $table->foreign('perusahaan_id')->references('id')->on('perusahaan')->onDelete('set null')->onUpdate('cascade');

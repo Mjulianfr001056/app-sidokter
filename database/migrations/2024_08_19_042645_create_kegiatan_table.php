@@ -23,6 +23,8 @@ return new class extends Migration
             $table->unsignedInteger('target')->nullable();
             $table->string('satuan', 30);
             $table->unsignedInteger('harga_satuan')->nullable();
+            $table->unsignedInteger('banyak_sampel')->default(0);
+            $table->enum('status_sampel', ['menunggu', 'final'])->nullable();
 
             $table->timestamps();
         });
