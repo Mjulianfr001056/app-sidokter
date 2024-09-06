@@ -6,6 +6,7 @@ use App\Http\Controllers\BebanKerjaOrganikController;
 use App\Http\Controllers\CapaianAgregatController;
 use App\Http\Controllers\CapaianOrganikController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\ManajemenSampelController;
 use App\Http\Controllers\MasterKegiatanController;
 use App\Http\Controllers\MasterMitraController;
@@ -74,6 +75,8 @@ Route::group(['prefix' => 'manajemen-sampel'], function () {
     ->name('sampel-edit-view');
     Route::put('/edit/{id}', [ManajemenSampelController::class, 'update'])
         ->name('sampel-edit-save');
+    Route::post('/seeder/{id}', [ManajemenSampelController::class, 'seeder'])
+        ->name('sampel-seeder');
 
     Route::get('/finalisasi/{id}', [ManajemenSampelController::class, 'finalisasi'])
         ->name('kegiatan-finalisasi');
@@ -141,4 +144,9 @@ Route::group(['prefix' => 'master'], function () {
         ->name('master-perusahaan-edit-save');
     Route::delete('/perusahaan/delete/{id}', [MasterPerusahaanController::class, 'delete'])
         ->name('master-perusahaan-delete');
+});
+
+Route::group(['prefix' => 'template'], function () {
+    Route::get('/seeder-sampel', [DownloadController::class, 'sampel'])
+        ->name('template-sampel');
 });

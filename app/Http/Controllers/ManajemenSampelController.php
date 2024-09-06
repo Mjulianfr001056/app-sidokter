@@ -7,6 +7,7 @@ use App\Models\Perusahaan;
 use App\Models\Sampel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ManajemenSampelController extends Controller
 {
@@ -63,7 +64,6 @@ class ManajemenSampelController extends Controller
                     'kegiatan_id' => $id,
                     'perusahaan_id' => $perusahaan_id,
                     'dibuat_oleh' => env('SESSION_USER_ID'),
-                    'status' => 'menunggu'
                 ]);
             }
 
@@ -77,6 +77,33 @@ class ManajemenSampelController extends Controller
 
             return redirect()->back()->with('error', 'Failed to update samples. Please try again.');
         }
+    }
+
+    public function seeder(Request $request, $id)
+    {
+        Sampel::where('kegiatan_id', $id)->delete();
+
+        $file_seeder = $request->file('seeder_file');
+        $idsbrList = Excel::toArray((object)[], $file_seeder);
+
+        $idsbrColumn = $idsbrList[0];
+        $idsbrValues = array_column($idsbrColumn, 0);
+        array_shift($idsbrValues);
+
+        $perusahaanIds = Perusahaan::whereIn('idsbr', $idsbrValues)->pluck('id', 'idsbr');
+
+
+        foreach ($idsbrValues as $idsbr) {
+            if (isset($perusahaanIds[$idsbr])) {
+                Sampel::create([
+                    'kegiatan_id' => $id,
+                    'perusahaan_id' => $perusahaanIds[$idsbr],
+                    'dibuat_oleh' => env('SESSION_USER_ID'),
+                ]);
+            }
+        }
+
+        return redirect()->route('sampel-edit-view', $id);
     }
 
     public function finalisasi($id)
