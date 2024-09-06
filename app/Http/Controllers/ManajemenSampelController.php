@@ -28,12 +28,12 @@ class ManajemenSampelController extends Controller
 
     public function edit($id){
         $kegiatan = Kegiatan::find($id);
-        $daftar_sampel = Sampel::getDaftarSampel($id);
-        $daftar_perusahaan = Perusahaan::all(['id', 'nama_usaha']);
-
-        $daftar_perusahaan = $daftar_perusahaan->filter(function ($perusahaan) use ($daftar_sampel) {
-            return !$daftar_sampel->contains('perusahaan_id', $perusahaan->id);
-        });
+        $daftar_sampel = Sampel::getDaftarSampel($id)->sortBy('nama_perusahaan');
+        $daftar_perusahaan = Perusahaan::all(['id', 'nama_usaha'])
+            ->filter(function ($perusahaan) use ($daftar_sampel) {
+                return !$daftar_sampel->contains('perusahaan_id', $perusahaan->id);
+            })
+            ->sortBy('nama_usaha');
 
         return view('manajemen-sampel.edit', compact('kegiatan', 'daftar_sampel', 'daftar_perusahaan'));
     }
@@ -74,8 +74,6 @@ class ManajemenSampelController extends Controller
         } catch (\Exception $e) {
             // Rollback the transaction on error
             DB::rollBack();
-
-            dd($e);
 
             return redirect()->back()->with('error', 'Failed to update samples. Please try again.');
         }
