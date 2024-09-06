@@ -75,7 +75,8 @@ Route::group(['prefix' => 'manajemen-sampel'], function () {
     Route::put('/edit/{id}', [ManajemenSampelController::class, 'update'])
         ->name('sampel-edit-save');
 
-
+    Route::get('/finalisasi/{id}', [ManajemenSampelController::class, 'finalisasi'])
+        ->name('kegiatan-finalisasi');
 //
 //    Route::get('/assign/{id}', [ManajemenSampelController::class, 'assign'])
 //        ->name('sampel-assign-view');
