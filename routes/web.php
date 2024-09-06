@@ -64,9 +64,28 @@ Route::group(['prefix' => 'beban-kerja'], function () {
         ->name('beban-kerja-mitra');
 });
 
-Route::group(['prefix' => 'sampel'], function () {
+Route::group(['prefix' => 'manajemen-sampel'], function () {
     Route::get('/', [ManajemenSampelController::class, 'index'])
-        ->name('manajemen-sampel');
+        ->name('sampel-index');
+    Route::get('/details/{id}', [ManajemenSampelController::class, 'show'])
+        ->name('sampel-show');
+
+    Route::get('/edit/{id}', [ManajemenSampelController::class, 'edit'])
+    ->name('sampel-edit-view');
+    Route::put('/edit/{id}', [ManajemenSampelController::class, 'update'])
+        ->name('sampel-edit-save');
+
+    Route::get('/finalisasi/{id}', [ManajemenSampelController::class, 'finalisasi'])
+        ->name('kegiatan-finalisasi');
+//
+//    Route::get('/assign/{id}', [ManajemenSampelController::class, 'assign'])
+//        ->name('sampel-assign-view');
+//    Route::post('/create', [ManajemenSampelController::class, 'store'])
+//        ->name('sampel-create-save');
+
+//    Route::delete('/delete/{id}', [ManajemenSampelController::class, 'delete'])
+//        ->name('sampel-delete');
+
 });
 
 Route::group(['prefix' => 'master'], function () {

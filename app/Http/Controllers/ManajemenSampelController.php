@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kegiatan;
 use App\Models\Perusahaan;
+use App\Models\Sampel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -11,23 +12,75 @@ class ManajemenSampelController extends Controller
 {
     public function index()
     {
-        $perusahaan_rank = Perusahaan::select('perusahaan.nama_usaha', 'perusahaan.kode_kbli', DB::raw('COUNT(kegiatan.id) as jumlah_kegiatan'))
-            ->join('sampel', 'perusahaan.id', '=', 'sampel.perusahaan_id')
-            ->join('kegiatan', 'kegiatan.id', '=', 'sampel.kegiatan_id')
-            ->groupBy('perusahaan.id', 'perusahaan.nama_usaha', 'perusahaan.kode_kbli')
-            ->orderByDesc('jumlah_kegiatan')
-            ->take(10)
-            ->get();
+        $ranking = Perusahaan::getTopSampledPerusahaan();
+        $kegiatan = Kegiatan::select('id', 'nama', 'banyak_sampel', 'status_sampel')
+            ->paginate(25);
 
-        $perusahaan_rank = $perusahaan_rank->map(function ($item, $index) {
-            $item->rank = $index + 1;
-            return $item;
-        });
+        return view('manajemen-sampel.index', compact('ranking', 'kegiatan'));
+    }
 
-        $kegiatan_sampel = Kegiatan::withCount('sampel')
-            ->having('sampel_count', '>', 0)
-            ->paginate(25, ['id', 'nama', 'sampel_count']);
+    public function show($id)
+    {
+        $kegiatan = Kegiatan::find($id);
+        $daftar_sampel = Sampel::getDaftarSampel($id);
+        return view('manajemen-sampel.details', compact('kegiatan', 'daftar_sampel'));
+    }
 
-        return view('manajemen-sampel', compact('perusahaan_rank', 'kegiatan_sampel'));
+    public function edit($id){
+        $kegiatan = Kegiatan::find($id);
+        $daftar_sampel = Sampel::getDaftarSampel($id)->sortBy('nama_perusahaan');
+        $daftar_perusahaan = Perusahaan::all(['id', 'nama_usaha'])
+            ->filter(function ($perusahaan) use ($daftar_sampel) {
+                return !$daftar_sampel->contains('perusahaan_id', $perusahaan->id);
+            })
+            ->sortBy('nama_usaha');
+
+        return view('manajemen-sampel.edit', compact('kegiatan', 'daftar_sampel', 'daftar_perusahaan'));
+    }
+
+    public function update(Request $request, $id)
+    {
+//        dd($request->all());
+        $request->validate([
+            'sampel_baru' => 'array',  // Ensure that sampel_baru is an array
+            'sampel_baru.*' => 'exists:perusahaan,id', // Ensure each ID exists in the database
+        ]);
+
+
+        // Start a database transaction
+        DB::beginTransaction();
+
+        try {
+            // Delete all existing samples related to the kegiatan_id
+            Sampel::where('kegiatan_id', $id)->delete();
+
+            // Retrieve the new sample IDs from the request
+            $sampel_baru = $request->input('sampel_baru', []);
+
+            // Add new samples to the database
+            foreach ($sampel_baru as $perusahaan_id) {
+                Sampel::create([
+                    'kegiatan_id' => $id,
+                    'perusahaan_id' => $perusahaan_id,
+                    'dibuat_oleh' => env('SESSION_USER_ID'),
+                    'status' => 'menunggu'
+                ]);
+            }
+
+            // Commit the transaction
+            DB::commit();
+
+            return redirect()->route('sampel-index')->with('success', 'Samples updated successfully.');
+        } catch (\Exception $e) {
+            // Rollback the transaction on error
+            DB::rollBack();
+
+            return redirect()->back()->with('error', 'Failed to update samples. Please try again.');
+        }
+    }
+
+    public function finalisasi($id)
+    {
+        return view('dashboard');
     }
 }

@@ -48,6 +48,8 @@ class KegiatanFactory extends Factory
             'target' => $this->faker->numberBetween(1, 1000),
             'satuan' => $this->faker->randomElement($satuanOptions),
             'harga_satuan' => $this->faker->optional()->numberBetween(1000, 200000),
+            'banyak_sampel' => $this->faker->numberBetween(0, 100),
+            'status_sampel' => $this->faker->optional()->randomElement(['menunggu', 'final'])
         ];
     }
 }
