@@ -14,8 +14,7 @@ class Sampel extends Model
     protected $fillable = [
         'kegiatan_id',
         'perusahaan_id',
-        'dibuat_oleh',
-        'status',
+        'dibuat_oleh'
     ];
 
     /**

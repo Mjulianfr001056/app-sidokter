@@ -13,6 +13,7 @@ class Perusahaan extends Model
     protected $table = 'perusahaan';
 
     protected $fillable = [
+        'idsbr',
         'kode_wilayah',
         'nama_usaha',
         'sls',
@@ -24,6 +25,7 @@ class Perusahaan extends Model
     ];
 
     protected $casts = [
+        'idsbr' => 'string',
         'kode_wilayah' => 'string',
         'nama_usaha' => 'string',
         'sls' => 'string',
