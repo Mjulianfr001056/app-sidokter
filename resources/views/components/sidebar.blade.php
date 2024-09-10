@@ -45,7 +45,7 @@
                 <x-sidebar-button :icon="null"  :href="route('master-kegiatan')" :title="'Kegiatan'" class="pl-11" />
                 <x-sidebar-button :icon="null" :href="route('master-organik')" :title="'Organik'" class="pl-11" />
                 <x-sidebar-button :icon="null" :href="route('master-mitra')" :title="'Mitra'" class="pl-11" />
-                <x-sidebar-button :icon="null" :href="route('master-perusahaan')" :title="'Perusahaan'" class="pl-11" />
+                <x-sidebar-button :icon="null" :href="route('perusahaan-index')" :title="'Perusahaan'" class="pl-11" />
             </x-sidebar-dropdown>
         </ul>
     </div>

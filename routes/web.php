@@ -132,18 +132,31 @@ Route::group(['prefix' => 'master'], function () {
     Route::delete('/mitra/delete/{id}', [MasterMitraController::class, 'delete'])
         ->name('master-mitra-delete');
 
-    Route::get('/perusahaan', [MasterPerusahaanController::class, 'index'])
-        ->name('master-perusahaan');
-    Route::get('/perusahaan/create', [MasterPerusahaanController::class, 'create'])
-        ->name('master-perusahaan-create-view');
-    Route::post('/perusahaan/create', [MasterPerusahaanController::class, 'store'])
-        ->name('master-perusahaan-create-save');
-    Route::get('/perusahaan/edit/{id}', [MasterPerusahaanController::class, 'edit'])
-        ->name('master-perusahaan-edit-view');
-    Route::put('/perusahaan/edit/{id}', [MasterPerusahaanController::class, 'update'])
-        ->name('master-perusahaan-edit-save');
-    Route::delete('/perusahaan/delete/{id}', [MasterPerusahaanController::class, 'delete'])
-        ->name('master-perusahaan-delete');
+//    Route::get('/perusahaan', [MasterPerusahaanController::class, 'index'])
+//        ->name('master-perusahaan');
+//    Route::get('/perusahaan/create', [MasterPerusahaanController::class, 'create'])
+//        ->name('master-perusahaan-create-view');
+//    Route::post('/perusahaan/create', [MasterPerusahaanController::class, 'store'])
+//        ->name('master-perusahaan-create-save');
+//    Route::get('/perusahaan/edit/{id}', [MasterPerusahaanController::class, 'edit'])
+//        ->name('master-perusahaan-edit-view');
+//    Route::put('/perusahaan/edit/{id}', [MasterPerusahaanController::class, 'update'])
+//        ->name('master-perusahaan-edit-save');
+//    Route::delete('/perusahaan/delete/{id}', [MasterPerusahaanController::class, 'delete'])
+//        ->name('master-perusahaan-delete');
+
+    Route::resource('perusahaan', MasterPerusahaanController::class)
+    ->except(['show'])
+    ->names([
+        'index' => 'perusahaan-index',
+        'create' => 'perusahaan-create-view',
+        'store' => 'perusahaan-create-save',
+        'edit' => 'perusahaan-edit-view',
+        'update' => 'perusahaan-edit-save',
+        'destroy' => 'perusahaan-destroy',
+    ])->parameters([
+        'perusahaan' => 'id'
+        ]);
 });
 
 Route::group(['prefix' => 'template'], function () {

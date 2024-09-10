@@ -26,7 +26,7 @@
                           d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
                 </svg>
             </div>
-            <x-tambah-button :route="'master-perusahaan-create-view'"/>
+            <x-tambah-button :route="'perusahaan-create-view'"/>
         </div>
 
 
@@ -37,12 +37,13 @@
                     <thead>
                     <tr>
                         <th scope="col" rowspan="2" class="w-8 text-center">No</th>
+                        <th scope="col" rowspan="2" class="w-8">ID SBR</th>
                         <th scope="col" rowspan="2" class="w-56">Nama Usaha</th>
                         <th scope="col" rowspan="2" class="w-8 text-center">Kode KBLI</th>
                         <th scope="col" rowspan="2" class="w-16">SLS</th>
-                        <th scope="col" colspan="3" class="text-center border-b-gray-200 border-b-[1px]">Alamat</th>
+                        <th scope="colgroup" colspan="3" class="text-center border-b-gray-200 border-b-[1px]">Alamat</th>
                         <th scope="col" rowspan="2" class="w-16 text-center">Email</th>
-                        <th scope="col" colspan="2" class="text-center border-b-gray-200 border-b-[1px]">Contact Person</th>
+                        <th scope="colgroup" colspan="2" class="text-center border-b-gray-200 border-b-[1px]">Contact Person</th>
                         <th scope="col" rowspan="2" class="w-16 text-center">Aksi</th>
                     </tr>
                     <tr>
@@ -57,9 +58,10 @@
                     @foreach ($perusahaan as $item)
                         <tr class="tr-border-b">
                             <td class="text-center">{{ $loop->iteration }}</td>
+                            <td>{{ $item->idsbr }}</td>
                             <td>{{ $item->nama_usaha }}</td>
                             <td class="text-center">{{ $item->kode_kbli }}</td>
-                            <td>{{ $item->sls }}</td>
+                            <td>{{ $item->sls ?: '-' }}</td>
                             <td class="text-center">{{ $item->kecamatan ?: '-' }}</td>
                             <td class="text-center">{{ $item->kelurahan ?: '-' }}</td>
                             <td>{{ $item->alamat_detail ?: '-' }}</td>
@@ -68,9 +70,9 @@
                             <td class="text-center">{{ $item->nomor_cp }}</td>
                             <td class="text-center">
                                 <div class="flex justify-center space-x-2 px-2">
-                                    <x-edit-button-table :id="$item->id" :route="'master-perusahaan-edit-view'"/>
+                                    <x-edit-button-table :id="$item->id" :route="'perusahaan-edit-view'"/>
 
-                                    <form action="{{ route('master-perusahaan-delete', $item->id) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('perusahaan-destroy', $item->id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <x-remove-button/>
