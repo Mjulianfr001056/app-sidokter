@@ -42,6 +42,7 @@
                 @csrf
                 @method('PUT')
 
+
                 <div class="w-full pb-2">
                     <label class="text-lg text-cyan-950 font-medium">Nama Perusahaan</label>
                     <input type="text" id="nama_usaha" name="nama_usaha" value="{{ $perusahaan->nama_usaha }}"

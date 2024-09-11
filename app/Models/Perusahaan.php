@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class Perusahaan extends Model
 {
@@ -13,6 +14,7 @@ class Perusahaan extends Model
     protected $table = 'perusahaan';
 
     protected $fillable = [
+        'idsbr',
         'kode_wilayah',
         'nama_usaha',
         'sls',
@@ -24,6 +26,7 @@ class Perusahaan extends Model
     ];
 
     protected $casts = [
+        'idsbr' => 'string',
         'kode_wilayah' => 'string',
         'nama_usaha' => 'string',
         'sls' => 'string',
@@ -50,6 +53,24 @@ class Perusahaan extends Model
             ->take($banyak)
             ->get()
             ->map(fn($item, $index) => $item->setAttribute('rank', $index + 1));
+    }
+
+    public static function getAllWithWilayah($paginate = 25)
+    {
+        $perusahaanColumns = Schema::getColumnListing('perusahaan');
+        $excludeColumns = ['kode_wilayah'];
+        $selectedColumns = array_diff($perusahaanColumns, $excludeColumns);
+        $selectedColumns = array_map(function($column) {
+            return 'perusahaan.' . $column;
+        }, $selectedColumns);
+
+        $selectedColumns = array_merge($selectedColumns, [
+            'wilayah.kecamatan', 'wilayah.kelurahan'
+        ]);
+
+        return self::leftjoin('wilayah', 'perusahaan.kode_wilayah', '=', 'wilayah.kode')
+            ->select($selectedColumns)
+            ->paginate($paginate);
     }
 
 }

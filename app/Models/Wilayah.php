@@ -24,4 +24,22 @@ class Wilayah extends Model
     {
         return $this->hasMany(Perusahaan::class, 'kode_wilayah', 'kode');
     }
+
+    public static function getWilayahGrouped()
+    {
+        return self::select('kecamatan', 'kelurahan')
+            ->get()
+            ->groupBy('kecamatan')
+            ->map(function ($group) {
+                return $group->pluck('kelurahan')->toArray();
+            })
+            ->toArray();
+    }
+
+    public static function getKodeWilayahByKecamatanKelurahan($kecamatan, $kelurahan)
+    {
+        return self::where('kecamatan', $kecamatan)
+            ->where('kelurahan', $kelurahan)
+            ->first();
+    }
 }

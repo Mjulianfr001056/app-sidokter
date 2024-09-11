@@ -15,12 +15,14 @@ return new class extends Migration
     {
         Schema::create('perusahaan', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_wilayah');
-            $table->foreign('kode_wilayah')->references('kode')->on('wilayah')
-            ->onDelete('restrict')->onUpdate('cascade');
+            $table->string('idsbr', 15)->unique();
+            $table->string('kode_wilayah')->nullable();
+            $table->foreign('kode_wilayah')
+                ->references('kode')->on('wilayah')
+                ->nullOnDelete()->cascadeOnUpdate();
 
             $table->string('nama_usaha');
-            $table->string('sls');
+            $table->string('sls')->nullable();
             $table->text('alamat_detail');
 
             $table->enum('kode_kbli', [

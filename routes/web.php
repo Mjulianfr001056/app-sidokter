@@ -6,6 +6,7 @@ use App\Http\Controllers\BebanKerjaOrganikController;
 use App\Http\Controllers\CapaianAgregatController;
 use App\Http\Controllers\CapaianOrganikController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\ManajemenSampelController;
 use App\Http\Controllers\MasterKegiatanController;
 use App\Http\Controllers\MasterMitraController;
@@ -74,6 +75,8 @@ Route::group(['prefix' => 'manajemen-sampel'], function () {
     ->name('sampel-edit-view');
     Route::put('/edit/{id}', [ManajemenSampelController::class, 'update'])
         ->name('sampel-edit-save');
+    Route::post('/seeder/{id}', [ManajemenSampelController::class, 'seeder'])
+        ->name('sampel-seeder');
 
     Route::get('/finalisasi/{id}', [ManajemenSampelController::class, 'finalisasi'])
         ->name('kegiatan-finalisasi');
@@ -129,16 +132,38 @@ Route::group(['prefix' => 'master'], function () {
     Route::delete('/mitra/delete/{id}', [MasterMitraController::class, 'delete'])
         ->name('master-mitra-delete');
 
-    Route::get('/perusahaan', [MasterPerusahaanController::class, 'index'])
-        ->name('master-perusahaan');
-    Route::get('/perusahaan/create', [MasterPerusahaanController::class, 'create'])
-        ->name('master-perusahaan-create-view');
-    Route::post('/perusahaan/create', [MasterPerusahaanController::class, 'store'])
-        ->name('master-perusahaan-create-save');
-    Route::get('/perusahaan/edit/{id}', [MasterPerusahaanController::class, 'edit'])
-        ->name('master-perusahaan-edit-view');
-    Route::put('/perusahaan/edit/{id}', [MasterPerusahaanController::class, 'update'])
-        ->name('master-perusahaan-edit-save');
-    Route::delete('/perusahaan/delete/{id}', [MasterPerusahaanController::class, 'delete'])
-        ->name('master-perusahaan-delete');
+//    Route::get('/perusahaan', [MasterPerusahaanController::class, 'index'])
+//        ->name('master-perusahaan');
+//    Route::get('/perusahaan/create', [MasterPerusahaanController::class, 'create'])
+//        ->name('master-perusahaan-create-view');
+//    Route::post('/perusahaan/create', [MasterPerusahaanController::class, 'store'])
+//        ->name('master-perusahaan-create-save');
+//    Route::get('/perusahaan/edit/{id}', [MasterPerusahaanController::class, 'edit'])
+//        ->name('master-perusahaan-edit-view');
+//    Route::put('/perusahaan/edit/{id}', [MasterPerusahaanController::class, 'update'])
+//        ->name('master-perusahaan-edit-save');
+//    Route::delete('/perusahaan/delete/{id}', [MasterPerusahaanController::class, 'delete'])
+//        ->name('master-perusahaan-delete');
+
+    Route::resource('perusahaan', MasterPerusahaanController::class)
+    ->except(['show'])
+    ->names([
+        'index' => 'perusahaan-index',
+        'create' => 'perusahaan-create-view',
+        'store' => 'perusahaan-create-save',
+        'edit' => 'perusahaan-edit-view',
+        'update' => 'perusahaan-edit-save',
+        'destroy' => 'perusahaan-destroy',
+    ])->parameters([
+        'perusahaan' => 'id'
+        ]);
+    Route::post('/perusahaan/seeder', [MasterPerusahaanController::class, 'seeder'])
+        ->name('perusahaan-seeder');
+});
+
+Route::group(['prefix' => 'template'], function () {
+    Route::get('/seeder-sampel', [DownloadController::class, 'sampel'])
+        ->name('template-sampel');
+    Route::get('/seeder-perusahaan', [DownloadController::class, 'perusahaan'])
+        ->name('template-perusahaan');
 });
