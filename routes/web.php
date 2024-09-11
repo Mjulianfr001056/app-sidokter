@@ -157,9 +157,13 @@ Route::group(['prefix' => 'master'], function () {
     ])->parameters([
         'perusahaan' => 'id'
         ]);
+    Route::post('/perusahaan/seeder', [MasterPerusahaanController::class, 'seeder'])
+        ->name('perusahaan-seeder');
 });
 
 Route::group(['prefix' => 'template'], function () {
     Route::get('/seeder-sampel', [DownloadController::class, 'sampel'])
         ->name('template-sampel');
+    Route::get('/seeder-perusahaan', [DownloadController::class, 'perusahaan'])
+        ->name('template-perusahaan');
 });

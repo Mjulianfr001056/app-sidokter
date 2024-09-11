@@ -109,7 +109,11 @@
         </div>
     </div>
 
-    <x-modal.upload-seeder :id="$seeder_modal_id"/>
+    <x-modal.upload-seeder
+        :id="$seeder_modal_id"
+        :route_template="'template-sampel'"
+        :route_seeder="'sampel-seeder'"
+        :use_id="true"/>
     <script>
         const maxSampelLimit = {{ $kegiatan->banyak_sampel }};
 

@@ -1,4 +1,4 @@
-@props(['id'])
+@props(['id', 'route_template', 'route_seeder', 'use_id' => false])
 
 <div id={{ $id }} tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-md max-h-full">
@@ -17,10 +17,12 @@
             <div class="p-4 md:p-5">
                 <div>
                     <p class="text-md text-cyan-950">
-                        Download template untuk file seeder <a href="{{ route('template-sampel') }}" class="text-blue-700 hover:underline">di sini</a>.
+                        Download template untuk file seeder <a href="{{ route($route_template) }}" class="text-blue-700 hover:underline">di sini</a>.
                     </p>
                 </div>
-                <form class="space-y-4" action="{{ route('sampel-seeder', request()->route('id')) }}" method="POST" enctype="multipart/form-data">
+                <form class="space-y-4"
+                      action="{{ $use_id ? route($route_seeder, request()->route('id')) : route($route_seeder) }}"
+                      method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('POST')
 

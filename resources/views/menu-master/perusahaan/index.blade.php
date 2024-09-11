@@ -1,4 +1,6 @@
-{{--@php dd($perusahaan) @endphp--}}
+@php
+    $seeder_modal_id = 'seeder-modal';
+@endphp
 @extends('components.layout')
 
 @section('title', 'Master Perusahaan')
@@ -26,7 +28,12 @@
                           d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
                 </svg>
             </div>
-            <x-tambah-button :route="'perusahaan-create-view'"/>
+            <div class="flex space-x-3">
+                <x-button.seeder :route="'perusahaan-seeder'" :modal_id="$seeder_modal_id">
+                    Seeder
+                </x-button.seeder>
+                <x-tambah-button :route="'perusahaan-create-view'"/>
+            </div>
         </div>
 
 
@@ -87,6 +94,10 @@
         </div>
 
         <x-paginator :paginator="$perusahaan"/>
-
     </div>
+    <x-modal.upload-seeder
+        :id="$seeder_modal_id"
+        :route_template="'template-perusahaan'"
+        :route_seeder="'perusahaan-seeder'"
+    />
 @endsection

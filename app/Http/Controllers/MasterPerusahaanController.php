@@ -6,6 +6,7 @@ use App\Models\Perusahaan;
 use App\Models\Wilayah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MasterPerusahaanController extends Controller
 {
@@ -70,10 +71,38 @@ class MasterPerusahaanController extends Controller
         return redirect()->route('master-perusahaan');
     }
 
-
     public function delete($id)
     {
         Perusahaan::where('id', $id)->delete();
         return redirect()->route('master-perusahaan');
+    }
+
+    public function seeder(Request $request)
+    {
+        $file_seeder = $request->file('seeder_file');
+
+        $data = Excel::toCollection((object) null, $file_seeder)->first();
+
+        $rows = $data->slice(1);
+
+        foreach ($rows as $row) {
+            $kelurahan = $row[3];
+            $kecamatan = $row[4];
+
+            $kodeWilayah = Wilayah::getKodeWilayahByKecamatanKelurahan($kecamatan, $kelurahan);
+
+            Perusahaan::create([
+                'idsbr' => $row[0],
+                'nama_usaha' => $row[1],
+                'sls' => $row[2],
+                'alamat_detail' => $row[5],
+                'kode_kbli' => $row[6],
+                'nama_cp' => $row[7],
+                'nomor_cp' => $row[8],
+                'email' => $row[9],
+                'kode_wilayah' => $kodeWilayah
+            ]);
+        }
+        return redirect()->route('perusahaan-index');
     }
 }
