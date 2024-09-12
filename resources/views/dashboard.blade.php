@@ -4,6 +4,7 @@
 
 @section('content')
     <div class="size-full flex flex-col items-center">
+{{--        <x-navigation.bread-crumbs :breadcrumbs="$breadcrumbs"/>--}}
         <div class="size-full flex flex-col">
             <x-judul text="Selamat datang!"/>
 
