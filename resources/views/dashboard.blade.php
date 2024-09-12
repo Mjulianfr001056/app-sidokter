@@ -7,18 +7,7 @@
 {{--        <x-navigation.bread-crumbs :breadcrumbs="$breadcrumbs"/>--}}
         <div class="size-full flex flex-col">
             <x-judul text="Selamat datang!"/>
-
-{{--            Chip periode--}}
-            <div class="w-full flex justify-end">
-                <x-chip-periode/>
-            </div>
-
-            <div class="flex flex-row space-x-4">
-                <x-stat-card :jumlah="$jumlah_kegiatan">Jumlah kegiatan periode ini</x-stat-card>
-                <x-stat-card :jumlah="$rerata_beban">Rata-rata beban organik</x-stat-card>
-                <x-stat-card :jumlah="$organik_terlibat">Jumlah organik yang terlibat</x-stat-card>
-                <x-stat-card :jumlah="$mitra_terlibat">Jumlah mitra yang terlibat</x-stat-card>
-            </div>
+            <livewire:stats-card/>
         </div>
 
         <div class="grid grid-cols-[5fr_3fr] grid-rows-auto size-full pt-6 gap-4">
@@ -28,7 +17,10 @@
                     <div class="w-full pl-2 pb-6">
                         <span class="text-2xl text-teal-600 font-medium">Daftar Tugas Terkini</span>
                     </div>
-                    <div class="my-2 flex flex-col justify-center overflow-auto max-w-[78vw]">
+{{--                    <div class="flex justify-end px-2">--}}
+{{--                        //Chip here--}}
+{{--                    </div>--}}
+                    <div class="my-2 flex flex-col justify-center overflow-auto max-w-[50vw] px-2">
                         <div class="relative max-h-96">
                             <table class="table-custom">
                                 <thead>
@@ -39,14 +31,33 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($kegiatan_user as $item)
-{{--                                        @dd($item)--}}
-                                        <tr>
-                                            <td>{{  $item->nama_tugas }}</td>
-                                            <td>{{ $item->nama_pemberi_tugas }}</td>
-                                            <td class="text-center">{{  $item->status }}</td>
-                                        </tr>
-                                    @endforeach
+                                @foreach ($kegiatan_user as $item)
+                                    <tr class="clickable-row hover:bg-teal-50 cursor-pointer" data-url="{{ route('penugasan-organik-detail', $item->id) }}">
+                                        <td>{{  $item->nama_tugas }}</td>
+                                        <td>{{ $item->nama_pemberi_tugas }}</td>
+                                        @switch($item->status)
+                                            @case('ditugaskan')
+                                                <td class="flex justify-center items-center">
+                                                    <x-badge.blue-badge :width="'28'">{{ $item->status }}</x-badge.blue-badge>
+                                                </td>
+                                                @break
+                                            @case('proses')
+                                                <td class="flex justify-center items-center">
+                                                    <x-badge.yellow-badge :width="'28'">{{ $item->status }}</x-badge.yellow-badge>
+                                                </td>
+                                                @break
+                                            @case('selesai')
+                                                <td class="flex justify-center items-center">
+                                                    <x-badge.green-badge :width="'28'">{{ $item->status }}</x-badge.green-badge>
+                                                </td>
+                                                @break
+                                            @default
+                                                <td class="flex justify-center items-center">
+                                                    <x-badge.gray-badge :width="'28'">#not_found</x-badge.gray-badge>
+                                                </td>
+                                        @endswitch
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -66,4 +77,18 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rows = document.querySelectorAll('.clickable-row');
+            rows.forEach(row => {
+                row.addEventListener('click', function() {
+                    const url = row.getAttribute('data-url');
+                    if (url) {
+                        window.location.href = url;
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

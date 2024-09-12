@@ -11,11 +11,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $jumlah_kegiatan = Kegiatan::countActiveKegiatan();
-        $rerata_beban = Pegawai::getRerataBebanKerja();
-        $organik_terlibat = Pegawai::countPegawaiTerlibatKegiatan();
-        $mitra_terlibat = Mitra::countMitraTerlibatKegiatan();
-
         $kegiatan_periode = Kegiatan::countByMonth();
         $kegiatan_periode_labels = $kegiatan_periode['label'];
         $kegiatan_periode_value = $kegiatan_periode['jumlah'];
@@ -42,10 +37,6 @@ class DashboardController extends Controller
         $jumlah_kegiatan_user = count($kegiatan_user);
 
         return view('dashboard', [
-            'jumlah_kegiatan' => $jumlah_kegiatan,
-            'rerata_beban' => $rerata_beban,
-            'organik_terlibat' => $organik_terlibat,
-            'mitra_terlibat' => $mitra_terlibat,
             'kegiatan_periode_labels' => $kegiatan_periode_labels,
             'kegiatan_periode_value' => $kegiatan_periode_value,
             'kegiatan_organik_labels' => $kegiatan_organik_labels,
