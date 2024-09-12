@@ -45,11 +45,6 @@ class DashboardStats extends Component
                 break;
             }
         }
-
-        $this->dispatch('chartDataUpdated', [
-            'labels' => $this->label_linechart_kegiatan,
-            'value' => $this->value_linechart_kegiatan
-        ]);
     }
 
     private function updateStatsMonthOnMonth()
