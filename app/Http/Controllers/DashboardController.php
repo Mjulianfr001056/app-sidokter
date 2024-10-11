@@ -5,22 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Kegiatan;
 use App\Models\Mitra;
 use App\Models\Pegawai;
+use App\Models\PenugasanPegawai;
 
 class DashboardController extends Controller
 {
-    public function __construct()
-    {
-        $this->model = new Kegiatan();
-    }
     public function index()
     {
-        $jumlah_kegiatan = $this->model->countActiveKegiatan();
-        $rerata_beban = Pegawai::getRerataBebanKerja();
-        $organik_terlibat = Pegawai::countPegawaiTerlibatKegiatan();
-        $mitra_terlibat = Mitra::countMitraTerlibatKegiatan();
-
         $kegiatan_periode = Kegiatan::countByMonth();
-//        dd($kegiatan_periode);
         $kegiatan_periode_labels = $kegiatan_periode['label'];
         $kegiatan_periode_value = $kegiatan_periode['jumlah'];
 
@@ -28,31 +19,32 @@ class DashboardController extends Controller
         $kegiatan_organik_labels = $kegiatan_organik['nama'];
         $kegiatan_organik_value = $kegiatan_organik['tugas'];
 
-
-        $perusahaan_kecamatan_labels = [
-            'Pasar Rebo', 'Ciracas', 'Cipayung', 'Makasar', 'Kramat Jati',
-            'Jatinegara', 'Duren Sawit', 'Cakung', 'Pulo Gadung', 'Matraman'
-        ];
-
-        $perusahaan_kecamatan_value = array_map(fn() => rand(1, 100), $perusahaan_kecamatan_labels);
-
-        $kegiatan_fungsi_data = $this->model->countByAsalFungsi();
+        $kegiatan_fungsi_data = Kegiatan::countByAsalFungsi();
         $kegiatan_fungsi_labels = $kegiatan_fungsi_data->keys()->toArray();
         $kegiatan_fungsi_value = $kegiatan_fungsi_data->values()->toArray();
 
+        $kegiatan_user = PenugasanPegawai::getAllByUserId(env('SESSION_USER_ID'));
+        $kegiatan_user = $kegiatan_user->map(function($item) {
+            return (object) [
+                'id' => $item->id,
+                'nama_tugas' => $item->nama_kegiatan,
+                'nama_pemberi_tugas' => $item->nama_pemberi_tugas,
+                'tanggal_penugasan' => $item->tanggal_penugasan,
+                'status' => $item->status
+            ];
+        });
+
+        $jumlah_kegiatan_user = count($kegiatan_user);
+
         return view('dashboard', [
-            'jumlah_kegiatan' => $jumlah_kegiatan,
-            'rerata_beban' => $rerata_beban,
-            'organik_terlibat' => $organik_terlibat,
-            'mitra_terlibat' => $mitra_terlibat,
             'kegiatan_periode_labels' => $kegiatan_periode_labels,
             'kegiatan_periode_value' => $kegiatan_periode_value,
             'kegiatan_organik_labels' => $kegiatan_organik_labels,
             'kegiatan_organik_value' => $kegiatan_organik_value,
-            'perusahaan_kecamatan_labels' => $perusahaan_kecamatan_labels,
-            'perusahaan_kecamatan_value' => $perusahaan_kecamatan_value,
             'kegiatan_fungsi_labels' => $kegiatan_fungsi_labels,
             'kegiatan_fungsi_value' => $kegiatan_fungsi_value,
+            'kegiatan_user' => $kegiatan_user,
+            'jumlah_kegiatan_user' => $jumlah_kegiatan_user
         ]);
     }
 

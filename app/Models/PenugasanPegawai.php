@@ -64,4 +64,14 @@ class PenugasanPegawai extends Model
             ->where('penugasan_pegawai.id', $id)
             ->first();
     }
+
+    public static function getAllByUserId($userID){
+        return self::select('penugasan_pegawai.*', 'kegiatan.nama as nama_kegiatan', 'pemberi.nama as nama_pemberi_tugas', 'pelaksana.nama as pelaksana')
+            ->join('kegiatan', 'penugasan_pegawai.kegiatan', '=', 'kegiatan.id')
+            ->join('pegawai as pemberi', 'penugasan_pegawai.pemberi_tugas', '=', 'pemberi.id')
+            ->join('pegawai as pelaksana', 'penugasan_pegawai.petugas', '=', 'pelaksana.id')
+            ->where('penugasan_pegawai.petugas', $userID)
+            ->get();
+    }
+
 }

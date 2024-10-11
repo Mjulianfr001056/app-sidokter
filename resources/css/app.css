@@ -32,7 +32,7 @@
 }
 
 .table-custom th:last-child {
-    border-right: none; /* Remove border from the last header cell */
+    border-right: none;
 }
 
 

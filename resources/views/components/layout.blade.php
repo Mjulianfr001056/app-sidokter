@@ -6,7 +6,6 @@
     @vite(['resources/css/app.css','resources/js/app.js'])
     <title>@yield('title')</title>
     @livewireStyles
-    @livewireScripts
 </head>
 <body>
 <div class="size-full flex flex-col">
@@ -22,6 +21,6 @@
         </main>
     </div>
 </div>
-
+@livewireScripts
 </body>
 </html>

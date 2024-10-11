@@ -50,6 +50,33 @@ class Kegiatan extends Model
         return $this->hasMany(Sampel::class, 'kegiatan_id');
     }
 
+    public static function getCountOfKegiatanGroupedByDayThisMonth()
+    {
+        return self::whereMonth('tanggal_mulai', Carbon::now()->month)
+            ->whereYear('tanggal_mulai', Carbon::now()->year)
+            ->selectRaw('DAY(tanggal_mulai) as day, COUNT(*) as count')
+            ->groupBy('day')
+            ->orderBy('day', 'asc')
+            ->get()
+            ->keyBy('day');;
+    }
+
+    public static function getCountOfKegiatanGroupedByWeekThisQuarter()
+    {
+        $startOfQuarter = Carbon::now()->firstOfQuarter()->startOfDay();
+        $endOfQuarter = Carbon::now()->lastOfQuarter()->endOfDay();
+
+        $counts = self::whereBetween('tanggal_mulai', [$startOfQuarter, $endOfQuarter])
+            ->selectRaw('WEEK(tanggal_mulai, 1) as week, COUNT(*) as count')
+            ->groupBy('week')
+            ->orderBy('week', 'asc')
+            ->get()
+            ->keyBy('week');
+
+        return $counts;
+    }
+
+
 
     public static function countActiveKegiatan()
     {
