@@ -16,7 +16,7 @@ use App\Http\Controllers\PenugasanMitraController;
 use App\Http\Controllers\PenugasanPegawaiController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/dashboard', [DashboardController::class, 'index']) -> name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::group(['prefix' => 'capaian'], function () {
     Route::get('/agregat', [CapaianAgregatController::class, 'index'])
@@ -33,8 +33,12 @@ Route::group(['prefix' => 'beban-kerja'], function () {
     Route::get('/tugas', [BebanKerjaController::class, 'index'])
         ->name('beban-kerja-tugas');
 
+    Route::get('/', [BebanKerjaController::class, 'showAll'])
+        ->name('jls');
     Route::get('/tugas-organik/show/{id}', [PenugasanPegawaiController::class, 'show'])
         ->name('penugasan-organik-detail');
+    Route::get('/{id}/penugasan', [BebanKerjaController::class, 'show'])
+        ->name('jls');
     Route::get('/tugas-organik/create', [PenugasanPegawaiController::class, 'create'])
         ->name('penugasan-organik-create-view');
     Route::post('/tugas-organik/save', [PenugasanPegawaiController::class, 'store'])
@@ -72,7 +76,7 @@ Route::group(['prefix' => 'manajemen-sampel'], function () {
         ->name('sampel-show');
 
     Route::get('/edit/{id}', [ManajemenSampelController::class, 'edit'])
-    ->name('sampel-edit-view');
+        ->name('sampel-edit-view');
     Route::put('/edit/{id}', [ManajemenSampelController::class, 'update'])
         ->name('sampel-edit-save');
     Route::post('/seeder/{id}', [ManajemenSampelController::class, 'seeder'])
@@ -80,14 +84,14 @@ Route::group(['prefix' => 'manajemen-sampel'], function () {
 
     Route::get('/finalisasi/{id}', [ManajemenSampelController::class, 'finalisasi'])
         ->name('kegiatan-finalisasi');
-//
-//    Route::get('/assign/{id}', [ManajemenSampelController::class, 'assign'])
-//        ->name('sampel-assign-view');
-//    Route::post('/create', [ManajemenSampelController::class, 'store'])
-//        ->name('sampel-create-save');
+    //
+    //    Route::get('/assign/{id}', [ManajemenSampelController::class, 'assign'])
+    //        ->name('sampel-assign-view');
+    //    Route::post('/create', [ManajemenSampelController::class, 'store'])
+    //        ->name('sampel-create-save');
 
-//    Route::delete('/delete/{id}', [ManajemenSampelController::class, 'delete'])
-//        ->name('sampel-delete');
+    //    Route::delete('/delete/{id}', [ManajemenSampelController::class, 'delete'])
+    //        ->name('sampel-delete');
 
 });
 
@@ -132,30 +136,30 @@ Route::group(['prefix' => 'master'], function () {
     Route::delete('/mitra/delete/{id}', [MasterMitraController::class, 'delete'])
         ->name('master-mitra-delete');
 
-//    Route::get('/perusahaan', [MasterPerusahaanController::class, 'index'])
-//        ->name('master-perusahaan');
-//    Route::get('/perusahaan/create', [MasterPerusahaanController::class, 'create'])
-//        ->name('master-perusahaan-create-view');
-//    Route::post('/perusahaan/create', [MasterPerusahaanController::class, 'store'])
-//        ->name('master-perusahaan-create-save');
-//    Route::get('/perusahaan/edit/{id}', [MasterPerusahaanController::class, 'edit'])
-//        ->name('master-perusahaan-edit-view');
-//    Route::put('/perusahaan/edit/{id}', [MasterPerusahaanController::class, 'update'])
-//        ->name('master-perusahaan-edit-save');
-//    Route::delete('/perusahaan/delete/{id}', [MasterPerusahaanController::class, 'delete'])
-//        ->name('master-perusahaan-delete');
+    //    Route::get('/perusahaan', [MasterPerusahaanController::class, 'index'])
+    //        ->name('master-perusahaan');
+    //    Route::get('/perusahaan/create', [MasterPerusahaanController::class, 'create'])
+    //        ->name('master-perusahaan-create-view');
+    //    Route::post('/perusahaan/create', [MasterPerusahaanController::class, 'store'])
+    //        ->name('master-perusahaan-create-save');
+    //    Route::get('/perusahaan/edit/{id}', [MasterPerusahaanController::class, 'edit'])
+    //        ->name('master-perusahaan-edit-view');
+    //    Route::put('/perusahaan/edit/{id}', [MasterPerusahaanController::class, 'update'])
+    //        ->name('master-perusahaan-edit-save');
+    //    Route::delete('/perusahaan/delete/{id}', [MasterPerusahaanController::class, 'delete'])
+    //        ->name('master-perusahaan-delete');
 
     Route::resource('perusahaan', MasterPerusahaanController::class)
-    ->except(['show'])
-    ->names([
-        'index' => 'perusahaan-index',
-        'create' => 'perusahaan-create-view',
-        'store' => 'perusahaan-create-save',
-        'edit' => 'perusahaan-edit-view',
-        'update' => 'perusahaan-edit-save',
-        'destroy' => 'perusahaan-destroy',
-    ])->parameters([
-        'perusahaan' => 'id'
+        ->except(['show'])
+        ->names([
+            'index' => 'perusahaan-index',
+            'create' => 'perusahaan-create-view',
+            'store' => 'perusahaan-create-save',
+            'edit' => 'perusahaan-edit-view',
+            'update' => 'perusahaan-edit-save',
+            'destroy' => 'perusahaan-destroy',
+        ])->parameters([
+            'perusahaan' => 'id'
         ]);
     Route::post('/perusahaan/seeder', [MasterPerusahaanController::class, 'seeder'])
         ->name('perusahaan-seeder');

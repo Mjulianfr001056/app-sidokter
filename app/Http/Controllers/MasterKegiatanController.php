@@ -16,8 +16,12 @@ class MasterKegiatanController extends Controller
     public function index()
     {
         $kegiatan = $this->model->paginate(10);
-
         return view('master-kegiatan', compact('kegiatan'));
+    }
+
+    public function daftar()
+    {
+        dd("contoh");
     }
 
     public function create()
@@ -66,7 +70,7 @@ class MasterKegiatanController extends Controller
     {
         $kegiatan = $this->model->find($id);
 
-        if(is_array($request->get('periode'))) {
+        if (is_array($request->get('periode'))) {
             $request->merge(['periode' => implode(',', $request->get('periode'))]);
         } elseif ($request->get('periode') === '') {
             $request->merge(['periode' => null]);
