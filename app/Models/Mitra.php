@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\DB;
 class Mitra extends Model
 {
     use HasFactory;
-
-
     protected $table = 'mitra';
 
     protected $primaryKey = 'id';
@@ -25,7 +23,8 @@ class Mitra extends Model
         'kecamatan',
         'kelurahan',
         'alamat_detail',
-        'posisi'
+        'posisi',
+        'pendapatan'
     ];
 
     protected $casts = [
@@ -39,6 +38,11 @@ class Mitra extends Model
     public function penugasanMitra()
     {
         return $this->hasMany(PenugasanMitra::class, 'petugas');
+    }
+
+    public static function getByKegiatan($id)
+    {
+        return self::where('kegiatan_id', $id);
     }
 
     public static function countMitraTerlibatKegiatan()
@@ -70,5 +74,4 @@ class Mitra extends Model
             ->orderBy('total_pendapatan', 'desc')
             ->get();
     }
-
 }

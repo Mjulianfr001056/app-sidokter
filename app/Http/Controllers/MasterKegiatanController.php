@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+
 use App\Models\Kegiatan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,6 +20,11 @@ class MasterKegiatanController extends Controller
     {
         $kegiatan = $this->model->paginate(10);
         return view('master-kegiatan', compact('kegiatan'));
+    }
+
+    public static function getById($id)
+    {
+        return self::find();
     }
 
     public function daftar()

@@ -75,7 +75,7 @@
                         <td class="text-end">{{ $item->harga_satuan }}</td>
                         <td class="text-center">
                             <div class="flex justify-between px-2">
-                                <x-edit-button-table :id="$item->id" :route="'master-kegiatan-edit-view'" />
+                                <x-detail-button-table :id="$item->id" :route="'master-kegiatan-edit-view'" />
 
                                 <form action="{{ route('master-kegiatan-delete', $item->id) }}" method="POST" style="display:inline;">
                                     @csrf

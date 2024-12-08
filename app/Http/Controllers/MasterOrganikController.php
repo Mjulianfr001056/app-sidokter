@@ -11,10 +11,11 @@ class MasterOrganikController extends Controller
     {
         $this->model = new Pegawai();
     }
+
     public function index()
     {
-        $pegawai = $this->model->paginate(25);
-        return view('master-organik', compact('pegawai'));
+        $pegawai = $this->model->paginate(10);
+        return view('manajemen-user', compact('pegawai'));
     }
 
     public function create()
@@ -36,7 +37,7 @@ class MasterOrganikController extends Controller
 
     public function update(Request $request, $id)
     {
-//        dd($request->all());
+        //        dd($request->all());
         Pegawai::where('id', $id)->update($request->except('_token', '_method'));
         return redirect()->route('master-organik');
     }

@@ -10,38 +10,34 @@ use DateTime;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
-class PenugasanPegawaiController extends Controller implements RestControllerInterface
+class PenugasanPegawaiController extends Controller
 {
     public function show($id)
     {
         $detail_tugas = PenugasanPegawai::getById($id);
-
         return view('penugasan-organik-detail', compact('detail_tugas'));
     }
 
-    public function create(): View
+    public function create($id)
     {
-        $daftar_kegiatan = Kegiatan::all(['id', 'nama']);
+        $kegiatan = Kegiatan::where('id', $id)->first();
         $pilihan_petugas = Pegawai::orderBy('fungsi', 'asc')->get(['id', 'nama']);
         $satuan_kegiatan = self::getSatuanKegiatan();
 
-        return view('penugasan-organik-create', compact('pilihan_petugas', 'daftar_kegiatan', 'satuan_kegiatan'));
+        return view('penugasan-organik-create', compact('pilihan_petugas', 'kegiatan', 'satuan_kegiatan', 'id'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        $pemberi_tugas = env('SESSION_USER_ID');
-        $status = 'ditugaskan';
         $tanggal_penugasan = Carbon::now()->format('Y-m-d');
 
         $request->merge([
-            'pemberi_tugas' => $pemberi_tugas,
-            'status' => $status,
             'tanggal_penugasan' => $tanggal_penugasan,
         ]);
         PenugasanPegawai::create($request->except('_token', '_method'));
+        dd($request->input('kegiatan'));
 
-        return redirect()->route('beban-kerja-tugas');
+        return redirect()->route('beban-kerja-tugas', ['id' => $id]);
     }
 
     public function edit($id): View

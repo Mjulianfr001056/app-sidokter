@@ -20,27 +20,20 @@ return new class extends Migration
             $table->string('nip_bps', 9);
             $table->string('nama', 120);
             $table->string('alias', 20);
-            $table->string('jabatan', 120);
 
-            $table->enum('golongan', [
-                'I/A', 'I/B', 'I/C', 'I/D',
-                'II/A', 'II/B', 'II/C', 'II/D',
-                'III/A', 'III/B', 'III/C', 'III/D',
-                'IV/A', 'IV/B', 'IV/C', 'IV/D', 'IV/E',
-                'I', 'II', 'III', 'IV', 'V',
-                'VI', 'VII', 'VIII', 'IX', 'X',
-                'XI', 'XII', 'XIII', 'XIV', 'XV',
-                'XVI', 'XVII'
-            ]);
-
-            $table->enum('status', ['pns', 'pppk']);
+            $table->enum('status', ['Admin Kabupaten', 'Ketua Tim', 'Organik', 'Pimpinan']);
             $table->enum('fungsi', [
-                'ipds', 'statistik produksi', 'statistik distribusi',
-                'statistik sosial', 'subbag umum', 'nerwilis'
+                'ipds',
+                'statistik produksi',
+                'statistik distribusi',
+                'statistik sosial',
+                'subbag umum',
+                'nerwilis'
             ]);
 
             $table->enum('jabatan_tim', [
-                'ketua', 'anggota'
+                'ketua',
+                'anggota'
             ]);
 
             $table->timestamps();

@@ -31,17 +31,16 @@ Route::group(['prefix' => 'capaian'], function () {
 
 Route::group(['prefix' => 'beban-kerja'], function () {
     Route::get('/tugas', [BebanKerjaController::class, 'index'])
-        ->name('beban-kerja-tugas');
-
+        ->name('beban-kerja-all');
     Route::get('/', [BebanKerjaController::class, 'showAll'])
         ->name('jls');
     Route::get('/tugas-organik/show/{id}', [PenugasanPegawaiController::class, 'show'])
         ->name('penugasan-organik-detail');
     Route::get('/{id}/penugasan', [BebanKerjaController::class, 'show'])
-        ->name('jls');
-    Route::get('/tugas-organik/create', [PenugasanPegawaiController::class, 'create'])
-        ->name('penugasan-organik-create-view');
-    Route::post('/tugas-organik/save', [PenugasanPegawaiController::class, 'store'])
+        ->name('beban-kerja-tugas');
+    Route::get('/{id}/tambah-organik', [PenugasanPegawaiController::class, 'create'])
+        ->name('penugasan-organik-create');
+    Route::post('{id}/tambah-organik/save', [PenugasanPegawaiController::class, 'store'])
         ->name('penugasan-organik-create-save');
     Route::get('/tugas-organik/edit/{id}', [PenugasanPegawaiController::class, 'edit'])
         ->name('penugasan-organik-edit-view');
@@ -53,7 +52,7 @@ Route::group(['prefix' => 'beban-kerja'], function () {
     Route::get('/tugas-mitra/show/{id}', [PenugasanMitraController::class, 'show'])
         ->name('penugasan-mitra-detail');
     Route::get('/tugas-mitra/create', [PenugasanMitraController::class, 'create'])
-        ->name('penugasan-mitra-create-view');
+        ->name('penugasan-mitra-create');
     Route::post('/tugas-mitra/save', [PenugasanMitraController::class, 'store'])
         ->name('penugasan-mitra-create-save');
     Route::get('/tugas-mitra/edit/{id}', [PenugasanMitraController::class, 'edit'])
@@ -95,6 +94,21 @@ Route::group(['prefix' => 'manajemen-sampel'], function () {
 
 });
 
+Route::get('/manajemen-user-x', [MasterOrganikController::class, 'index'])
+    ->name('master-organik');
+Route::get('/manajemen-user', [MasterOrganikController::class, 'index'])
+    ->name('manajemen-user');
+Route::get('/manajemen-user/create', [MasterOrganikController::class, 'create'])
+    ->name('master-organik-create-view');
+Route::post('/manajemen-user/create', [MasterOrganikController::class, 'store'])
+    ->name('master-organik-create-save');
+Route::get('/manajemen-user/edit/{id}', [MasterOrganikController::class, 'edit'])
+    ->name('master-organik-edit-view');
+Route::put('/manajemen-user/edit/{id}', [MasterOrganikController::class, 'update'])
+    ->name('master-organik-edit-save');
+Route::delete('/manajemen-user/delete/{id}', [MasterOrganikController::class, 'delete'])
+    ->name('master-organik-delete');
+
 Route::group(['prefix' => 'master'], function () {
     Route::get('/kegiatan', [MasterKegiatanController::class, 'index'])
         ->name('master-kegiatan');
@@ -109,18 +123,7 @@ Route::group(['prefix' => 'master'], function () {
     Route::delete('/kegiatan/delete/{id}', [MasterKegiatanController::class, 'delete'])
         ->name('master-kegiatan-delete');
 
-    Route::get('/organik', [MasterOrganikController::class, 'index'])
-        ->name('master-organik');
-    Route::get('/organik/create', [MasterOrganikController::class, 'create'])
-        ->name('master-organik-create-view');
-    Route::post('/organik/create', [MasterOrganikController::class, 'store'])
-        ->name('master-organik-create-save');
-    Route::get('/organik/edit/{id}', [MasterOrganikController::class, 'edit'])
-        ->name('master-organik-edit-view');
-    Route::put('/organik/edit/{id}', [MasterOrganikController::class, 'update'])
-        ->name('master-organik-edit-save');
-    Route::delete('/organik/delete/{id}', [MasterOrganikController::class, 'delete'])
-        ->name('master-organik-delete');
+
 
 
     Route::get('/mitra', [MasterMitraController::class, 'index'])
@@ -136,18 +139,6 @@ Route::group(['prefix' => 'master'], function () {
     Route::delete('/mitra/delete/{id}', [MasterMitraController::class, 'delete'])
         ->name('master-mitra-delete');
 
-    //    Route::get('/perusahaan', [MasterPerusahaanController::class, 'index'])
-    //        ->name('master-perusahaan');
-    //    Route::get('/perusahaan/create', [MasterPerusahaanController::class, 'create'])
-    //        ->name('master-perusahaan-create-view');
-    //    Route::post('/perusahaan/create', [MasterPerusahaanController::class, 'store'])
-    //        ->name('master-perusahaan-create-save');
-    //    Route::get('/perusahaan/edit/{id}', [MasterPerusahaanController::class, 'edit'])
-    //        ->name('master-perusahaan-edit-view');
-    //    Route::put('/perusahaan/edit/{id}', [MasterPerusahaanController::class, 'update'])
-    //        ->name('master-perusahaan-edit-save');
-    //    Route::delete('/perusahaan/delete/{id}', [MasterPerusahaanController::class, 'delete'])
-    //        ->name('master-perusahaan-delete');
 
     Route::resource('perusahaan', MasterPerusahaanController::class)
         ->except(['show'])
