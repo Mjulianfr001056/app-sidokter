@@ -13,7 +13,7 @@ class PenugasanPegawai extends Model
 
     protected $fillable = [
         'petugas',
-        'kegiatan',
+        'kegiatan_id',
         'tanggal_penugasan',
         'jabatan',
         'status',
@@ -30,7 +30,7 @@ class PenugasanPegawai extends Model
 
     public function kegiatan()
     {
-        return $this->belongsTo(Kegiatan::class, 'kegiatan');
+        return $this->belongsTo(Kegiatan::class, 'kegiatan_id');
     }
 
     public static function getAllByFungsi($fungsi, $paginate = 10)

@@ -14,6 +14,7 @@ use App\Http\Controllers\MasterOrganikController;
 use App\Http\Controllers\MasterPerusahaanController;
 use App\Http\Controllers\PenugasanMitraController;
 use App\Http\Controllers\PenugasanPegawaiController;
+use App\Models\PenugasanPegawai;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -34,10 +35,12 @@ Route::group(['prefix' => 'beban-kerja'], function () {
         ->name('beban-kerja-all');
     Route::get('/', [BebanKerjaController::class, 'showAll'])
         ->name('jls');
-    Route::get('/tugas-organik/show/{id}', [PenugasanPegawaiController::class, 'show'])
+    Route::get('/{id}/tugas-organik/show', [PenugasanPegawaiController::class, 'show'])
         ->name('penugasan-organik-detail');
     Route::get('/{id}/penugasan', [BebanKerjaController::class, 'show'])
         ->name('beban-kerja-tugas');
+    Route::get('/{id}/tugas-organik/{petugas}', [PenugasanPegawaiController::class, 'view'])
+        ->name('jlsss');
     Route::get('/{id}/tambah-organik', [PenugasanPegawaiController::class, 'create'])
         ->name('penugasan-organik-create');
     Route::post('{id}/tambah-organik/save', [PenugasanPegawaiController::class, 'store'])
@@ -51,9 +54,9 @@ Route::group(['prefix' => 'beban-kerja'], function () {
 
     Route::get('/tugas-mitra/show/{id}', [PenugasanMitraController::class, 'show'])
         ->name('penugasan-mitra-detail');
-    Route::get('/tugas-mitra/create', [PenugasanMitraController::class, 'create'])
+    Route::get('/{id}/tambah-mitra', [PenugasanMitraController::class, 'create'])
         ->name('penugasan-mitra-create');
-    Route::post('/tugas-mitra/save', [PenugasanMitraController::class, 'store'])
+    Route::post('/{id}/tambah-mitra/save', [PenugasanMitraController::class, 'store'])
         ->name('penugasan-mitra-create-save');
     Route::get('/tugas-mitra/edit/{id}', [PenugasanMitraController::class, 'edit'])
         ->name('penugasan-mitra-edit-view');

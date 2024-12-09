@@ -11,7 +11,7 @@ use DateTime;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
-class PenugasanMitraController extends Controller implements RestControllerInterface
+class PenugasanMitraController extends Controller
 {
     public function show($id)
     {
@@ -20,45 +20,26 @@ class PenugasanMitraController extends Controller implements RestControllerInter
         return view('penugasan-mitra-detail', compact('detail_tugas'));
     }
 
-    public function create(): View
+    public function create($id)
     {
-        $daftar_kegiatan = Kegiatan::all(['id', 'nama', 'harga_satuan', 'satuan']);
+        $kegiatan = Kegiatan::where('id', $id);
+        $mitra = Mitra::all();
 
-        $daftar_kegiatan = $daftar_kegiatan->map(function ($item) {
-            $encoded_data = json_encode([
-                'id' => $item->id,
-                'satuan' => $item->satuan,
-            ]);
-
-            return (object) [
-                'id' => $encoded_data,
-                'nama' => $item->nama,
-            ];
-        });
-
-        $pilihan_petugas = Mitra::getTotalPendapatanFiltered();
-        $daftar_pendapatan = Mitra::getTotalPendapatan();
-
-        return view('penugasan-mitra-create', compact('daftar_pendapatan','pilihan_petugas', 'daftar_kegiatan'));
+        return view('penugasan-mitra-create', compact('id', 'kegiatan', 'mitra'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        $pemberi_tugas = env('SESSION_USER_ID');
-        $status = 'ditugaskan';
         $tanggal_penugasan = Carbon::now()->format('Y-m-d');
-        $id_kegiatan = json_decode($request->get('kegiatan'))->id;
 
         $request->merge([
-            'pemberi_tugas' => $pemberi_tugas,
-            'kegiatan' => $id_kegiatan,
-            'status' => $status,
             'tanggal_penugasan' => $tanggal_penugasan,
         ]);
 
+
         PenugasanMitra::create($request->except('_token', '_method'));
 
-        return redirect()->route('beban-kerja-tugas');
+        return redirect()->route('beban-kerja-tugas', ['id' => $id]);
     }
 
     public function edit($id): View

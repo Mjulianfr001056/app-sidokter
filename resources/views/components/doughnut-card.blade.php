@@ -4,5 +4,5 @@
     <div class="w-full pl-2 pb-6">
         <span class="text-2xl text-teal-600 font-medium">{{ $judul }}</span>
     </div>
-    <x-doughnut-chart :labels="$labels" :value="$value"/>
+    <x-doughnut-chart :labels="$labels" :value="$value" />
 </div>

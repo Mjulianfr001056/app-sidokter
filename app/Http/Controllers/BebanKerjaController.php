@@ -34,45 +34,51 @@ class BebanKerjaController extends Controller
 
     public function show($id)
     {
-        $fungsi = env('SESSION_FUNGSI');
+        // Ambil data PenugasanPegawai dan gunakan eager loading untuk relasi pegawai
+        $penugasanPegawai = PenugasanPegawai::with('pegawai') // Memuat relasi 'pegawai'
+            ->where('kegiatan', $id)
+            ->get(); // Mengambil data sebagai Collection, bukan array
 
-        //$pegawai = Pegawai::all();
-        $penugasanPegawai = PenugasanPegawai::where('kegiatan', $id)->get(); // Ambil semua data terkait
-        $pegawai = $penugasanPegawai->pluck('pegawai');
+        // Ambil data PenugasanMitra dan gunakan eager loading untuk relasi mitra
+        $penugasanMitra = PenugasanMitra::with('mitra') // Memuat relasi 'mitra'
+            ->where('kegiatan', $id)
+            ->get(); // Mengambil data sebagai Collection, bukan array
 
-        // Periksa jika ada data
+        // Periksa jika data PenugasanPegawai tidak kosong
         if ($penugasanPegawai->isNotEmpty()) {
-            foreach ($penugasanPegawai as $item) {
-                // Setiap $item adalah instance dari PenugasanPegawai
-                $target = $item->target; // Properti 'target' ada pada setiap item
-                $pegawaiNama = $item->pegawai ? $item->pegawai->nama : null; // Relasi pegawai
-            }
+            // Map untuk mendapatkan nama pegawai
+            $pegawai = $penugasanPegawai->map(function ($item) {
+                return optional($item->pegawai)->nama; // Mengambil nama pegawai jika ada
+            });
         } else {
-            $penugasanPegawai = null;
+            $pegawai = []; // Jika tidak ada data, set array kosong
         }
 
-        $penugasanMitra = PenugasanMitra::where('kegiatan', $id)->first();
-
-        if ($penugasanMitra) {
-            // Jika penugasan mitra ditemukan, memaginasikan relasi mitra (misalnya jika ada banyak mitra)
-            $mitra = $penugasanMitra->mitra()->paginate(100);  // Memaginasikan mitra terkait
-
-            // Sekarang Anda bisa memanggil currentPage() karena $mitra adalah objek LengthAwarePaginator
-            $currentPage = $mitra->currentPage();
+        // Periksa jika data PenugasanMitra tidak kosong
+        if ($penugasanMitra->isNotEmpty()) {
+            // Map untuk mendapatkan nama mitra
+            $mitra = $penugasanMitra->map(function ($item) {
+                return optional($item->mitra)->nama; // Mengambil nama mitra jika ada
+            });
         } else {
-            $mitra = null;
+            $mitra = []; // Jika tidak ada data, set array kosong
         }
+
+        // Ambil data kegiatan
         $kegiatan = Kegiatan::find($id);
 
         return view('penugasan-detail', compact(
-            'pegawai',
-            'mitra',
-            'kegiatan',
-            'id',
-            'penugasanPegawai',
-            'penugasanMitra',
+            'pegawai', // Mengirim koleksi nama pegawai
+            'mitra',   // Mengirim koleksi nama mitra
+            'kegiatan', // Mengirim data kegiatan
+            'id', // Mengirim id kegiatan
+            'penugasanPegawai', // Mengirim semua data penugasan pegawai
+            'penugasanMitra'    // Mengirim semua data penugasan mitra
         ));
     }
+
+
+
 
     public function showAll()
     {

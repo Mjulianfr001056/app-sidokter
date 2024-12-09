@@ -38,7 +38,7 @@
                 :name="'kuantitas'">
                 <x-input.number-field
                     :label="'Jumlah satuan'"
-                    :name="'satuan'"
+                    :name="'target'"
                     :label_size="'md'"></x-input.number-field>
                 <!-- <x-input.dropdown
                     :label="'Satuan'"

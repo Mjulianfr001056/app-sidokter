@@ -8,8 +8,13 @@
 <div class="size-full flex flex-col w-full items-center px-4">
     {{-- Judul--}}
     <div class="w-full pb-6 ">
-        <p class="text-sm"><?php echo $kegiatan->nama ?> / Penugasan</p>
-        <p class="text-3xl font-bold"><?php echo $kegiatan->nama ?></p>
+        <div class="flex  justify-beetween">
+            <div>
+                <p class="text-sm"><?php echo $kegiatan_petugas->kegiatan->nama ?> / Penugasan</p>
+                <p class="text-3xl font-bold"><?php echo $kegiatan_petugas->pegawai->nama ?></p>
+            </div>
+            <a href="/" class="button button-gray-500 bg-gray-500 py-2 px-1 text-white m-auto">Tandai selesai</a>
+        </div>
     </div>
 
     {{-- Grid--}}
@@ -18,8 +23,7 @@
             <div class="row-span-1 max-h-[75vh]">
                 <div class="size-full bg-gray-50 border border-gray-100 rounded-md p-4">
                     <div class="w-full pl-2 pb-6 flex justify-between">
-                        <span class="text-2xl text-teal-600 font-medium">Daftar Organik</span>
-                        <x-tambah-button :route="route('penugasan-organik-create', ['id' => $id])" />
+                        <span class="text-2xl text-teal-600 font-medium">Tinjau Beban Kerja</span>
                     </div>
 
                     <div class="flex flex-col justify-center overflow-x-auto max-w-[70vw]">
@@ -28,32 +32,32 @@
                                 <thead>
                                     <tr>
                                         <th scope="col" class="w-8 text-center">No</th>
-                                        <th scope="col" class="w-56">Nama</th>
-                                        <th scope="col" class="w-8 text-center">Target (Satuan)</th>
-                                        <th scope="col" class="w-8 text-center">Terlaksana (Satuan)</th>
+                                        <th scope="col" class="w-8">Awal (Satuan)</th>
+                                        <th scope="col" class="w-8 text-center">Akhir (Satuan)</th>
+                                        <th scope="col" class="w-8 text-center">Tanggal Pengajuan</th>
+                                        <th scope="col" class="w-8 text-center">Status</th>
+                                        <th scope="col" class="w-8 text-center">Bukti</th>
                                         <th scope="col" class="w-8 text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    @if($pegawai && $pegawai->isNotEmpty())
-                                    @foreach ($penugasanPegawai as $item)
-
                                     <tr>
-                                        <td class="text-center">{{ $loop->iteration }}</td>
-                                        <td>{{ $item->pegawai->nama }}</td>>
-                                        <td class="text-center">{{ $item->target }}</td>
-                                        <td class="text-center">{{ $item->terlaksana }}</td>
+                                        <td class="text-center">1</td>
+                                        <td></td>
+                                        <td class="text-center"></td>
+                                        <td class="text-center"></td>
+                                        <td class="text-center">Menunggu persetujuan</td>
                                         <td class="text-center">
-                                            <a href="/beban-kerja/{{$id}}/tugas-organik/{{$item->pegawai->id}}" class="button bg-blue-500 py-1 px-2 text-white font-md rounded-md">Detail</a>
+                                            <a href="/" class="button px-2 py-1 rounded-md bg-blue-600 text-white">Lihat</a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="/" class="button px-2 py-1 rounded-md bg-blue-600 text-white">ACC</a>
                                         </td>
                                     </tr>
-                                    @endforeach
-                                    @else
                                     <tr>
                                         <td colspan="5" class="text-center">Tidak ada data pegawai yang ditemukan.</td>
                                     </tr>
-                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -64,10 +68,10 @@
         <div class="row-span-1 flex flex-col justify-between max-w-[75vw]">
             <div class="size-full bg-gray-50 border border-gray-100 rounded-md rounded-md p-4">
                 <div class="w-full pl-2 pb-6">
-                    <span class="text-2xl text-teal-600 font-medium">Informasi Tim</span>
+                    <span class="text-2xl text-teal-600 font-medium">Informasi Penugasan</span>
                 </div>
                 <div class="w-full pl-2 pb-2">
-                    <p class="text-md text-cyan-950 font-medium">Progress </p>
+                    <p class="text-md text-cyan-950 font-medium">Ditugaskan</p>
                     <p class="text-sm text-gray-600 font-normal">100% (buat grafik frontend)</p>
                 </div>
                 <div class="w-full pl-2 pb-2">
@@ -79,7 +83,7 @@
                     <p class="text-sm text-gray-600 font-normal">Rp10.000</p>
                 </div>
                 <div class="w-full pl-2 pb-2">
-                    <p class="text-md text-cyan-950 font-medium">Ketua Tim: </p>
+                    <p class="text-md text-cyan-950 font-medium">Catatan: </p>
                     <p class="text-sm text-gray-600 font-normal">null</p>
                 </div>
             </div>
@@ -87,11 +91,10 @@
         <div class="size-full pt-6">
             <div class="size-full bg-gray-50 border border-gray-100 rounded-md rounded-md p-4">
                 <div class="w-full pl-2 pb-6 flex flex-row justify-between">
-                    <span class="text-2xl text-teal-600 font-medium">Daftar Tugas Mitra</span>
+                    <span class="text-2xl text-teal-600 font-medium">Pengajuan Penambahan Beban Kerja</span>
                 </div>
 
                 <div class="w-full flex flex-row justify-between items-center pb-1">
-                    {{-- Pencarian--}}
                     <div class="relative flex items-center w-64 ">
                         <input type="text"
                             class="input pl-10 m-2 ml-0 w-full bg-gray-50 border border-gray-300 rounded-md input-sm focus:outline-none focus:ring-1 focus:ring-teal-600 focus:border-teal-600 peer"
@@ -105,8 +108,6 @@
                                 d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                         </svg>
                     </div>
-                    <x-tambah-button :route="route('penugasan-mitra-create', ['id' => $id])" />
-
                 </div>
 
                 <div class="flex flex-col justify-center overflow-x-auto max-w-[78vw]">
@@ -115,40 +116,28 @@
                             <thead>
                                 <tr>
                                     <th scope="col" class="w-8 text-center">No</th>
-                                    <th scope="col" class="w-52">Nama</th>
-                                    <th scope="col" class="w-12 text-end">Pendapatan</th>
-                                    <th scope="col" class="w-12 text-center">Target(Satuan)</th>
-                                    <th scope="col" class="w-12 text-center">Terlaksana (Satuan)</th>
+                                    <th scope="col" class="w-8">Jumlah (Satuan)</th>
+                                    <th scope="col" class="w-8 text-center">Potensi Sisa (Satuan)</th>
+                                    <th scope="col" class="w-8 text-center">Tanggal Pengajuan</th>
+                                    <th scope="col" class="w-8 text-center">Status</th>
                                     <th scope="col" class="w-8 text-center">Aksi</th>
-                                    <th scope="col" class="w-8 text-center">Catatan</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if($mitra && $mitra->count() > 0)
-                                @foreach ($penugasanMitra as $item)
-
-
 
                                 <tr>
-                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td>{{ $item->mitra->nama }}</td>
-                                    <td class="text-end">{{ $item->mitra->pendapatan }}</td>
-                                    <td class="text-end">{{ $item->target }}</td>
-                                    <td class="text-end">{{ $item->terlaksana}}</td>
-                                    <td class="text-center w-8">
-                                        <div class="justify-center space-x-2 px-2 flex">
-                                            <x-view-button :id="$item->id" :route="'penugasan-mitra-detail'" />
-                                        </div>
+                                    <td class="text-center">1</td>
+                                    <td></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center">Menunggu persetujuan</td>
+                                    <td class="text-center">
+                                        <a href="/" class="button px-2 py-1 rounded-md bg-blue-600 text-white">ACC</a>
                                     </td>
-                                    <td class="text-center">Tidak ada</td>
                                 </tr>
-                                @endforeach
-                                @else
                                 <tr>
-                                    <td colspan="7" class="text-center">Tidak ada data mitra yang ditemukan.</td>
+                                    <td colspan="5" class="text-center">Tidak ada data pegawai yang ditemukan.</td>
                                 </tr>
-                                @endif
-
                             </tbody>
                         </table>
                     </div>

@@ -18,13 +18,25 @@ class PenugasanPegawaiController extends Controller
         return view('penugasan-organik-detail', compact('detail_tugas'));
     }
 
+    public function view($id, $pegawai)
+    {
+        $kegiatan_petugas = PenugasanPegawai::with(['pegawai', 'kegiatan']) // Pastikan relasi dimuat
+            ->where(['kegiatan_id' => $id, 'petugas' => $pegawai])
+            ->first();
+
+
+        return view('penugasan-detail-organik', compact('kegiatan_petugas', 'id'));
+    }
+
+
+
     public function create($id)
     {
         $kegiatan = Kegiatan::where('id', $id)->first();
-        $pilihan_petugas = Pegawai::orderBy('fungsi', 'asc')->get(['id', 'nama']);
+        $pilihan_pegawai = Pegawai::orderBy('fungsi', 'asc')->get(['id', 'nama']);
         $satuan_kegiatan = self::getSatuanKegiatan();
 
-        return view('penugasan-organik-create', compact('pilihan_petugas', 'kegiatan', 'satuan_kegiatan', 'id'));
+        return view('penugasan-organik-create', compact('pilihan_pegawai', 'kegiatan', 'satuan_kegiatan', 'id'));
     }
 
     public function store(Request $request, $id)
@@ -35,7 +47,6 @@ class PenugasanPegawaiController extends Controller
             'tanggal_penugasan' => $tanggal_penugasan,
         ]);
         PenugasanPegawai::create($request->except('_token', '_method'));
-        dd($request->input('kegiatan'));
 
         return redirect()->route('beban-kerja-tugas', ['id' => $id]);
     }
