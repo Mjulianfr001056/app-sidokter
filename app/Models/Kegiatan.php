@@ -19,15 +19,15 @@ class Kegiatan extends Model
     protected $fillable = [
         'nama',
         'asal_fungsi',
-        'periode',
         'tanggal_mulai',
         'tanggal_akhir',
         'target',
+        'terlaksana',
         'satuan',
         'harga_satuan',
-        'banyak_sampel',
-        'status_sampel'
+        'catatan',
     ];
+
 
     protected $casts = [
         'tanggal_mulai' => 'date',

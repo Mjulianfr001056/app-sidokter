@@ -13,7 +13,7 @@ class PenugasanMitra extends Model
 
     protected $fillable = [
         'petugas',
-        'kegiatan',
+        'kegiatan_id',
         'tanggal_penugasan',
         'pemberi_tugas',
         'jabatan',

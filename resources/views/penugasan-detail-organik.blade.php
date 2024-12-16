@@ -10,8 +10,8 @@
     <div class="w-full pb-6 ">
         <div class="flex  justify-beetween">
             <div>
-                <p class="text-sm"><?php echo $kegiatan_petugas->kegiatan->nama ?> / Penugasan</p>
-                <p class="text-3xl font-bold"><?php echo $kegiatan_petugas->pegawai->nama ?></p>
+                <p class="text-sm"><?php echo $nama_kegiatan ?> / Penugasan</p>
+                <p class="text-3xl font-bold"><?php echo $nama_pegawai ?></p>
             </div>
             <a href="/" class="button button-gray-500 bg-gray-500 py-2 px-1 text-white m-auto">Tandai selesai</a>
         </div>
@@ -24,6 +24,9 @@
                 <div class="size-full bg-gray-50 border border-gray-100 rounded-md p-4">
                     <div class="w-full pl-2 pb-6 flex justify-between">
                         <span class="text-2xl text-teal-600 font-medium">Tinjau Beban Kerja</span>
+                        <x-tambah-button :route="route('pengumpulan-tugas-organik-create', ['id' => $id, 'petugas' => $pegawai])">
+
+                        </x-tambah-button>
                     </div>
 
                     <div class="flex flex-col justify-center overflow-x-auto max-w-[70vw]">
@@ -32,8 +35,7 @@
                                 <thead>
                                     <tr>
                                         <th scope="col" class="w-8 text-center">No</th>
-                                        <th scope="col" class="w-8">Awal (Satuan)</th>
-                                        <th scope="col" class="w-8 text-center">Akhir (Satuan)</th>
+                                        <th scope="col" class="w-8">Dikerjakan (satuan)</th>
                                         <th scope="col" class="w-8 text-center">Tanggal Pengajuan</th>
                                         <th scope="col" class="w-8 text-center">Status</th>
                                         <th scope="col" class="w-8 text-center">Bukti</th>
@@ -41,23 +43,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    @foreach ($tugas_pegawai as $item)
                                     <tr>
-                                        <td class="text-center">1</td>
-                                        <td></td>
-                                        <td class="text-center"></td>
-                                        <td class="text-center"></td>
-                                        <td class="text-center">Menunggu persetujuan</td>
+                                        <td class="text-center">{{$loop->iteration}}</td>
+                                        <td>{{$item->dikerjakan}}</td>
+                                        <td class="text-center">{{$item->created_at}}</td>
+                                        <td class="text-center">{{$item->status}}</td>
                                         <td class="text-center">
                                             <a href="/" class="button px-2 py-1 rounded-md bg-blue-600 text-white">Lihat</a>
                                         </td>
                                         <td class="text-center">
-                                            <a href="/" class="button px-2 py-1 rounded-md bg-blue-600 text-white">ACC</a>
+                                            <form action="{{ route('penugasan-organik-approve', ['id'=>$id, 'petugas'=>$pegawai, 'tugasId'=>$item->id]) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                <x-acc-button />
+                                            </form>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td colspan="5" class="text-center">Tidak ada data pegawai yang ditemukan.</td>
-                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -92,21 +94,13 @@
             <div class="size-full bg-gray-50 border border-gray-100 rounded-md rounded-md p-4">
                 <div class="w-full pl-2 pb-6 flex flex-row justify-between">
                     <span class="text-2xl text-teal-600 font-medium">Pengajuan Penambahan Beban Kerja</span>
+                    <x-tambah-button :route="route('pengajuan-tugas-organik-create', ['id' => $id, 'petugas' => $pegawai])">
+
+                    </x-tambah-button>
                 </div>
 
                 <div class="w-full flex flex-row justify-between items-center pb-1">
                     <div class="relative flex items-center w-64 ">
-                        <input type="text"
-                            class="input pl-10 m-2 ml-0 w-full bg-gray-50 border border-gray-300 rounded-md input-sm focus:outline-none focus:ring-1 focus:ring-teal-600 focus:border-teal-600 peer"
-                            placeholder="Cari kegiatan" />
-
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="absolute left-4 w-5 h-5 text-gray-500 transition duration-200 ease-in-out peer-focus:text-teal-600">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                        </svg>
                     </div>
                 </div>
 
@@ -124,20 +118,23 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach($pengajuan_pegawai as $item)
 
                                 <tr>
-                                    <td class="text-center">1</td>
-                                    <td></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center">Menunggu persetujuan</td>
+                                    <td class="text-center">{{$loop->iteration}}</td>
+                                    <td>{{$item->dikerjakan}}</td>
+                                    <td class="text-center">0</td>
+                                    <td class="text-center">{{$item->created_at}}</td>
+                                    <td class="text-center">{{$item->status}}</td>
                                     <td class="text-center">
-                                        <a href="/" class="button px-2 py-1 rounded-md bg-blue-600 text-white">ACC</a>
+                                        <form action="{{ route('penugasan-organik-delete', ['id'=>$item->id, 'penugasan'=>$id]) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('POST')
+                                            <x-acc-button />
+                                        </form>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td colspan="5" class="text-center">Tidak ada data pegawai yang ditemukan.</td>
-                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

@@ -2,16 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Mitra;
 use Illuminate\Database\Seeder;
+use App\Models\Mitra;
 
 class MitraSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        Mitra::factory(100)->create();
+        Mitra::factory()->count(10)->create();
     }
 }

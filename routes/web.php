@@ -31,16 +31,24 @@ Route::group(['prefix' => 'capaian'], function () {
 });
 
 Route::group(['prefix' => 'beban-kerja'], function () {
-    Route::get('/tugas', [BebanKerjaController::class, 'index'])
-        ->name('beban-kerja-all');
     Route::get('/', [BebanKerjaController::class, 'showAll'])
-        ->name('jls');
-    Route::get('/{id}/tugas-organik/show', [PenugasanPegawaiController::class, 'show'])
-        ->name('penugasan-organik-detail');
+        ->name('beban-kerja-all');
+    Route::get('/add', [BebanKerjaController::class, 'create'])
+        ->name('beban-kerja-add');
+    Route::post('/add/save', [BebanKerjaController::class, 'store'])
+        ->name('beban-kerja-save');
     Route::get('/{id}/penugasan', [BebanKerjaController::class, 'show'])
         ->name('beban-kerja-tugas');
     Route::get('/{id}/tugas-organik/{petugas}', [PenugasanPegawaiController::class, 'view'])
-        ->name('jlsss');
+        ->name('penugasan-organik-detail');
+    Route::post('/{id}/tugas-organik/{petugas}/approve/{tugasId}', [PenugasanPegawaiController::class, 'accPenugasan'])
+        ->name('penugasan-organik-approve');
+    Route::get('/{id}/tugas-organik/{petugas}/create', [PenugasanPegawaiController::class, 'createTugas'])
+        ->name('pengumpulan-tugas-organik-create');
+    Route::get('/{id}/tugas-organik/{petugas}/createpengajuan', [PenugasanPegawaiController::class, 'createPengajuan'])
+        ->name('pengajuan-tugas-organik-create');
+    Route::post('/save-tugas-organik', [PenugasanPegawaiController::class, 'storeTugas'])
+        ->name('pengumpulan-tugas-organik-save');
     Route::get('/{id}/tambah-organik', [PenugasanPegawaiController::class, 'create'])
         ->name('penugasan-organik-create');
     Route::post('{id}/tambah-organik/save', [PenugasanPegawaiController::class, 'store'])
@@ -49,8 +57,10 @@ Route::group(['prefix' => 'beban-kerja'], function () {
         ->name('penugasan-organik-edit-view');
     Route::put('/tugas-organik/edit/{id}', [PenugasanPegawaiController::class, 'update'])
         ->name('penugasan-organik-edit-save');
-    Route::delete('/tugas-organik/delete/{id}', [PenugasanPegawaiController::class, 'delete'])
+    Route::delete('{penugasan}/penugasan/organik/delete/{id}', [PenugasanPegawaiController::class, 'delete'])
         ->name('penugasan-organik-delete');
+    Route::delete('{penugasan}/penugasan/mitra/delete/{id}', [PenugasanMitraController::class, 'delete'])
+        ->name('penugasan-mitra-delete');
 
     Route::get('/tugas-mitra/show/{id}', [PenugasanMitraController::class, 'show'])
         ->name('penugasan-mitra-detail');
@@ -62,8 +72,6 @@ Route::group(['prefix' => 'beban-kerja'], function () {
         ->name('penugasan-mitra-edit-view');
     Route::put('/tugas-mitra/edit/{id}', [PenugasanMitraController::class, 'update'])
         ->name('penugasan-mitra-edit-save');
-    Route::delete('/tugas-mitra/delete/{id}', [PenugasanMitraController::class, 'delete'])
-        ->name('penugasan-mitra-delete');
 
     Route::get('/organik', [BebanKerjaOrganikController::class, 'index'])
         ->name('beban-kerja-organik');
@@ -102,9 +110,9 @@ Route::get('/manajemen-user-x', [MasterOrganikController::class, 'index'])
 Route::get('/manajemen-user', [MasterOrganikController::class, 'index'])
     ->name('manajemen-user');
 Route::get('/manajemen-user/create', [MasterOrganikController::class, 'create'])
-    ->name('master-organik-create-view');
+    ->name('manajemen-user-create');
 Route::post('/manajemen-user/create', [MasterOrganikController::class, 'store'])
-    ->name('master-organik-create-save');
+    ->name('manajemen-user-save');
 Route::get('/manajemen-user/edit/{id}', [MasterOrganikController::class, 'edit'])
     ->name('master-organik-edit-view');
 Route::put('/manajemen-user/edit/{id}', [MasterOrganikController::class, 'update'])

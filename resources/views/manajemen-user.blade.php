@@ -25,7 +25,7 @@
                     d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
         </div>
-        <x-tambah-button :route="'master-organik-create-view'" />
+        <x-tambah-button :route="route('manajemen-user-create')" />
     </div>
 
     {{-- Tabel--}}
@@ -39,7 +39,7 @@
                         <th scope="col" class="w-20 text-center">NIP BPS</th>
                         <th scope="col" class="w-56">Nama</th>
                         <th scope="col" class="w-16 text-center">Alias</th>
-                        <th scope="col" class="w-14 text-center">Status</th>
+                        <th scope="col" class="w-14 text-center">Jabatan</th>
                         <th scope="col" class="w-16 text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -51,7 +51,7 @@
                         <td class="text-center">{{ $item->nip_bps }}</td>
                         <td>{{ $item->nama }}</td>
                         <td class="text-center">{{ $item->alias }}</td>
-                        <td class="text-center">{{ $item->status }}</td>
+                        <td class="text-center">{{ $item->jabatan }}</td>
                         <td class="text-center">
                             <div class="flex justify-center space-x-2 px-2">
                                 <x-edit-button-table :id="$item->id" :route="'master-organik-edit-view'" />

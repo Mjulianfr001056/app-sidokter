@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\PenugasanPegawai;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PenugasanPegawaiSeeder extends Seeder
@@ -12,6 +12,6 @@ class PenugasanPegawaiSeeder extends Seeder
      */
     public function run(): void
     {
-        PenugasanPegawai::factory(100)->create();
+        //
     }
 }

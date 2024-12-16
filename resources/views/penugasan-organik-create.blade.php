@@ -13,7 +13,7 @@
             @csrf
             @method('POST')
 
-            <input type="text" name="kegiatan" value="{{$id}}" hidden>
+            <input type="text" name="kegiatan_id" value="{{$id}}" hidden>
 
             <!-- <x-input.text-field
                 :label="'Nama Kegiatan'"
@@ -24,14 +24,16 @@
 
             <x-input.dropdown
                 :label="'Organik'"
-                :options="$pilihan_petugas"
+                :options="$pilihan_pegawai"
                 :name="'petugas'"
                 required></x-input.dropdown>
 
-            <!-- <x-input.text-field
+            <x-input.text-field
                 :label="'Jabatan Penugasan'"
                 :name="'jabatan'"
-                required></x-input.text-field> -->
+                required></x-input.text-field>
+
+            <input type="text" value="Ditugaskan" name="status" hidden>
 
             <x-input.double-input-layout
                 :label="'Kuantitas'"

@@ -18,8 +18,8 @@ class PenugasanPegawai extends Model
         'jabatan',
         'status',
         'target',
-        'terlaksana' .
-            'satuan',
+        'terlaksana',
+        'satuan',
         'catatan',
     ];
 

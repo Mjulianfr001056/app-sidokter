@@ -20,7 +20,10 @@ class MasterOrganikController extends Controller
 
     public function create()
     {
-        return view('master-organik-create');
+        $fungsi_ketua_tim = ['Nerwilis', 'IPDS', 'Statistik Produksi'];
+        $options = ['Ketua Tim', 'Admin Kabupaten', 'Organik', 'Pimpinan'];
+
+        return view('manajemen-user-create', compact('options', 'fungsi_ketua_tim'));
     }
 
     public function store(Request $request)

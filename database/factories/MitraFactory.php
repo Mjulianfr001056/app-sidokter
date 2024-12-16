@@ -4,35 +4,23 @@ namespace Database\Factories;
 
 use App\Models\Mitra;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\DB;
 
-/**
- * @extends Factory<Mitra>
- */
 class MitraFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
+    protected $model = Mitra::class;
+
+    public function definition()
     {
-        $posisiOptions = ['pendataan', 'pengolahan'];
-
-        $selectedPosisi = $this->faker->randomElements($posisiOptions, $this->faker->numberBetween(1, count($posisiOptions)));
-        $posisi = implode(',', $selectedPosisi);
-
-        $kodeWilayah = DB::table('wilayah')->inRandomOrder()->value('kode');;
-
         return [
-            'sobat_id' => $this->faker->unique()->numerify('############'),
+            'sobat_id' => $this->faker->numberBetween(1, 100),
             'nama' => $this->faker->name,
-            'jenis_kelamin' => $this->faker->randomElement(['laki-laki', 'perempuan']),
+            'jenis_kelamin' => $this->faker->randomElement(['L', 'P']),
             'email' => $this->faker->unique()->safeEmail,
-            'kode_wilayah' => $kodeWilayah,
+            'kecamatan' => $this->faker->city,
+            'kelurahan' => $this->faker->citySuffix,
             'alamat_detail' => $this->faker->address,
-            'posisi' => $posisi
+            'posisi' => $this->faker->word,
+            'pendapatan' => $this->faker->randomDigitNotZero(100000, 4000000),
         ];
     }
 }

@@ -64,10 +64,9 @@ class PenugasanMitraController extends Controller
         return redirect()->route('penugasan-mitra-detail', ['id' => $id]);
     }
 
-    public function delete($id)
+    public function delete($penugasan, $id)
     {
         PenugasanMitra::where('id', $id)->delete();
-
-        return redirect()->route('beban-kerja-tugas');
+        return redirect()->route('beban-kerja-tugas', ['id' => $penugasan]);
     }
 }

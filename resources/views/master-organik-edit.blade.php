@@ -47,21 +47,7 @@ $current_status = old('status', $pegawai->status);
 
             <div class="w-full pb-2">
                 <label class="text-lg text-cyan-950 font-medium">Jabatan</label>
-                <input type="text" id="jabatan" name="jabatan" value="{{ $pegawai->jabatan }}"
-                    class="text-gray-600 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
-            </div>
-
-            <div class="w-full pb-2">
-                <label class="text-lg text-cyan-950 font-medium">Golongan</label>
-                <select id="golongan" name="golongan"
-                    class="text-gray-600 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
-                    <option value="">-- Pilih Opsi --</option>
-                </select>
-            </div>
-
-            <div class="w-full pb-2">
-                <label class="text-lg text-cyan-950 font-medium">Status</label>
-                <select id="status" name="status"
+                <select id="status" name="jabatan"
                     class="text-gray-600 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
                     <option value="">-- Pilih Opsi --</option>
                     <option value="Admin Kabupaten" {{ $current_status == 'Admin Kabupaten' ? 'selected' : '' }}>Admin Kabupaten</option>
@@ -71,7 +57,7 @@ $current_status = old('status', $pegawai->status);
                 </select>
             </div>
 
-            <script>
+            <!-- <script>
                 const options = @json($options);
                 const currentGolongan = @json($current_golongan);
                 const currentStatus = @json($current_status);
@@ -107,7 +93,7 @@ $current_status = old('status', $pegawai->status);
                     const selectedStatus = this.value;
                     populateGolonganOptions(selectedStatus);
                 });
-            </script>
+            </script> -->
 
             <div class="w-full flex justify-end pt-4">
                 <x-submit-button>

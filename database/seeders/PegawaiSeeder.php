@@ -2,17 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Pegawai;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Pegawai;
 
 class PegawaiSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        Pegawai::factory(30)->create();
+        // Menggunakan factory untuk membuat 10 data Pegawai
+        Pegawai::factory()->count(10)->create();
     }
 }

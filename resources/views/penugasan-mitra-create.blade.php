@@ -14,7 +14,7 @@
             @method('POST')
 
 
-            <input type="text" name="kegiatan" value="{{$id}}" hidden>
+            <input type="text" name="kegiatan_id" value="{{$id}}" hidden>
 
             <x-input.dropdown-mitra :label="'Mitra'"
                 :options="$mitra"

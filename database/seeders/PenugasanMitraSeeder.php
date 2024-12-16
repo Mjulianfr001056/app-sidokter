@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\PenugasanMitra;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PenugasanMitraSeeder extends Seeder
@@ -12,6 +12,6 @@ class PenugasanMitraSeeder extends Seeder
      */
     public function run(): void
     {
-         PenugasanMitra::factory(100)->create();
+        //
     }
 }

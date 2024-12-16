@@ -1,12 +1,8 @@
 @extends('components.layout')
-
 @section('title', 'Penugasan')
-
 @section('content')
-<?php
-?>
+
 <div class="size-full flex flex-col w-full items-center px-4">
-    {{-- Judul--}}
     <div class="w-full pb-6 ">
         <p class="text-sm"><?php echo $kegiatan->nama ?> / Penugasan</p>
         <p class="text-3xl font-bold"><?php echo $kegiatan->nama ?></p>
@@ -38,14 +34,18 @@
 
                                     @if($pegawai && $pegawai->isNotEmpty())
                                     @foreach ($penugasanPegawai as $item)
-
                                     <tr>
                                         <td class="text-center">{{ $loop->iteration }}</td>
                                         <td>{{ $item->pegawai->nama }}</td>>
                                         <td class="text-center">{{ $item->target }}</td>
                                         <td class="text-center">{{ $item->terlaksana }}</td>
-                                        <td class="text-center">
-                                            <a href="/beban-kerja/{{$id}}/tugas-organik/{{$item->pegawai->id}}" class="button bg-blue-500 py-1 px-2 text-white font-md rounded-md">Detail</a>
+                                        <td class="text-center flex">
+                                            <a href="/beban-kerja/{{$id}}/tugas-organik/{{$item->pegawai->id}}" class="mx-1 button bg-blue-500 py-1 px-2 text-white font-md rounded-md">Detail</a>
+                                            <form action="{{ route('penugasan-organik-delete', ['id'=>$item->id, 'penugasan'=>$id]) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <x-remove-button />
+                                            </form>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -67,7 +67,15 @@
                     <span class="text-2xl text-teal-600 font-medium">Informasi Tim</span>
                 </div>
                 <div class="w-full pl-2 pb-2">
-                    <p class="text-md text-cyan-950 font-medium">Progress </p>
+                    <p class="text-md text-cyan-950 font-medium">Ditugaskan</p>
+                    <p class="text-sm text-gray-600 font-normal">100% (buat grafik frontend)</p>
+                </div>
+                <div class="w-full pl-2 pb-2">
+                    <p class="text-md text-cyan-950 font-medium">Selesai</p>
+                    <p class="text-sm text-gray-600 font-normal">100% (buat grafik frontend)</p>
+                </div>
+                <div class="w-full pl-2 pb-2">
+                    <p class="text-md text-cyan-950 font-medium">Pengajuan</p>
                     <p class="text-sm text-gray-600 font-normal">100% (buat grafik frontend)</p>
                 </div>
                 <div class="w-full pl-2 pb-2">
@@ -128,7 +136,6 @@
                                 @foreach ($penugasanMitra as $item)
 
 
-
                                 <tr>
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td>{{ $item->mitra->nama }}</td>
@@ -138,6 +145,11 @@
                                     <td class="text-center w-8">
                                         <div class="justify-center space-x-2 px-2 flex">
                                             <x-view-button :id="$item->id" :route="'penugasan-mitra-detail'" />
+                                            <form action="{{ route('penugasan-mitra-delete', ['id'=>$item->id, 'penugasan'=>$id]) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <x-remove-button />
+                                            </form>
                                         </div>
                                     </td>
                                     <td class="text-center">Tidak ada</td>

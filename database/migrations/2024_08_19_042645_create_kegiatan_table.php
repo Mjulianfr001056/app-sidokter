@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateKegiatanTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,19 +14,18 @@ return new class extends Migration
     public function up()
     {
         Schema::create('kegiatan', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama', 150);
-            $table->string('asal_fungsi', 50);
-            $table->string('periode', 50)->nullable();
-            $table->date('tanggal_mulai')->nullable();
-            $table->date('tanggal_akhir')->nullable();
-            $table->unsignedInteger('target')->nullable();
-            $table->string('satuan', 30);
-            $table->unsignedInteger('harga_satuan')->nullable();
-            $table->unsignedInteger('banyak_sampel')->default(0);
-            $table->enum('status_sampel', ['menunggu', 'final'])->nullable();
+            $table->id(); // Primary key with auto-increment
+            $table->string('nama'); // Nama kegiatan
+            $table->string('asal_fungsi'); // Asal fungsi atau departemen
+            $table->date('tanggal_mulai'); // Tanggal mulai kegiatan
+            $table->date('tanggal_akhir'); // Tanggal akhir kegiatan
+            $table->integer('target'); // Target yang ingin dicapai
+            $table->integer('terlaksana')->nullable(); // Jumlah yang terlaksana
+            $table->string('satuan'); // Satuan target (misal: unit, orang, dll.)
+            $table->integer('harga_satuan'); // Harga per satuan
+            $table->text('catatan')->nullable(); // Catatan tambahan, bisa null
 
-            $table->timestamps();
+            $table->timestamps(); // created_at dan updated_at otomatis
         });
     }
 
@@ -39,4 +38,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('kegiatan');
     }
-};
+}
