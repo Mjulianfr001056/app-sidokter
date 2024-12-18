@@ -1,13 +1,13 @@
 @php use Carbon\Carbon; @endphp
 @extends('components.layout')
 
-@section('title', 'Semua Penugasan')
+@section('title', 'Semua Penugasan Mitra')
 
 @section('content')
 <div class="size-full flex flex-col w-full items-center px-4">
     {{-- Judul--}}
     <div class="w-full pb-6 ">
-        <x-judul text="Semua Penugasan" />
+        <x-judul text="Penugasan Mitra" />
     </div>
 
     {{-- Pencarian--}}
@@ -36,45 +36,27 @@
                 <thead>
                     <tr>
                         <th scope="col" rowspan="2" class="w-8 text-center">No</th>
-                        <th scope="col" rowspan="2" class="w-56">Nama</th>
-                        <th scope="col" rowspan="2" class="w-24">Asal Fungsi</th>
-                        <th scope="col" colspan="2" class="text-center border-b-gray-200 border-b-[1px]">Tanggal</th>
-                        <th scope="col" rowspan="2" class="w-28 text-end">Target</th>
-                        <th scope="col" rowspan="2" class="w-28 text-end">Terlaksana</th>
+                        <th scope="col" rowspan="2" class="w-24">Kegiatan</th>
+                        <th scope="col" rowspan="2" class="w-28 text-center">Pelaksana</th>
+                        <th scope="col" rowspan="2" class="w-28 text-center">Target</th>
+                        <th scope="col" rowspan="2" class="w-28 text-center">Terlaksana</th>
                         <th scope="col" rowspan="2" class="w-28 text-center">Satuan</th>
-                        <th scope="col" rowspan="2" class="w-28 text-end">Harga Satuan</th>
-                        <th scope="col" rowspan="2" class="w-28 text-center">Aksi</th>
-                    </tr>
-                    <tr>
                         <th scope="col" class="w-28 text-center">Mulai</th>
                         <th scope="col" class="w-28 text-center">Selesai</th>
+                        <th scope="col" rowspan="2" class="w-28 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($kegiatan as $item)
+                    @foreach ($kegiatan_mitra as $item)
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
-                        <td>{{ $item->nama }}</td>
-                        <td>{{ $item->asal_fungsi }}</td>
-                        <td class="text-center">
-                            @if($item->tanggal_mulai)
-                            {{ Carbon::parse($item->tanggal_mulai)->format('d-m-Y') }}
-                            @else
-                            -
-                            @endif
-                        </td>
-                        <td class="text-center">
-                            @if($item->tanggal_akhir)
-                            {{ Carbon::parse($item->tanggal_akhir)->format('d-m-Y') }}
-                            @else
-                            -
-                            @endif
-                        </td>
-
-                        <td class="text-end">{{ $item->target }}</td>
-                        <td class="text-end">{{ $item->terlaksana }}</td>
-                        <td class="text-center">{{$item->satuan }}</td>
-                        <td class="text-end">{{ $item->harga_satuan }}</td>
+                        <td>{{ $item->kegiatan->nama }}</td>
+                        <td>{{ $item->mitra->nama }}</td>
+                        <td class="text-center">{{ $item->target }}</td>
+                        <td class="text-center">{{ $item->terlaksana }}</td>
+                        <td class="text-center">{{$item->kegiatan->satuan }}</td>
+                        <td class="text-center">{{$item->kegiatan->tanggal_mulai }}</td>
+                        <td class="text-center">{{$item->kegiatan->tanggal_akhir }}</td>
                         <td class="text-center">
                             <div class="flex justify-between px-2">
                                 <x-detail-button-table :id="$item->id" :route="'beban-kerja-all'" />
@@ -94,7 +76,7 @@
     </div>
 
     {{-- Pagination --}}
-    <x-paginator :paginator="$kegiatan" />
+    <x-paginator :paginator="$kegiatan_mitra" />
 
 </div>
 @endsection

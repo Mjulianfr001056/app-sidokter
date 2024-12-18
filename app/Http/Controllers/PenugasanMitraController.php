@@ -13,6 +13,12 @@ use Illuminate\Http\Request;
 
 class PenugasanMitraController extends Controller
 {
+    public function index()
+    {
+        $kegiatan_mitra = PenugasanMitra::with(['mitra', 'kegiatan'])->paginate(10);
+        return view('penugasan-mitra-all', compact('kegiatan_mitra'));
+    }
+
     public function show($id)
     {
         $detail_tugas = PenugasanMitra::getById($id);

@@ -21,9 +21,9 @@ class BebanKerjaController extends Controller
             ->get();
 
         // Ambil data PenugasanMitra dan gunakan eager loading untuk relasi mitra
-        $penugasanMitra = PenugasanMitra::with('mitra') // Memuat relasi 'mitra'
+        $penugasanMitra = PenugasanMitra::with('mitra')
             ->where('kegiatan_id', $id)
-            ->get(); // Mengambil data sebagai Collection, bukan array
+            ->get();
 
         // Periksa jika data PenugasanPegawai tidak kosong
         if ($penugasanPegawai->isNotEmpty()) {
@@ -56,6 +56,13 @@ class BebanKerjaController extends Controller
             'penugasanPegawai', // Mengirim semua data penugasan pegawai
             'penugasanMitra'    // Mengirim semua data penugasan mitra
         ));
+    }
+
+    public function delete($id)
+    {
+        $kegiatan = Kegiatan::where('id', $id);
+        $kegiatan->delete();
+        return redirect()->route('beban-kerja-all');
     }
 
     public function create()

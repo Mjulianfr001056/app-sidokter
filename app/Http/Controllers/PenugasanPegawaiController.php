@@ -20,6 +20,14 @@ class PenugasanPegawaiController extends Controller
         return view('penugasan-organik-detail', compact('detail_tugas'));
     }
 
+    public function index()
+    {
+        $kegiatan_pegawai = PenugasanPegawai::with(['pegawai', 'kegiatan'])->paginate(10);
+        return view('penugasan-organik-all', compact('kegiatan_pegawai'));
+    }
+
+
+
     public function view($id, $pegawai)
     {
         $penugasan_pegawai_id = PenugasanPegawai::with(['pegawai', 'kegiatan']) // Pastikan relasi dimuat

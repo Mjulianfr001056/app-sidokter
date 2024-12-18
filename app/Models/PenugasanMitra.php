@@ -30,7 +30,7 @@ class PenugasanMitra extends Model
 
     public function kegiatan()
     {
-        return $this->belongsTo(Kegiatan::class, 'kegiatan');
+        return $this->belongsTo(Kegiatan::class, 'kegiatan_id');
     }
 
     public static function getByKegiatan($id)
