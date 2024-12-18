@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class MasterOrganikController extends Controller
 {
     public function __construct()
     {
         $this->model = new Pegawai();
+    }
+
+    public function login()
+    {
+        return view('login');
     }
 
     public function index()
@@ -28,7 +34,10 @@ class MasterOrganikController extends Controller
 
     public function store(Request $request)
     {
-        Pegawai::create($request->except('_token', '_method'));
+        $data = $request->except('_token', '_method');
+        $data['password'] = Hash::make($request->password);
+        Pegawai::create($data);
+
         return redirect()->route('master-organik');
     }
 

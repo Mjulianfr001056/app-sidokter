@@ -25,9 +25,11 @@
                                     <tr>
                                         <th scope="col" class="w-8 text-center">No</th>
                                         <th scope="col" class="w-56">Nama</th>
+                                        <th scope="col" class="w-56">Jabatan</th>
                                         <th scope="col" class="w-8 text-center">Target (Satuan)</th>
                                         <th scope="col" class="w-8 text-center">Terlaksana (Satuan)</th>
                                         <th scope="col" class="w-8 text-center">Aksi</th>
+                                        <th scope="col" class="w-8 text-center">Catatan</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -37,6 +39,7 @@
                                     <tr>
                                         <td class="text-center">{{ $loop->iteration }}</td>
                                         <td>{{ $item->pegawai->nama }}</td>>
+                                        <td class="text-center">{{ $item->jabatan }}</td>
                                         <td class="text-center">{{ $item->target }}</td>
                                         <td class="text-center">{{ $item->terlaksana }}</td>
                                         <td class="text-center flex">
@@ -45,8 +48,10 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <x-remove-button />
+                                                <a href="{{route('penugasan-organik-edit',['id'=>$id,'petugas'=>$item->petugas])}}" class="mx-1 button bg-blue-500 py-1 px-2 text-white font-md rounded-md"></a>
                                             </form>
                                         </td>
+                                        <td>{{$item->catatan}}</td>
                                     </tr>
                                     @endforeach
                                     @else

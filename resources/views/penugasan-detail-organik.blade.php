@@ -40,6 +40,7 @@
                                         <th scope="col" class="w-8 text-center">Status</th>
                                         <th scope="col" class="w-8 text-center">Bukti</th>
                                         <th scope="col" class="w-8 text-center">Aksi</th>
+                                        <th scope="col" class="w-8 text-center">Catatan</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -52,12 +53,15 @@
                                         <td class="text-center">
                                             <a href="/" class="button px-2 py-1 rounded-md bg-blue-600 text-white">Lihat</a>
                                         </td>
-                                        <td class="text-center">
-                                            <form action="{{ route('penugasan-organik-approve', ['id'=>$id, 'petugas'=>$pegawai, 'tugasId'=>$item->id]) }}" method="POST" style="display:inline;">
+                                        <td class="text-center flex justify-between">
+                                            <form action="{{ route('penugasan-organik-approve', ['id' => $id, 'petugas' => $pegawai, 'tugasId' => $item->id]) }}" method="POST" style="display:inline;">
+
                                                 @csrf
                                                 <x-acc-button />
                                             </form>
+                                            <a href="/" class="button px-2 py-1 rounded-md bg-blue-600 text-white">Lihat</a>
                                         </td>
+                                        <td class="text-center">{{$item->catatan}}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -115,6 +119,7 @@
                                     <th scope="col" class="w-8 text-center">Tanggal Pengajuan</th>
                                     <th scope="col" class="w-8 text-center">Status</th>
                                     <th scope="col" class="w-8 text-center">Aksi</th>
+                                    <th scope="col" class="w-8 text-center">Catatan</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -127,12 +132,13 @@
                                     <td class="text-center">{{$item->created_at}}</td>
                                     <td class="text-center">{{$item->status}}</td>
                                     <td class="text-center">
-                                        <form action="{{ route('penugasan-organik-delete', ['id'=>$item->id, 'penugasan'=>$id]) }}" method="POST" style="display:inline;">
+                                        <form action="{{ route('pengajuan-organik-approve', ['id' => $id, 'petugas' => $pegawai, 'tugasId' => $item->id]) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('POST')
                                             <x-acc-button />
                                         </form>
                                     </td>
+                                    <td class="text-center">{{$item->catatan}}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

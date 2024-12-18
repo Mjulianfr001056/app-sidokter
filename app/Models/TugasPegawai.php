@@ -19,10 +19,8 @@ class TugasPegawai extends Model
         'catatan',
     ];
 
-    // Relasi 
-
     public function penugasanPegawai()
     {
-        return $this->belongsTo(PenugasanPegawai::class, 'penugasanPegawai');
+        return $this->belongsTo(PenugasanPegawai::class, 'penugasan_pegawai', 'id');
     }
 }

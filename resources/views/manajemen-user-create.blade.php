@@ -41,10 +41,17 @@
             <x-input.dropdown-single :options="$options" :name="'jabatan'">
 
             </x-input.dropdown-single>
+
             <label for="fungsi" class="text-lg text-cyan-950 font-medium">Fungsi (Ketua Tim)</label>
             <x-input.dropdown-single :options="$fungsi_ketua_tim" :name="'fungsi_ketua_tim'">
 
             </x-input.dropdown-single>
+
+            <div class="w-full pb-2">
+                <label class="text-lg text-cyan-950 font-medium">Password</label>
+                <input type="text" id="nip_bps" name="password"
+                    class="text-gray-600 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+            </div>
 
             <div class="w-full flex justify-end pt-4">
                 <x-submit-button>

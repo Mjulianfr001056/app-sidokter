@@ -21,7 +21,8 @@ class Pegawai extends Model
         'nama',
         'alias',
         'jabatan',
-        'fungsi_ketua_tim'
+        'fungsi_ketua_tim',
+        'password'
     ];
 
     public function penugasanPegawai()

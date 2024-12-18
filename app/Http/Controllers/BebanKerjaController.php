@@ -12,28 +12,6 @@ use Illuminate\Support\Facades\DB;
 
 class BebanKerjaController extends Controller
 {
-    // public function index()
-    // {
-    //     $fungsi = env('SESSION_FUNGSI');
-
-    //     $pegawai = Pegawai::all();
-    //     //$kegiatan = Kegiatan::getKegiatanById($id);
-    //     $ketua = Pegawai::getKetuaByFungsi($fungsi);
-    //     $anggota = Pegawai::getAnggotaByFungsi($fungsi);
-    //     $tugas_tim = Pegawai::getJumlahKegiatanPerPegawaiByFungsi($fungsi);
-    //     $daftarPenugasanTim = PenugasanPegawai::getAllByFungsi($fungsi);
-    //     $daftarPenugasanMitra = PenugasanMitra::getAll();
-
-    //     return view('beban-kerja-tugas', compact(
-    //         'pegawai',
-    //         'fungsi',
-    //         'ketua',
-    //         'anggota',
-    //         'tugas_tim',
-    //         'daftarPenugasanTim',
-    //         'daftarPenugasanMitra'
-    //     ));
-    // }
 
     public function show($id)
     {
@@ -113,9 +91,6 @@ class BebanKerjaController extends Controller
                     )')
                 ]);
         }
-        // Update kolom 'terlaksana' untuk setiap kegiatan yang ada
-
-        // Kirim data kegiatan ke view
         return view('penugasan-all', compact('kegiatan'));
     }
 }
