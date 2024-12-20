@@ -21,15 +21,8 @@ class Pegawai extends Model
         'nama',
         'alias',
         'jabatan',
-        'golongan',
-        'status',
-        'fungsi',
-        'jabatan_tim',
-    ];
-
-    protected $casts = [
-        'golongan' => 'string',
-        'status' => 'string',
+        'fungsi_ketua_tim',
+        'password'
     ];
 
     public function penugasanPegawai()

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class MasterOrganikController extends Controller
 {
@@ -11,20 +12,32 @@ class MasterOrganikController extends Controller
     {
         $this->model = new Pegawai();
     }
+
+    public function login()
+    {
+        return view('login');
+    }
+
     public function index()
     {
-        $pegawai = $this->model->paginate(25);
-        return view('master-organik', compact('pegawai'));
+        $pegawai = $this->model->paginate(10);
+        return view('manajemen-user', compact('pegawai'));
     }
 
     public function create()
     {
-        return view('master-organik-create');
+        $fungsi_ketua_tim = ['Nerwilis', 'IPDS', 'Statistik Produksi'];
+        $options = ['Ketua Tim', 'Admin Kabupaten', 'Organik', 'Pimpinan'];
+
+        return view('manajemen-user-create', compact('options', 'fungsi_ketua_tim'));
     }
 
     public function store(Request $request)
     {
-        Pegawai::create($request->except('_token', '_method'));
+        $data = $request->except('_token', '_method');
+        $data['password'] = Hash::make($request->password);
+        Pegawai::create($data);
+
         return redirect()->route('master-organik');
     }
 
@@ -36,7 +49,7 @@ class MasterOrganikController extends Controller
 
     public function update(Request $request, $id)
     {
-//        dd($request->all());
+        //        dd($request->all());
         Pegawai::where('id', $id)->update($request->except('_token', '_method'));
         return redirect()->route('master-organik');
     }

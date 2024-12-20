@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateMitraTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,17 +14,17 @@ return new class extends Migration
     public function up()
     {
         Schema::create('mitra', function (Blueprint $table) {
-            $table->id();
-            $table->string('sobat_id', 12);
-            $table->string('nama', 150);
-            $table->enum('jenis_kelamin', ['laki-laki', 'perempuan']);
-            $table->string('email', 50);
-            $table->string('kode_wilayah');
-            $table->foreign('kode_wilayah')->references('kode')->on('wilayah')
-                ->onDelete('restrict')->onUpdate('cascade');
+            $table->id(); // Primary key
+            $table->foreignId('sobat_id');
+            $table->string('nama', 255);
+            $table->enum('jenis_kelamin', ['L', 'P'])->default('L'); // 'L' untuk laki-laki, 'P' untuk perempuan
+            $table->string('email')->unique();
+            $table->string('kecamatan', 100)->nullable();
+            $table->string('kelurahan', 100)->nullable();
             $table->text('alamat_detail')->nullable();
-            $table->string('posisi', 30);
-            $table->timestamps();
+            $table->string('posisi', 50)->nullable();
+            $table->decimal('pendapatan', 15, 2)->default(0); // Pendapatan dalam bentuk decimal
+            $table->timestamps(); // Created_at dan updated_at
         });
     }
 
@@ -37,4 +37,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('mitra');
     }
-};
+}

@@ -12,11 +12,17 @@ use App\Http\Controllers\MasterKegiatanController;
 use App\Http\Controllers\MasterMitraController;
 use App\Http\Controllers\MasterOrganikController;
 use App\Http\Controllers\MasterPerusahaanController;
+use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\PenugasanMitraController;
 use App\Http\Controllers\PenugasanPegawaiController;
+use App\Http\Controllers\TugasPegawaiController;
+use App\Models\PenugasanMitra;
+use App\Models\PenugasanPegawai;
+use App\Models\TugasPegawai;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/dashboard', [DashboardController::class, 'index']) -> name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/login', [MasterOrganikController::class, 'login'])->name('login');
 
 Route::group(['prefix' => 'capaian'], function () {
     Route::get('/agregat', [CapaianAgregatController::class, 'index'])
@@ -30,38 +36,60 @@ Route::group(['prefix' => 'capaian'], function () {
 });
 
 Route::group(['prefix' => 'beban-kerja'], function () {
-    Route::get('/tugas', [BebanKerjaController::class, 'index'])
+    Route::get('/', [BebanKerjaController::class, 'showAll'])
+        ->name('beban-kerja-all');
+    Route::get('/pengajuan/all', [TugasPegawaiController::class, 'showAll'])
+        ->name('pengajuan-all');
+    Route::get('/add', [BebanKerjaController::class, 'create'])
+        ->name('beban-kerja-add');
+    Route::post('/add/save', [BebanKerjaController::class, 'store'])
+        ->name('beban-kerja-save');
+    Route::get('/{id}/penugasan', [BebanKerjaController::class, 'show'])
         ->name('beban-kerja-tugas');
-
-    Route::get('/tugas-organik/show/{id}', [PenugasanPegawaiController::class, 'show'])
+    Route::delete('/{id}/penugasan/delete', [BebanKerjaController::class, 'delete'])
+        ->name('beban-kerja-delete');
+    Route::get('/{id}/tugas-organik/{petugas}', [PenugasanPegawaiController::class, 'view'])
         ->name('penugasan-organik-detail');
-    Route::get('/tugas-organik/create', [PenugasanPegawaiController::class, 'create'])
-        ->name('penugasan-organik-create-view');
-    Route::post('/tugas-organik/save', [PenugasanPegawaiController::class, 'store'])
+    Route::post('/{id}/tugas-organik/{petugas}/approve/{tugasId}', [PenugasanPegawaiController::class, 'accPenugasan'])
+        ->name('penugasan-organik-approve');
+    Route::post('/{id}/tugas-organik/{petugas}/tugaskan/{tugasId}', [PenugasanPegawaiController::class, 'accPengajuan'])
+        ->name('pengajuan-organik-approve');
+    Route::post('/pengajuan/acc/{tugasId}', [PenugasanPegawaiController::class, 'accPengajuanTabel'])
+        ->name('pengajuan-organik-approve-tabel');
+    Route::get('/{id}/tugas-organik/{petugas}/create', [PenugasanPegawaiController::class, 'createTugas'])
+        ->name('pengumpulan-tugas-organik-create');
+    Route::get('{id}/tugas-organik/{petugas}/edit', [PenugasanPegawaiController::class, 'edit'])
+        ->name('penugasan-organik-edit');
+    Route::get('/{id}/tugas-organik/{petugas}/createpengajuan', [PenugasanPegawaiController::class, 'createPengajuan'])
+        ->name('pengajuan-tugas-organik-create');
+    Route::post('/save-tugas-organik', [PenugasanPegawaiController::class, 'storeTugas'])
+        ->name('pengumpulan-tugas-organik-save');
+    Route::get('/{id}/tambah-organik', [PenugasanPegawaiController::class, 'create'])
+        ->name('penugasan-organik-create');
+    Route::post('{id}/tambah-organik/save', [PenugasanPegawaiController::class, 'store'])
         ->name('penugasan-organik-create-save');
-    Route::get('/tugas-organik/edit/{id}', [PenugasanPegawaiController::class, 'edit'])
-        ->name('penugasan-organik-edit-view');
+    Route::put('{id}/penugasan/{pegawai}/update', [PenugasanPegawaiController::class, 'update'])
+        ->name('penugasan-organik-update');
     Route::put('/tugas-organik/edit/{id}', [PenugasanPegawaiController::class, 'update'])
         ->name('penugasan-organik-edit-save');
-    Route::delete('/tugas-organik/delete/{id}', [PenugasanPegawaiController::class, 'delete'])
+    Route::delete('{penugasan}/penugasan/organik/delete/{id}', [PenugasanPegawaiController::class, 'delete'])
         ->name('penugasan-organik-delete');
+    Route::delete('{penugasan}/penugasan/mitra/delete/{id}', [PenugasanMitraController::class, 'delete'])
+        ->name('penugasan-mitra-delete');
 
     Route::get('/tugas-mitra/show/{id}', [PenugasanMitraController::class, 'show'])
         ->name('penugasan-mitra-detail');
-    Route::get('/tugas-mitra/create', [PenugasanMitraController::class, 'create'])
-        ->name('penugasan-mitra-create-view');
-    Route::post('/tugas-mitra/save', [PenugasanMitraController::class, 'store'])
+    Route::get('/{id}/tambah-mitra', [PenugasanMitraController::class, 'create'])
+        ->name('penugasan-mitra-create');
+    Route::post('/{id}/tambah-mitra/save', [PenugasanMitraController::class, 'store'])
         ->name('penugasan-mitra-create-save');
     Route::get('/tugas-mitra/edit/{id}', [PenugasanMitraController::class, 'edit'])
         ->name('penugasan-mitra-edit-view');
     Route::put('/tugas-mitra/edit/{id}', [PenugasanMitraController::class, 'update'])
         ->name('penugasan-mitra-edit-save');
-    Route::delete('/tugas-mitra/delete/{id}', [PenugasanMitraController::class, 'delete'])
-        ->name('penugasan-mitra-delete');
-
-    Route::get('/organik', [BebanKerjaOrganikController::class, 'index'])
+    Route::get('/organik', [PenugasanPegawaiController::class, 'index'])
         ->name('beban-kerja-organik');
-    Route::get('/mitra', [BebanKerjaMitraController::class, 'index'])
+    Route::get('/mitra', [PenugasanMitraController::class, 'index'])
         ->name('beban-kerja-mitra');
 });
 
@@ -72,7 +100,7 @@ Route::group(['prefix' => 'manajemen-sampel'], function () {
         ->name('sampel-show');
 
     Route::get('/edit/{id}', [ManajemenSampelController::class, 'edit'])
-    ->name('sampel-edit-view');
+        ->name('sampel-edit-view');
     Route::put('/edit/{id}', [ManajemenSampelController::class, 'update'])
         ->name('sampel-edit-save');
     Route::post('/seeder/{id}', [ManajemenSampelController::class, 'seeder'])
@@ -80,72 +108,47 @@ Route::group(['prefix' => 'manajemen-sampel'], function () {
 
     Route::get('/finalisasi/{id}', [ManajemenSampelController::class, 'finalisasi'])
         ->name('kegiatan-finalisasi');
-//
-//    Route::get('/assign/{id}', [ManajemenSampelController::class, 'assign'])
-//        ->name('sampel-assign-view');
-//    Route::post('/create', [ManajemenSampelController::class, 'store'])
-//        ->name('sampel-create-save');
+    //
+    //    Route::get('/assign/{id}', [ManajemenSampelController::class, 'assign'])
+    //        ->name('sampel-assign-view');
+    //    Route::post('/create', [ManajemenSampelController::class, 'store'])
+    //        ->name('sampel-create-save');
 
-//    Route::delete('/delete/{id}', [ManajemenSampelController::class, 'delete'])
-//        ->name('sampel-delete');
+    //    Route::delete('/delete/{id}', [ManajemenSampelController::class, 'delete'])
+    //        ->name('sampel-delete');
 
 });
 
-Route::group(['prefix' => 'master'], function () {
-    Route::get('/kegiatan', [MasterKegiatanController::class, 'index'])
-        ->name('master-kegiatan');
-    Route::get('/kegiatan/create', [MasterKegiatanController::class, 'create'])
-        ->name('master-kegiatan-create-view');
-    Route::post('/kegiatan/create', [MasterKegiatanController::class, 'store'])
-        ->name('master-kegiatan-create-save');
-    Route::get('/kegiatan/edit/{id}', [MasterKegiatanController::class, 'edit'])
-        ->name('master-kegiatan-edit-view');
-    Route::put('/kegiatan/edit/{id}', [MasterKegiatanController::class, 'update'])
-        ->name('master-kegiatan-edit-save');
-    Route::delete('/kegiatan/delete/{id}', [MasterKegiatanController::class, 'delete'])
-        ->name('master-kegiatan-delete');
+Route::get('/manajemen-user-x', [MasterOrganikController::class, 'index'])
+    ->name('master-organik');
+Route::get('/manajemen-user', [MasterOrganikController::class, 'index'])
+    ->name('manajemen-user');
+Route::get('/manajemen-user/create', [MasterOrganikController::class, 'create'])
+    ->name('manajemen-user-create');
+Route::post('/manajemen-user/create', [MasterOrganikController::class, 'store'])
+    ->name('manajemen-user-save');
+Route::get('/manajemen-user/edit/{id}', [MasterOrganikController::class, 'edit'])
+    ->name('master-organik-edit-view');
+Route::put('/manajemen-user/edit/{id}', [MasterOrganikController::class, 'update'])
+    ->name('master-organik-edit-save');
+Route::delete('/manajemen-user/delete/{id}', [MasterOrganikController::class, 'delete'])
+    ->name('master-organik-delete');
 
-    Route::get('/organik', [MasterOrganikController::class, 'index'])
-        ->name('master-organik');
-    Route::get('/organik/create', [MasterOrganikController::class, 'create'])
-        ->name('master-organik-create-view');
-    Route::post('/organik/create', [MasterOrganikController::class, 'store'])
-        ->name('master-organik-create-save');
-    Route::get('/organik/edit/{id}', [MasterOrganikController::class, 'edit'])
-        ->name('master-organik-edit-view');
-    Route::put('/organik/edit/{id}', [MasterOrganikController::class, 'update'])
-        ->name('master-organik-edit-save');
-    Route::delete('/organik/delete/{id}', [MasterOrganikController::class, 'delete'])
-        ->name('master-organik-delete');
+Route::get('/mitra', [MasterMitraController::class, 'index'])
+    ->name('master-mitra');
+Route::get('/mitra/create', [MasterMitraController::class, 'create'])
+    ->name('master-mitra-create-view');
+Route::post('/mitra/create', [MasterMitraController::class, 'store'])
+    ->name('master-mitra-create-save');
+Route::get('/mitra/edit/{id}', [MasterMitraController::class, 'edit'])
+    ->name('master-mitra-edit-view');
+Route::put('/mitra/edit/{id}', [MasterMitraController::class, 'update'])
+    ->name('master-mitra-edit-save');
+Route::delete('/mitra/delete/{id}', [MasterMitraController::class, 'delete'])
+    ->name('master-mitra-delete');
 
 
-    Route::get('/mitra', [MasterMitraController::class, 'index'])
-        ->name('master-mitra');
-    Route::get('/mitra/create', [MasterMitraController::class, 'create'])
-        ->name('master-mitra-create-view');
-    Route::post('/mitra/create', [MasterMitraController::class, 'store'])
-        ->name('master-mitra-create-save');
-    Route::get('/mitra/edit/{id}', [MasterMitraController::class, 'edit'])
-        ->name('master-mitra-edit-view');
-    Route::put('/mitra/edit/{id}', [MasterMitraController::class, 'update'])
-        ->name('master-mitra-edit-save');
-    Route::delete('/mitra/delete/{id}', [MasterMitraController::class, 'delete'])
-        ->name('master-mitra-delete');
-
-//    Route::get('/perusahaan', [MasterPerusahaanController::class, 'index'])
-//        ->name('master-perusahaan');
-//    Route::get('/perusahaan/create', [MasterPerusahaanController::class, 'create'])
-//        ->name('master-perusahaan-create-view');
-//    Route::post('/perusahaan/create', [MasterPerusahaanController::class, 'store'])
-//        ->name('master-perusahaan-create-save');
-//    Route::get('/perusahaan/edit/{id}', [MasterPerusahaanController::class, 'edit'])
-//        ->name('master-perusahaan-edit-view');
-//    Route::put('/perusahaan/edit/{id}', [MasterPerusahaanController::class, 'update'])
-//        ->name('master-perusahaan-edit-save');
-//    Route::delete('/perusahaan/delete/{id}', [MasterPerusahaanController::class, 'delete'])
-//        ->name('master-perusahaan-delete');
-
-    Route::resource('perusahaan', MasterPerusahaanController::class)
+Route::resource('perusahaan', MasterPerusahaanController::class)
     ->except(['show'])
     ->names([
         'index' => 'perusahaan-index',
@@ -156,10 +159,10 @@ Route::group(['prefix' => 'master'], function () {
         'destroy' => 'perusahaan-destroy',
     ])->parameters([
         'perusahaan' => 'id'
-        ]);
-    Route::post('/perusahaan/seeder', [MasterPerusahaanController::class, 'seeder'])
-        ->name('perusahaan-seeder');
-});
+    ]);
+Route::post('/perusahaan/seeder', [MasterPerusahaanController::class, 'seeder'])
+    ->name('perusahaan-seeder');
+
 
 Route::group(['prefix' => 'template'], function () {
     Route::get('/seeder-sampel', [DownloadController::class, 'sampel'])

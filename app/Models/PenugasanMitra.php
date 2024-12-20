@@ -13,12 +13,12 @@ class PenugasanMitra extends Model
 
     protected $fillable = [
         'petugas',
-        'kegiatan',
+        'kegiatan_id',
         'tanggal_penugasan',
         'pemberi_tugas',
         'jabatan',
-        'volume',
-        'status',
+        'target',
+        'terlaksana',
         'catatan',
     ];
 
@@ -30,8 +30,14 @@ class PenugasanMitra extends Model
 
     public function kegiatan()
     {
-        return $this->belongsTo(Kegiatan::class, 'kegiatan');
+        return $this->belongsTo(Kegiatan::class, 'kegiatan_id');
     }
+
+    public static function getByKegiatan($id)
+    {
+        return self::where('kegiatan', $id)->get();
+    }
+
 
     public function pemberiTugas()
     {
@@ -58,14 +64,18 @@ class PenugasanMitra extends Model
 
     public static function getById($id)
     {
-        return self::select('penugasan_mitra.*', 'kegiatan.nama as nama_kegiatan',
-            'kegiatan.satuan as satuan_kegiatan','kegiatan.harga_satuan as harga_satuan_kegiatan',
-            'pemberi.nama as nama_pemberi_tugas', 'pelaksana.nama as pelaksana')
+        return self::select(
+            'penugasan_mitra.*',
+            'kegiatan.nama as nama_kegiatan',
+            'kegiatan.satuan as satuan_kegiatan',
+            'kegiatan.harga_satuan as harga_satuan_kegiatan',
+            'pemberi.nama as nama_pemberi_tugas',
+            'pelaksana.nama as pelaksana'
+        )
             ->join('kegiatan', 'penugasan_mitra.kegiatan', '=', 'kegiatan.id')
             ->join('pegawai as pemberi', 'penugasan_mitra.pemberi_tugas', '=', 'pemberi.id')
             ->join('mitra as pelaksana', 'penugasan_mitra.petugas', '=', 'pelaksana.id')
             ->where('penugasan_mitra.id', $id)
             ->first();
     }
-
 }

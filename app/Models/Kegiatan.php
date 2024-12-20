@@ -19,21 +19,26 @@ class Kegiatan extends Model
     protected $fillable = [
         'nama',
         'asal_fungsi',
-        'periode',
         'tanggal_mulai',
         'tanggal_akhir',
         'target',
+        'terlaksana',
         'satuan',
         'harga_satuan',
-        'banyak_sampel',
-        'status_sampel'
+        'catatan',
     ];
+
 
     protected $casts = [
         'tanggal_mulai' => 'date',
         'tanggal_akhir' => 'date',
         'harga_satuan' => 'integer',
     ];
+
+    public static function getKegiatanById($id)
+    {
+        return self::find($id);
+    }
 
     public function penugasanPegawai()
     {
@@ -114,9 +119,18 @@ class Kegiatan extends Model
         });
 
         $monthNames = [
-            1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr',
-            5 => 'May', 6 => 'Jun', 7 => 'Jul', 8 => 'Aug',
-            9 => 'Sep', 10 => 'Oct', 11 => 'Nov', 12 => 'Dec'
+            1 => 'Jan',
+            2 => 'Feb',
+            3 => 'Mar',
+            4 => 'Apr',
+            5 => 'May',
+            6 => 'Jun',
+            7 => 'Jul',
+            8 => 'Aug',
+            9 => 'Sep',
+            10 => 'Oct',
+            11 => 'Nov',
+            12 => 'Dec'
         ];
 
         $currentYear = Carbon::now()->year;
@@ -139,7 +153,4 @@ class Kegiatan extends Model
             'jumlah' => $sortedMonths->pluck('total')->toArray(),
         ];
     }
-
-
-
 }
